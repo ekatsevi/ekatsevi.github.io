@@ -82,7 +82,7 @@ analytics:
 author:
   name             : "Gene Katsevich"
   avatar           : "Eugene_Katsevich.jpg"
-  bio              : "Assistant Professor at <a style='color: black;' href='https://statistics.wharton.upenn.edu/'>Wharton Statistics Department</a>"
+  bio              : "Assistant Professor at<br><a style='color: black;' href='https://statistics.wharton.upenn.edu/'>Wharton Statistics Department</a>"
   location         : "Philadelphia, PA"
   employer         :
   pubmed           : 
