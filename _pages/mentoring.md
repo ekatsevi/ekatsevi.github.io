@@ -17,4 +17,4 @@ PhD students must master a variety of non-technical skills, and these skills are
 - [Keeping track of the literature](/literature)
 - [Statistical computing](/computing)
 
-Along similar lines, Aaditya Ramdas has also compiled ["checklists"](https://www.stat.cmu.edu/~aramdas/checklists.html) for stat/ML PhD students that I find quite helpful.
+Along similar lines, [Aaditya Ramdas](https://www.stat.cmu.edu/~aramdas/) (Assistant Professor at CMU) has also compiled ["checklists"](https://www.stat.cmu.edu/~aramdas/checklists.html) for stat/ML PhD students that I find quite helpful.
