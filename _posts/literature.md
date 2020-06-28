@@ -1,6 +1,6 @@
 ---
 title: Keeping track of the literature
-permalink: /literature/ 
+permalink: /posts/literature/ 
 ---
 
 Keeping track of the literature
