@@ -1,6 +1,7 @@
 ---
 title: Statistical Computing
-permalink: /computing/ 
+permalink: /computing/
+author_profile: false
 ---
 
 I am often tempted to program quickly but poorly. Ironically, this only slows me down in the long term. I've been working to develop good coding practices, and it has helped me become much more efficient.
