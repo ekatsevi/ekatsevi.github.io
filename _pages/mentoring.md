@@ -16,4 +16,4 @@ Advice for PhD students
 PhD students must master a variety of non-technical skills, and these skills are often acquired through osmosis or trial-and-error. To speed the process along, I have compiled some advice on such topics based on my personal experience. These pages are exclusively my own opinions, and are far from comprehensive. I'd like to add more topics, so please let me know if there's something of this sort that would be helpful to you.
 - [Keeping track of the literature](/literature)
 
-Aaditya Ramdas has also compiled ["checklists"](https://www.stat.cmu.edu/~aramdas/checklists.html) for PhD students that I find quite helpful.
+Along similar lines, Aaditya Ramdas has also compiled ["checklists"](https://www.stat.cmu.edu/~aramdas/checklists.html) for stat/ML PhD students that I find quite helpful.
