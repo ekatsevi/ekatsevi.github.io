@@ -3,9 +3,6 @@ title: Keeping track of the literature
 permalink: /literature/ 
 ---
 
-Keeping track of the literature
-======
-
 A daunting but important part of academic life is keeping up with the literature. The following are some habits I've developed that allow me to stay up to date without getting too overwhelmed.
 
 Finding papers to read
