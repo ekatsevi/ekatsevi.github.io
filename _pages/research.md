@@ -21,10 +21,10 @@ Multiple testing
 ------
 [Multiplicity](https://en.wikipedia.org/wiki/Multiple_comparisons_problem#Large-scale_multiple_testing) is a ubiquitous problem in genomics applications, creating various methodological challenges. One challenge is to incorporate the structure of the underlying biology into the multiple testing procedure. For example, the genome has spatial structure, and biological networks have graphical structures. I've developed methodology for multiple testing problems involving [group structure](https://projecteuclid.org/euclid.aoas/1554861639) and [graph structure](https://arxiv.org/abs/1809.01792).
 
-![](/images/multiple-testing.png)
+<img src="/images/multiple-testing.png" class="center">
 
 Reconciling exploration and inference
 ------ 
 As new technologies facilitate faster and cheaper data collection, scientists increasingly use data for *generating* (as opposed to confirming) hypotheses. Data exploration is an integral step in hypothesis-generating research, but is at odds with standard statistical significance guarantees. Nevertheless, statistical guarantees are important to ensure the quality of the hypotheses chosen for confirmation. Reconciling exploration with inference is therefore an important statistical challenge. I have proposed [a means for doing this](https://arxiv.org/abs/1803.06790) in the context of [Goeman and Solari's](https://projecteuclid.org/euclid.ss/1330437937) simultaneous inference paradigm.
 
-![](/images/selective-inference.png)
+<img src="/images/selective-inference.png" class="center">
