@@ -12,7 +12,8 @@ redirect_from:
 
 About me
 ======
-I'm an assistant professor at the [Wharton Statistics Department](https://statistics.wharton.upenn.edu/). My [research](https://ekatsevi.github.io/research/) centers on several interconnected themes, spanning statistical theory, methodology, and applications. I work on modern **genomics** applications, which often inspire me to consider methodological and theoretical problems in the following domains: 
+I'm an assistant professor at the [Wharton Statistics Department](https://statistics.wharton.upenn.edu/). My [research](https://ekatsevi.github.io/research/) centers on several interconnected themes, spanning statistical theory, methodology, and applications. I work on modern 
+**genomics** applications, which often inspire me to consider methodological and theoretical problems in the following domains: 
 
 <p align="center">
   <img src="/images/research-snapshot-icons-2.png">
