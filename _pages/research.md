@@ -16,7 +16,7 @@ High-dimensional variable selection
 ------ 
 [Genome-wide association studies](https://en.wikipedia.org/wiki/Genome-wide_association_study) exemplify the situation where we have many input variables (genetic variants) that can potentially affect the outcome variable (disease status), creating a challenging statistical problem. I have developed [theory](https://arxiv.org/abs/2005.05506) and [methods](https://arxiv.org/abs/2006.08482) for this problem, in the context of the Model-X framework introduced by [Candes et al](https://rss.onlinelibrary.wiley.com/doi/10.1111/rssb.12265).
 
-<p align="center">
+<p align="left">
   <img src="/images/variable-selection.png" width="600">
 </p>
 
