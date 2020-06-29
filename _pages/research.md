@@ -5,7 +5,7 @@ permalink: /research/
 author_profile: true
 ---
 
-<img src="/images/high-throughput.png" align="right">
+<img src="/images/high-throughput.png" align="right" width="350">
 
 High-throughput genomics
 ------ 
