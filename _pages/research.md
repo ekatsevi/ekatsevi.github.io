@@ -5,10 +5,10 @@ permalink: /research/
 author_profile: true
 ---
 
-High-throughput genomics
------- 
 <img src="/images/high-throughput.png" align="right">
 
+High-throughput genomics
+------ 
 Modern high-throughput [sequencing technologies](https://en.wikipedia.org/wiki/Functional_genomics) allow us to efficiently make all sorts of measurements genome-wide. These kinds of data have enormous potential for science and medicine, and present a variety of novel statistical challenges. I have a broad interest in applied genomics, including [genome-wide association studies](https://www.nature.com/articles/s41467-020-14791-2) and [Gene Ontology enrichment analysis](https://www.nature.com/articles/s41598-019-42178-x); such applications also motivate my methodological and theoretical research.
 
 
