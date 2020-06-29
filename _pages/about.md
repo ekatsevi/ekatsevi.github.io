@@ -8,10 +8,10 @@ redirect_from:
   - /about.html
 ---
 
-About me
-======
 <img src="/images/test-tube-icon.png" align="right">
 
+About me
+======
 I'm an assistant professor at the [Wharton Statistics Department](https://statistics.wharton.upenn.edu/). My [research](https://ekatsevi.github.io/research/) centers on several interconnected themes, spanning statistical theory, methodology, and applications. I work on modern **genomics** applications, which often inspire me to consider methodological and theoretical problems in the following domains: 
 
 <p align="center">
