@@ -8,7 +8,7 @@ author_profile: true
 Statistics
 -======
 
-- E. Katsevich, A. Ramdas. *The leave-one-covariate-out conditional randomization test*. Preprint. ([paper](https://arxiv.org/abs/2006.08482), [code](https://github.com/ekatsevi/LOCO-CRT))
+- M. Liu, E. Katsevich, L. Janson, A. Ramdas. *Fast and Powerful Conditional Randomization Testing via Distillation*. Preprint. ([paper](https://arxiv.org/abs/2006.03980), [code](https://github.com/moleibobliu/Distillation-CRT))
 - E. Katsevich, A. Ramdas. *A theoretical treatment of conditional independence testing under Model-X*. Preprint. ([paper](https://arxiv.org/abs/2005.05506))
 - E. Katsevich, C. Sabatti, M. Bogomolov. *Filtering the rejection set while preserving false discovery rate control*. Preprint. ([paper](https://arxiv.org/abs/1809.01792),  [code](https://github.com/ekatsevi/Focused-BH), [slides](http://www.andrew.cmu.edu/user/ekatsevi/FocusedBH_slides.pdf))
 - E. Katsevich, A. Ramdas. *Simultaneous high-probability bounds on the FDP in structured, regression and online settings*. Annals of Statistics, to appear, 2020. ([paper](https://arxiv.org/abs/1803.06790), [code](https://github.com/ekatsevi/simultaneous-fdp), [slides](http://www.andrew.cmu.edu/user/ekatsevi/FDP_bound_slides.pdf))
