@@ -17,6 +17,6 @@ Statistics
 Genetics and genomics
 -======
 
-- E. Katsevich and K. Roeder. *Conditional resampling improves sensitivity and specificity of single cell CRISPR regulatory screens*. Preprint. ([paper](https://ekatsevi.github.io/files/SCEPTRE.pdf), [code](https://github.com/ekatsevi/SCEPTRE), [results](https://bit.ly/SCEPTRE))
+- E. Katsevich and K. Roeder. *Conditional resampling improves sensitivity and specificity of single cell CRISPR regulatory screens*. Preprint. ([paper](https://doi.org/10.1101/2020.08.13.250092), [code](https://github.com/ekatsevi/SCEPTRE), [results](https://bit.ly/SCEPTRE))
 - M. Sesia, E. Katsevich, S. Bates, E. Candes, C. Sabatti. *Multi-resolution localization of causal variants across the genome*. Nature Communications, 2020. ([paper](https://www.nature.com/articles/s41467-020-14791-2), [website](https://msesia.github.io/knockoffzoom/))
 - J. Zhu, Q. Zhao, E. Katsevich, C. Sabatti. *Exploratory Gene Ontology Analysis with Interactive Visualization*. Nature Scientific Reports, 2019. ([paper](https://www.nature.com/articles/s41598-019-42178-x), [website](http://aegis.stanford.edu/))
