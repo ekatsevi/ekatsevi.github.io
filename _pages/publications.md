@@ -8,6 +8,7 @@ author_profile: true
 Statistics
 -======
 
+- J. Tian, X. Chen, E. Katsevich, J. Goeman, A. Ramdas. *Large-scale simultaneous inference under dependence*. Preprint. ([paper](https://arxiv.org/abs/2102.11253))
 - M. Liu, E. Katsevich, L. Janson, A. Ramdas. *Fast and Powerful Conditional Randomization Testing via Distillation*. Preprint. ([paper](https://arxiv.org/abs/2006.03980), [code](https://github.com/moleibobliu/Distillation-CRT))
 - E. Katsevich, A. Ramdas. *A theoretical treatment of conditional independence testing under Model-X*. Preprint. ([paper](https://arxiv.org/abs/2005.05506), [slides](https://ekatsevi.github.io/files/Katsevich_JSM_2020.pdf))
 - E. Katsevich, C. Sabatti, M. Bogomolov. *Filtering the rejection set while preserving false discovery rate control*. Preprint. ([paper](https://arxiv.org/abs/1809.01792),  [code](https://github.com/ekatsevi/Focused-BH), [slides](http://ekatsevi.github.io/files/FocusedBH_slides.pdf))
