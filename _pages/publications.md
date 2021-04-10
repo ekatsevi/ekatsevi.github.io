@@ -18,6 +18,7 @@ Statistics
 Genetics and genomics
 -======
 
+-  J. A. Morris,  Z. Daniloski,  J. Domingo, T. Barry, M. Ziosi,  D. A. Glinos, S. Hao,  E. Mimitou,  P. Smibert,  K. Roeder,  E. Katsevich,  T. Lappalainen,  N. E. Sanjana. *Discovery of target genes and pathways of blood trait loci using pooled CRISPR screens and single cell RNA sequencing*. Preprint. ([paper](https://doi.org/10.1101/2021.04.07.438882))
 - E. Katsevich, T. Barry, K. Roeder. *Conditional resampling improves calibration and sensitivity in single-cell CRISPR screen analysis*. Preprint. ([paper](https://doi.org/10.1101/2020.08.13.250092), [slides](https://ekatsevi.github.io/files/SCEPTRE_slides.pdf), [code](https://github.com/Timothy-Barry/SCEPTRE), [results](https://drive.google.com/drive/folders/1ynZRMvGtFxfBiD0zAcuIYjNeS8Jj4AP9?usp=sharing))
 - M. Sesia, E. Katsevich, S. Bates, E. Candes, C. Sabatti. *Multi-resolution localization of causal variants across the genome*. Nature Communications, 2020. ([paper](https://www.nature.com/articles/s41467-020-14791-2), [website](https://msesia.github.io/knockoffzoom/))
 - J. Zhu, Q. Zhao, E. Katsevich, C. Sabatti. *Exploratory Gene Ontology Analysis with Interactive Visualization*. Nature Scientific Reports, 2019. ([paper](https://www.nature.com/articles/s41598-019-42178-x), [website](http://aegis.stanford.edu/))
