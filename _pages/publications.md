@@ -9,9 +9,9 @@ Statistics
 -======
 
 - J. Tian, X. Chen, E. Katsevich, J. Goeman, A. Ramdas. *Large-scale simultaneous inference under dependence*. Preprint. ([paper](https://arxiv.org/abs/2102.11253))
-- M. Liu, E. Katsevich, L. Janson, A. Ramdas. *Fast and Powerful Conditional Randomization Testing via Distillation*. Preprint. ([paper](https://arxiv.org/abs/2006.03980), [code](https://github.com/moleibobliu/Distillation-CRT))
 - E. Katsevich, A. Ramdas. *A theoretical treatment of conditional independence testing under Model-X*. Preprint. ([paper](https://arxiv.org/abs/2005.05506), [slides](https://ekatsevi.github.io/files/Katsevich_JSM_2020.pdf))
-- E. Katsevich, C. Sabatti, M. Bogomolov. *Filtering the rejection set while preserving false discovery rate control*. To appear in Journal of the American Statistical Association, 2021. ([paper](https://arxiv.org/abs/1809.01792),  [code](https://github.com/ekatsevi/Focused-BH), [slides](http://ekatsevi.github.io/files/FocusedBH_slides.pdf))
+- M. Liu, E. Katsevich, L. Janson, A. Ramdas. *Fast and Powerful Conditional Randomization Testing via Distillation*. To appear in Biometrika, 2021. ([paper](https://arxiv.org/abs/2006.03980), [code](https://github.com/moleibobliu/Distillation-CRT))
+- E. Katsevich, C. Sabatti, M. Bogomolov. *Filtering the rejection set while preserving false discovery rate control*. Journal of the American Statistical Association, 2021. ([paper](https://arxiv.org/abs/1809.01792),  [code](https://github.com/ekatsevi/Focused-BH), [slides](http://ekatsevi.github.io/files/FocusedBH_slides.pdf))
 - E. Katsevich, A. Ramdas. *Simultaneous high-probability bounds on the FDP in structured, regression and online settings*. Annals of Statistics, 2020. ([paper](https://arxiv.org/abs/1803.06790), [code](https://github.com/ekatsevi/simultaneous-fdp), [slides](http://ekatsevi.github.io/files/FDP_bound_slides.pdf))
 - E. Katsevich, C. Sabatti. *Multilayer Knockoff Filter: Controlled variable selection at multiple resolutions*. Annals of Applied Statistics, 2019. ([paper](https://projecteuclid.org/euclid.aoas/1554861639),  [code](https://ekatsevi.github.io/files/multilayer_knockoff_filter.zip), [slides](http://ekatsevi.github.io/files/MKF_slides.pdf))
 
