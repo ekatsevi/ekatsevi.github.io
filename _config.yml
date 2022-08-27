@@ -7,9 +7,9 @@
 
 # Site Settings
 locale                   : "en-US"
-title                    : "Gene Katsevich"
+title                    : "Eugene Katsevich"
 title_separator          : "-"
-name                     : &name "Gene Katsevich"
+name                     : &name "Eugene Katsevich"
 description              : &description "Statistician"
 url                      : https://ekatsevi.github.io # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
@@ -82,7 +82,7 @@ analytics:
 author:
   name             : "Gene Katsevich"
   avatar           : "Eugene_Katsevich.jpg"
-  bio              : "Assistant Professor at<br><a style='color: black;' href='https://statistics.wharton.upenn.edu/'>Wharton Statistics Department</a>"
+  bio              : "Assistant Professor at<br><a style='color: black;' href='https://statistics.wharton.upenn.edu/'>Wharton Department of Statistics and Data Science</a>"
   location         : "Philadelphia, PA"
   cv               : "https://ekatsevi.github.io/files/CV_Eugene_Katsevich.pdf"
   employer         :
