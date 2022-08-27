@@ -2,7 +2,5 @@
 main:
   - title: "Research"
     url: https://katsevich-lab.github.io/
-  - title: "Teaching"
-    url: /teaching/
-  - title: "Mentoring"
-    url: /mentoring/
+  - title: "Resources"
+    url: /resources/
