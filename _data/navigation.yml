@@ -1,7 +1,7 @@
 # main links links
 main:
   - title: "Research"
-    url: /lab/
+    url: https://katsevich-lab.github.io/
   - title: "Teaching"
     url: /teaching/
   - title: "Mentoring"
