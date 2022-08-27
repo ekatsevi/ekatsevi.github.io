@@ -10,7 +10,6 @@ redirect_from:
 
 About me
 ======
-<img src="/images/test-tube-icon.png" align="right">
 
 I'm an assistant professor at Wharton's [Department of Statistics and Data Science](https://statistics.wharton.upenn.edu/). My [research](https://katsevich-lab.github.io/) centers on several interconnected themes, spanning statistical theory, methodology, and applications. I work on modern 
 **genomics** applications, which often inspire me to consider methodological and theoretical problems in **high-dimensional variable selection, conditional independence testing, double/debiased machine learning, multiple testing, and selective inference.**
