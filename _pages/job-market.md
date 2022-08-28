@@ -1,6 +1,6 @@
 ---
 title: Navigating the academic job market in statistics
-permalink: /job-market/ 
+permalink: /resources/job-market/ 
 author_profile: false
 ---
 
@@ -34,7 +34,7 @@ Each school requires at least three recommendation letters, though in rare cases
 ### Academic Website (optional but highly recommended)
 Most job applications have an optional field where you can provide a link to an academic website. It is a good idea to create an academic website as soon as you have content to add to it. In particular, it should at least have a picture of you where you can clearly see your face (you want people to recognize you!), a CV, a brief description of your research interests, and links to any preprints, publications, or code available online. Email the link to the Student Services Manager when you create a website, so it can be linked to from your listing on the department’s Ph.D. students’ webpage. If relevant, also ask your advisor to add this to their page (to increase your visibility online).
 
-Here are some examples of academicwebsites:​one​,​two,​ ​three​.One of the easiest ways to create an academic website is through ​jemdoc​.
+Here are some examples of nice academic websites of PhD students: [​one](https://amspector100.github.io/About/)​, [​two]https://isgibbs.github.io/),​ [​three](https://patrickrchao.github.io/)​.
 
 ## Where to Apply
 

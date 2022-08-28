@@ -1,6 +1,6 @@
 ---
 title: Keeping track of the literature
-permalink: /literature/ 
+permalink: /resources/literature/ 
 author_profile: false
 ---
 
