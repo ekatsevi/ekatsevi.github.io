@@ -1,0 +1,2762 @@
+\documentclass{beamer}
+
+% \DeclareOptionBeamer{compress}{\beamer@compresstrue} 
+\ProcessOptionsBeamer 
+% \mode 
+%\useoutertheme[footline=authortitle]{miniframes} 
+% \useoutertheme{infolines} 
+%\useoutertheme[footline=]{miniframes}
+%\useinnertheme{circles} 
+\usecolortheme{whale} 
+\usecolortheme{orchid} 
+\definecolor{beamer@blendedblue}{rgb}{0.137,0.466,0.741} 
+\definecolor{darkgreen}{rgb}{0,0.5,0} 
+
+\definecolor{firebrick1}{HTML}{FF3030}
+\definecolor{dodgerblue}{HTML}{1E90FF}
+
+\usepackage{appendixnumberbeamer}
+\usepackage{rotating}
+\usepackage[absolute,overlay]{textpos}
+
+
+%\setbeamercolor{frametitle}{fg=beamer@blendedblue}
+
+\setbeamercolor{structure}{fg=beamer@blendedblue} 
+\setbeamercolor{titlelike}{parent=structure} 
+\setbeamercolor{frametitle}{fg=beamer@blendedblue} 
+\setbeamercolor{title}{fg=black} 
+\setbeamercolor{item}{fg=black} 
+\usepackage{tikz}
+\usetikzlibrary{fit}
+\input{tikzlibrarybayesnet.code}
+\usetikzlibrary{positioning,shadows,arrows}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{patterns}
+
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\usepackage{animate}
+\usepackage{tikzsymbols}
+\usepackage{bbm}
+\usepackage{subcaption}
+\newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
+%\usetikzlibrary{svg.path}
+
+\newlength{\hatchspread}
+\newlength{\hatchthickness}
+\newlength{\hatchshift}
+\newcommand{\hatchcolor}{}
+% declaring the keys in tikz
+\tikzset{hatchspread/.code={\setlength{\hatchspread}{#1}},
+	hatchthickness/.code={\setlength{\hatchthickness}{#1}},
+	hatchshift/.code={\setlength{\hatchshift}{#1}},% must be >= 0
+	hatchcolor/.code={\renewcommand{\hatchcolor}{#1}}}
+% setting the default values
+\tikzset{hatchspread=3pt,
+	hatchthickness=0.4pt,
+	hatchshift=0pt,% must be >= 0
+	hatchcolor=black}
+% declaring the pattern
+\pgfdeclarepatternformonly[\hatchspread,\hatchthickness,\hatchshift,\hatchcolor]% variables
+{custom north west lines}% name
+{\pgfqpoint{\dimexpr-2\hatchthickness}{\dimexpr-2\hatchthickness}}% lower left corner
+{\pgfqpoint{\dimexpr\hatchspread+2\hatchthickness}{\dimexpr\hatchspread+2\hatchthickness}}% upper right corner
+{\pgfqpoint{\dimexpr\hatchspread}{\dimexpr\hatchspread}}% tile size
+{% shape description
+	\pgfsetlinewidth{\hatchthickness}
+	\pgfpathmoveto{\pgfqpoint{0pt}{\dimexpr\hatchspread+\hatchshift}}
+	\pgfpathlineto{\pgfqpoint{\dimexpr\hatchspread+0.15pt+\hatchshift}{-0.15pt}}
+	\ifdim \hatchshift > 0pt
+	\pgfpathmoveto{\pgfqpoint{0pt}{\hatchshift}}
+	\pgfpathlineto{\pgfqpoint{\dimexpr0.15pt+\hatchshift}{-0.15pt}}
+	\fi
+	\pgfsetstrokecolor{\hatchcolor}
+	%    \pgfsetdash{{1pt}{1pt}}{0pt}% dashing cannot work correctly in all situation this way
+	\pgfusepath{stroke}
+}
+
+%\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+
+
+% \mode 
+
+
+% \usepackage{beamerthemesplit}
+\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{navigation symbols}{}%remove navigation symbols
+
+\usepackage[ruled]{algorithm2e}
+\usepackage{bm}
+
+\begin{document}
+	
+
+\title{\color{beamer@blendedblue} Multiple testing for modern data: \\ structure, curation, and replicability}
+\author{\large Eugene Katsevich \\ \vspace{0.1in} \small Department of Statistics \\ \small Stanford University} 
+\date{February 5, 2019}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+%\section[Modern data]{Multiple testing for modern data}
+%
+%\frame{\sectionpage}
+
+%\begin{frame}
+%\Large
+%\centering
+%%\color{beamer@blendedblue}
+%
+%Multiple testing for modern data
+%\end{frame}
+
+\begin{frame}{A modern data set}
+	
+\vspace{0.15in}
+
+\centering
+
+\includegraphics[width = 0.9\textwidth]{figures/UKB_banner.jpg}
+
+\includegraphics[width = 0.9\textwidth]{figures/Biobank.jpg}
+	
+\tiny
+(Image source: Nature)
+\end{frame}
+
+\begin{frame}{UK Biobank data}
+
+Extensive data on 500,000 individuals, including
+\begin{itemize}
+	\item \color{blue} Genotypes \color{black}
+	\item \color{blue} Diseases	(from electronic health records)\color{black}
+	\item Blood pressure and other clinical diagnostics
+	\item Socioeconomic variables
+	\item Environmental risk factors
+	\item Imaging data
+	\item Diet and exercise questionnaires
+	\item \dots
+\end{itemize}
+%\vspace{0.15in}
+
+%\begin{flushleft}
+%	\includegraphics[width = 0.5\textwidth]{figures/UKB_banner.jpg}
+%\end{flushleft}
+
+\end{frame}
+
+
+\begin{frame}{Genotype data}
+	
+	A genotype is an individual's allele at a \\ given \textit{single nucleotide polymorphism} (SNP).
+	\vspace{0.1in}
+	
+	Genotypes measured at 1,000,000 SNPs.
+	
+	\vspace{0.2in}
+	
+	\centering
+	\includegraphics[width = 0.6\textwidth]{figures/SNP_illustration.jpg}
+	
+	\tiny (Image source: Google)	
+\end{frame}
+
+\begin{frame}{Genotype data have spatial structure}
+	
+	Nearby SNPs are strongly correlated with each other.
+	
+	\vspace{0.3in}
+	
+	\centering		
+		\begin{tikzpicture}[
+		square/.style={regular polygon,regular polygon sides=4}
+		]
+		
+		\node[square, fill=white!10!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H11)  at(0.5,5)   {} ;
+ 		\node[square, fill=white!40!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(1.5,5)   {} ;
+		\node[square, fill=white!10!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(2.5,5)   {} ;
+		\node[square, fill=white!5!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(3.5,5)   {} ;
+		\node[square, fill=white!15!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(4.5,5)   {} ;
+		\node[square, fill=white!10!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(5.5,5)   {} ;
+		\node[square, fill=white!15!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(6.5,5)   {} ;
+		\node[square, fill=white!15!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(7.5,5)   {} ;
+		
+		\node[square, fill=white!50!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(1,5.5)   {} ;
+		\node[square, fill=white!85!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(2,5.5)   {} ;
+		\node[square, fill=white!40!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(3,5.5)   {} ;
+		\node[square, fill=white!35!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(4,5.5)   {} ;
+		\node[square, fill=white!45!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(5,5.5)   {} ;
+		\node[square, fill=white!50!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(6,5.5)   {} ;
+		\node[square, fill=white!25!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(7,5.5)   {} ;
+		
+		\node[square, fill=white!95!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(1.5,6)   {} ;
+		\node[square, fill=white!90!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(2.5,6)   {} ;
+		\node[square, fill=white!60!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(3.5,6)   {} ;
+		\node[square, fill=white!60!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(4.5,6)   {} ;
+		\node[square, fill=white, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(5.5,6)   {} ;
+		\node[square, fill=white!75!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(6.5,6)   {} ;
+		
+		\node[square, fill=white, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(2,6.5)   {} ;
+		\node[square, fill=white, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(3,6.5)   {} ;
+		\node[square, fill=white!75!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(4,6.5)   {} ;
+		\node[square, fill=white, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(5,6.5)   {} ;
+		\node[square, fill=white, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(6,6.5)   {} ;
+		
+		\node (source) at (-2, 4.4){};
+		\node (destination) at (9, 4.4){};
+		\draw[->](source)--(destination);
+ 		
+ 		\node (label) at (-1.2, 4.6) {Genome};
+ 		 		
+ 		\node[label={[shift={(0,0.1)}]below:\rotatebox{0}{$\text{SNP}_1$}}] (SNP1) at (0, 4.4) {\textbullet};
+ 		\node[label={[shift={(0,0.1)}]below:\rotatebox{0}{$\text{SNP}_2$}}] (SNP2) at (1, 4.4) {\textbullet};
+ 		\node[label={[shift={(0,0.1)}]below:\rotatebox{0}{$\text{SNP}_3$}}] (SNP1) at (2, 4.4) {\textbullet}; 		
+ 		\node[label={[shift={(0,0.1)}]below:\rotatebox{0}{$\text{SNP}_4$}}] (SNP1) at (3, 4.4) {\textbullet};
+ 		\node[label={[shift={(0,0.1)}]below:\rotatebox{0}{$\text{SNP}_5$}}] (SNP1) at (4, 4.4) {\textbullet}; 		
+ 		\node[label={[shift={(0,0.1)}]below:\rotatebox{0}{$\text{SNP}_6$}}] (SNP1) at (5, 4.4) {\textbullet};
+ 		\node[label={[shift={(0,0.1)}]below:\rotatebox{0}{$\text{SNP}_7$}}] (SNP1) at (6, 4.4) {\textbullet};
+ 		\node[label={[shift={(0,0.1)}]below:\rotatebox{0}{$\text{SNP}_8$}}] (SNP1) at (7, 4.4) {\textbullet};
+ 		\node[label={[shift={(0,0.1)}]below:\rotatebox{0}{$\text{SNP}_9$}}] (SNP1) at (8, 4.4) {\textbullet};
+		\end{tikzpicture}
+	
+\end{frame}
+
+\begin{frame}{Disease data}
+	
+	Disease codes from hospital episodes, \\
+	using \textit{International Classification of Diseases} (ICD-10).
+	\vspace{0.1in}
+	
+	ICD-10 is very comprehensive and includes 20K codes.
+	
+	\pause
+
+	\begin{center}
+		\includegraphics[width = 0.6\textwidth]{figures/Habitual_Mouth_Breathing.jpg}
+		
+		\tiny (Image source: Google)
+	\end{center}
+		
+\end{frame}
+
+\begin{frame}{Disease data have tree structure}
+	
+	\centering
+	\begin{tikzpicture}[scale = 0.6, minimum height = 1.2cm]
+	\node[text opacity=1,fill=white,draw = black, text opacity=1, align = center, minimum width = 2.2cm]  (H21)  at(0.5,5)   {Gout} ; 
+	\node[text opacity=1,fill=white,draw = black, text opacity=1, align = center, minimum width = 2.2cm]  (H22)  at(5.5,5)  {Rheumatoid \\ arthritis}; 
+	\node[text opacity=1,fill=white,text opacity=1, draw = black, align = center, minimum width = 2.2cm]  (H23)  at (10.5,5)   {Ankylosing \\ spondylitis} ; 
+	\node[text opacity=1,fill=white,text opacity=1, draw = black, minimum width = 2.2cm]  (H24)  at(15.5,5) {Spondylosis} ; 
+	
+	\node[text opacity=1,fill=white,draw = black,text opacity=1, align = center, minimum width = 3.25cm]  (H31)  at(3,9)   {Inflammatory \\ polyarthropathies} ; 
+	\node[text opacity=1,fill=white,draw = black,text opacity=1, minimum width = 3.25cm]  (H32)  at(13,9)  {Spondylopathies} ; 
+	
+	\node[text opacity=1,fill=white,text opacity=1, draw = black, align = center]  (H41)  at(8,13)   {Diseases of the musculoskeletal system \\ and connective tissue} ; 
+	
+	% tree edges
+	\edge {H41} {H31}
+	\edge {H41} {H32}
+	
+	\edge {H31} {H21}
+	\edge {H31} {H22}
+	\edge {H32} {H23}
+	\edge {H32} {H24}
+	
+	%	\node[fit=(H32), draw, rounded corners, thick, inner sep=1.5mm, black] {};	
+	%	\node[fit=(H22), draw, rounded corners, thick, inner sep=1.5mm, black] {};	
+	\end{tikzpicture}
+	
+\end{frame}
+
+\begin{frame}{UK Biobank: a complex multiple testing problem}
+	
+	
+%\flushleft
+	\vspace{0.1in}
+	\hspace{0.1in}
+	%		\resizebox{\textwidth}{!}{
+	\resizebox{!}{0.8\textheight}{
+		\begin{tikzpicture}[
+		square/.style={regular polygon,regular polygon sides=4}
+		]
+		
+		\node[square, fill=white!10!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H11)  at(0.5,5)   {} ;
+		\node[square, fill=white!40!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(1.5,5)   {} ;
+		\node[square, fill=white!10!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(2.5,5)   {} ;
+		\node[square, fill=white!5!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(3.5,5)   {} ;
+		\node[square, fill=white!15!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(4.5,5)   {} ;
+		\node[square, fill=white!10!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(5.5,5)   {} ;
+		\node[square, fill=white!15!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(6.5,5)   {} ;
+		\node[square, fill=white!15!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(7.5,5)   {} ;
+		
+		\node[square, fill=white!50!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(1,5.5)   {} ;
+		\node[square, fill=white!85!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(2,5.5)   {} ;
+		\node[square, fill=white!40!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(3,5.5)   {} ;
+		\node[square, fill=white!35!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(4,5.5)   {} ;
+		\node[square, fill=white!45!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(5,5.5)   {} ;
+		\node[square, fill=white!50!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(6,5.5)   {} ;
+		\node[square, fill=white!25!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(7,5.5)   {} ;
+		
+		\node[square, fill=white!95!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(1.5,6)   {} ;
+		\node[square, fill=white!90!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(2.5,6)   {} ;
+		\node[square, fill=white!60!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(3.5,6)   {} ;
+		\node[square, fill=white!60!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(4.5,6)   {} ;
+		\node[square, fill=white, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(5.5,6)   {} ;
+		\node[square, fill=white!75!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(6.5,6)   {} ;
+		
+		\node[square, fill=white, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(2,6.5)   {} ;
+		\node[square, fill=white, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(3,6.5)   {} ;
+		\node[square, fill=white!75!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(4,6.5)   {} ;
+		\node[square, fill=white, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(5,6.5)   {} ;
+		\node[square, fill=white, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(6,6.5)   {} ;
+		
+		%		\draw[draw=black] (-0.5,0) rectangle (8.5,4.4);
+		
+		\node (source) at (-1, 4.2){};
+		\node (destination) at (9, 4.2){};
+		\draw[->](source)--(destination);
+		
+		%		\node (label) at (-1.2, 4.6) {Genome};
+		
+		
+		\node[label={[shift={(0,-0.25)}]above:\rotatebox{0}{$\text{SNP}_1$}}] (SNP1) at (0, 4.2) {\textbullet};
+		\node[label={[shift={(0,-0.25)}]above:\rotatebox{0}{$\text{SNP}_2$}}] (SNP2) at (1, 4.2) {\textbullet};
+		\node[label={[shift={(0,-0.25)}]above:\rotatebox{0}{$\text{SNP}_3$}}] (SNP3) at (2, 4.2) {\textbullet}; 		
+		\node[label={[shift={(0,-0.25)}]above:\rotatebox{0}{$\text{SNP}_4$}}] (SNP4) at (3, 4.2) {\textbullet};
+		\node[label={[shift={(0,-0.25)}]above:\rotatebox{0}{$\text{SNP}_5$}}] (SNP5) at (4, 4.2) {\textbullet}; 		
+		\node[label={[shift={(0,-0.25)}]above:\rotatebox{0}{$\text{SNP}_6$}}] (SNP6) at (5, 4.2) {\textbullet};
+		\node[label={[shift={(0,-0.25)}]above:\rotatebox{0}{$\text{SNP}_7$}}] (SNP7) at (6, 4.2) {\textbullet};
+		\node[label={[shift={(0,-0.25)}]above:\rotatebox{0}{$\text{SNP}_8$}}] (SNP8) at (7, 4.2) {\textbullet};
+		\node[label={[shift={(0,-0.25)}]above:\rotatebox{0}{$\text{SNP}_9$}}] (SNP9) at (8, 4.2) {\textbullet};
+		
+		
+		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		
+		\node[fill=white,draw = black, rotate = 90, align = center, minimum width = 2.2cm,minimum height = 1.2cm]  (H21)  at(-2,-6.5)   {Gout} ; 
+		\node[fill=white,draw = black, rotate = 90, align = center, minimum width = 2.2cm,minimum height = 1.2cm]  (H22)  at(-2,-3.5)  {Rheumatoid \\ arthritis}; 
+		\node[fill=white, draw = black, text opacity=1, rotate = 90, align = center, minimum width = 2.2cm,minimum height = 1.2cm]  (H23)  at (-2,-0.5)   {Ankylosing \\ spondylitis} ; 
+		\node[fill=white,text opacity=1, draw = black, rotate = 90, minimum width = 2.2cm,minimum height = 1.2cm]  (H24)  at(-2,2.5) {Spondylosis} ; 
+		
+		\node[fill=white,draw = black, rotate = 90, align = center, minimum width = 3.25cm,minimum height = 1.2cm]  (H31)  at(-4,-5)   {Inflammatory \\ polyarthropathies} ; 
+		\node[fill=white,draw = black, rotate = 90, minimum width = 3.25cm,minimum height = 1.2cm]  (H32)  at(-4,1)  {Spondylopathies} ; 
+		
+		\node[text opacity=1,fill=white,text opacity=1, draw = black, align = center, rotate = 90,minimum height = 1.2cm]  (H41)  at(-6,-2)   {Diseases of the musculoskeletal system \\ and connective tissue} ; 
+		
+		% tree edges
+		\edge {H41} {H31}
+		\edge {H41} {H32}
+		
+		\edge {H31} {H21}
+		\edge {H31} {H22}
+		\edge {H32} {H23}
+		\edge {H32} {H24}
+		
+		\node (H21dest) at (9, -6.5){};
+		\node (H22dest) at (9, -3.5){};
+		\node (H23dest) at (9, -0.5){};
+		\node (H24dest) at (9, 2.5){};
+		\node (H31dest) at (9, -5){};
+		\node (H32dest) at (9, 1){};
+		\node (H41dest) at (9, -2){};
+		
+		\draw[dashed](H21)--(H21dest);
+		\draw[dashed](H22)--(H22dest);
+		\draw[dashed](H23)--(H23dest);
+		\draw[dashed](H24)--(H24dest);
+		\draw[dashed](H31)--(H31dest);
+		\draw[dashed](H32)--(H32dest);
+		\draw[dashed](H41)--(H41dest);
+		
+		\node (SNP1dest) at (0,-8){};
+		\node (SNP2dest) at (1,-8){};
+		\node (SNP3dest) at (2,-8){};
+		\node (SNP4dest) at (3,-8){};
+		\node (SNP5dest) at (4,-8){};
+		\node (SNP6dest) at (5,-8){};
+		\node (SNP7dest) at (6,-8){};
+		\node (SNP8dest) at (7,-8){};
+		\node (SNP9dest) at (8,-8){};
+		
+		\draw[dashed](SNP1)--(SNP1dest);
+		\draw[dashed](SNP2)--(SNP2dest);
+		\draw[dashed](SNP3)--(SNP3dest);
+		\draw[dashed](SNP4)--(SNP4dest);
+		\draw[dashed](SNP5)--(SNP5dest);
+		\draw[dashed](SNP6)--(SNP6dest);
+		\draw[dashed](SNP7)--(SNP7dest);
+		\draw[dashed](SNP8)--(SNP8dest);
+		\draw[dashed](SNP9)--(SNP9dest);
+		
+		\foreach \x in {0,1,2,3,4,5,6,7,8} {
+			\foreach \y in {-6.5,-5,-3.5,-2,-0.5,1,2.5} {
+				\fill[color=black] (\x,\y) circle (0.1);
+			}
+		}
+		
+		
+		
+		\end{tikzpicture}
+	}
+	
+Type-I error rates like the false discovery rate (FDR) \\ controlled for replicability.
+\end{frame}
+
+\begin{frame}{Findings from modern data sets often need curation}
+	
+\textbf{Manual curation (exploration):}
+
+Domain experts search for interesting patterns in the data.
+
+\vspace{0.1in}
+
+\textbf{Automatic curation (filtering):}
+
+Structured hypotheses often lead to redundant findings; \\ filtering is commonly used to reduce redundancy.
+
+\pause
+
+\vspace{0.1in}
+%\centering
+
+%	\vspace{0.1in}
+%	
+
+\color{red}
+Curation may conflict with replicability!
+
+	
+\end{frame}
+
+\begin{frame}{Phenome-wide association studies (PheWAS)}
+	
+	\hspace{0.1in}
+	%		\resizebox{\textwidth}{!}{
+	\resizebox{!}{0.85\textheight}{
+		\begin{tikzpicture}[
+		square/.style={regular polygon,regular polygon sides=4}
+		]
+		
+		\node[square, fill=white!10!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H11)  at(0.5,5)   {} ;
+		\node[square, fill=white!40!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(1.5,5)   {} ;
+		\node[square, fill=white!10!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(2.5,5)   {} ;
+		\node[square, fill=white!5!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(3.5,5)   {} ;
+		\node[square, fill=white!15!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(4.5,5)   {} ;
+		\node[square, fill=white!10!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(5.5,5)   {} ;
+		\node[square, fill=white!15!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(6.5,5)   {} ;
+		\node[square, fill=white!15!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(7.5,5)   {} ;
+		
+		\node[square, fill=white!50!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(1,5.5)   {} ;
+		\node[square, fill=white!85!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(2,5.5)   {} ;
+		\node[square, fill=white!40!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(3,5.5)   {} ;
+		\node[square, fill=white!35!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(4,5.5)   {} ;
+		\node[square, fill=white!45!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(5,5.5)   {} ;
+		\node[square, fill=white!50!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(6,5.5)   {} ;
+		\node[square, fill=white!25!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(7,5.5)   {} ;
+		
+		\node[square, fill=white!95!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(1.5,6)   {} ;
+		\node[square, fill=white!90!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(2.5,6)   {} ;
+		\node[square, fill=white!60!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(3.5,6)   {} ;
+		\node[square, fill=white!60!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(4.5,6)   {} ;
+		\node[square, fill=white, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(5.5,6)   {} ;
+		\node[square, fill=white!75!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(6.5,6)   {} ;
+		
+		\node[square, fill=white, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(2,6.5)   {} ;
+		\node[square, fill=white, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(3,6.5)   {} ;
+		\node[square, fill=white!75!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(4,6.5)   {} ;
+		\node[square, fill=white, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(5,6.5)   {} ;
+		\node[square, fill=white, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(6,6.5)   {} ;
+		
+		%		\draw[draw=black] (-0.5,0) rectangle (8.5,4.4);
+		
+		\node (source) at (-1, 4.2){};
+		\node (destination) at (9, 4.2){};
+		\draw[->](source)--(destination);
+		
+		%		\node (label) at (-1.2, 4.6) {Genome};
+		
+		
+		\node[label={[shift={(0,-0.25)}]above:\rotatebox{0}{$\text{SNP}_1$}}] (SNP1) at (0, 4.2) {\textbullet};
+		\node[label={[shift={(0,-0.25)}]above:\rotatebox{0}{$\text{SNP}_2$}}] (SNP2) at (1, 4.2) {\textbullet};
+		\node[label={[shift={(0,-0.25)}]above:\rotatebox{0}{$\text{SNP}_3$}}] (SNP3) at (2, 4.2) {\textbullet}; 		
+		\node[label={[shift={(0,-0.25)}]above:\rotatebox{0}{\color{blue}\bf$\text{SNP}_4$}}] (SNP4) at (3, 4.2) {\color{blue}\textbullet};
+		\node[label={[shift={(0,-0.25)}]above:\rotatebox{0}{$\text{SNP}_5$}}] (SNP5) at (4, 4.2) {\textbullet}; 		
+		\node[label={[shift={(0,-0.25)}]above:\rotatebox{0}{$\text{SNP}_6$}}] (SNP6) at (5, 4.2) {\textbullet};
+		\node[label={[shift={(0,-0.25)}]above:\rotatebox{0}{$\text{SNP}_7$}}] (SNP7) at (6, 4.2) {\textbullet};
+		\node[label={[shift={(0,-0.25)}]above:\rotatebox{0}{$\text{SNP}_8$}}] (SNP8) at (7, 4.2) {\textbullet};
+		\node[label={[shift={(0,-0.25)}]above:\rotatebox{0}{$\text{SNP}_9$}}] (SNP9) at (8, 4.2) {\textbullet};
+		
+		
+		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		
+		\node[fill=white,draw = black, rotate = 90, align = center, minimum width = 2.2cm,minimum height = 1.2cm]  (H21)  at(-2,-6.5)   {Gout} ; 
+		\node[fill=white,draw = black, rotate = 90, align = center, minimum width = 2.2cm,minimum height = 1.2cm]  (H22)  at(-2,-3.5)  {Rheumatoid \\ arthritis}; 
+		\node[fill=white, draw = black, text opacity=1, rotate = 90, align = center, minimum width = 2.2cm,minimum height = 1.2cm]  (H23)  at (-2,-0.5)   {Ankylosing \\ spondylitis} ; 
+		\node[fill=white,text opacity=1, draw = black, rotate = 90, minimum width = 2.2cm,minimum height = 1.2cm]  (H24)  at(-2,2.5) {Spondylosis} ; 
+		
+		\node[fill=white,draw = black, rotate = 90, align = center, minimum width = 3.25cm,minimum height = 1.2cm]  (H31)  at(-4,-5)   {Inflammatory \\ polyarthropathies} ; 
+		\node[fill=white,draw = black, rotate = 90, minimum width = 3.25cm,minimum height = 1.2cm]  (H32)  at(-4,1)  {Spondylopathies} ; 
+		
+		\node[text opacity=1,fill=white,text opacity=1, draw = black, align = center, rotate = 90,minimum height = 1.2cm]  (H41)  at(-6,-2)   {Diseases of the musculoskeletal system \\ and connective tissue} ; 
+		
+		% tree edges
+		\edge {H41} {H31}
+		\edge {H41} {H32}
+		
+		\edge {H31} {H21}
+		\edge {H31} {H22}
+		\edge {H32} {H23}
+		\edge {H32} {H24}
+		
+		\node (H21dest) at (9, -6.5){};
+		\node (H22dest) at (9, -3.5){};
+		\node (H23dest) at (9, -0.5){};
+		\node (H24dest) at (9, 2.5){};
+		\node (H31dest) at (9, -5){};
+		\node (H32dest) at (9, 1){};
+		\node (H41dest) at (9, -2){};
+		
+		\draw[dashed](H21)--(H21dest);
+		\draw[dashed](H22)--(H22dest);
+		\draw[dashed](H23)--(H23dest);
+		\draw[dashed](H24)--(H24dest);
+		\draw[dashed](H31)--(H31dest);
+		\draw[dashed](H32)--(H32dest);
+		\draw[dashed](H41)--(H41dest);
+		
+		\node (SNP1dest) at (0,-8){};
+		\node (SNP2dest) at (1,-8){};
+		\node (SNP3dest) at (2,-8){};
+		\node (SNP4dest) at (3,-8){};
+		\node (SNP5dest) at (4,-8){};
+		\node (SNP6dest) at (5,-8){};
+		\node (SNP7dest) at (6,-8){};
+		\node (SNP8dest) at (7,-8){};
+		\node (SNP9dest) at (8,-8){};
+		
+		\draw[dashed](SNP1)--(SNP1dest);
+		\draw[dashed](SNP2)--(SNP2dest);
+		\draw[dashed](SNP3)--(SNP3dest);
+		\draw[ultra thick, color = blue](SNP4)--(SNP4dest);
+		\draw[dashed](SNP5)--(SNP5dest);
+		\draw[dashed](SNP6)--(SNP6dest);
+		\draw[dashed](SNP7)--(SNP7dest);
+		\draw[dashed](SNP8)--(SNP8dest);
+		\draw[dashed](SNP9)--(SNP9dest);
+		
+		\foreach \x in {0,1,2,4,5,6,7,8} {
+			\foreach \y in {-6.5,-5,-3.5,-2,-0.5,1,2.5} {
+				\fill[color=black] (\x,\y) circle (0.1);
+			}
+		}
+		
+		\foreach \x in {3} {
+			\foreach \y in {-6.5,-5,-3.5,-2,-0.5,1,2.5} {
+				\fill[color=blue] (\x,\y) circle (0.15);
+			}
+		}
+		
+		
+		
+		\end{tikzpicture}
+	}
+	%	\vspace{-0.15in}
+	%	\textit{Phenome-wide association study (PheWAS):} find a set of diseases associated with a given SNP.
+	
+\end{frame}
+
+\begin{frame}{Rejection sets in phenotype space can be redundant}
+	
+	\vspace{-0.2in}
+	
+	\begin{center}
+		\begin{tikzpicture}[scale = 0.5, minimum height = 1.2cm]
+		\node[text opacity=1,fill=white,draw = black, text opacity=1, align = center, minimum width = 2.2cm]  (H21)  at(0.5,5)   {Gout} ; 
+		\node[text opacity=1,fill=lightgray,draw = black, text opacity=1, align = center, minimum width = 2.2cm]  (H22)  at(5.5,5)  {Rheumatoid \\ arthritis}; 
+		\node[text opacity=1,fill=white,text opacity=1, draw = black, align = center, minimum width = 2.2cm]  (H23)  at (10.5,5)   {Ankylosing \\ spondylitis} ; 
+		\node[text opacity=1,fill=white,text opacity=1, draw = black, minimum width = 2.2cm]  (H24)  at(15.5,5) {Spondylosis} ; 
+		
+		\node[text opacity=1,fill=lightgray,draw = black,text opacity=1, align = center, minimum width = 3.25cm]  (H31)  at(3,9)   {Inflammatory \\ polyarthropathies} ; 
+		\node[text opacity=1,fill=lightgray,draw = black,text opacity=1, minimum width = 3.25cm]  (H32)  at(13,9)  {Spondylopathies} ; 
+		
+		\node[text opacity=1,fill=lightgray,text opacity=1, draw = black, align = center]  (H41)  at(8,13)   {Diseases of the musculoskeletal system \\ and connective tissue} ; 
+		
+		% tree edges
+		\edge {H41} {H31}
+		\edge {H41} {H32}
+		
+		\edge {H31} {H21}
+		\edge {H31} {H22}
+		\edge {H32} {H23}
+		\edge {H32} {H24}
+		\end{tikzpicture}
+		
+	\end{center}
+	
+			\begin{center}
+				\textcolor{white}{cyan nodes: non-null; }
+				\textcolor{white}{red nodes: null;}
+				\textcolor{white}{shaded nodes: rejected.}
+			\end{center}		
+	
+\end{frame}
+
+\begin{frame}{Redundancy can be fixed by applying the \textit{outer nodes filter}}
+	
+	%	Rejection sets on the ICD-10 tree tend to be redundant:
+	%	\vspace{0.05in}
+	
+	\begin{center}
+		\begin{tikzpicture}[scale = 0.5, minimum height = 1.2cm]
+		\node[text opacity=1,fill=white,draw = black, text opacity=1, align = center, minimum width = 2.2cm]  (H21)  at(0.5,5)   {Gout} ; 
+		\node[text opacity=1,fill=lightgray,draw = black, text opacity=1, align = center, minimum width = 2.2cm]  (H22)  at(5.5,5)  {Rheumatoid \\ arthritis}; 
+		\node[text opacity=1,fill=white,text opacity=1, draw = black, align = center, minimum width = 2.2cm]  (H23)  at (10.5,5)   {Ankylosing \\ spondylitis} ; 
+		\node[text opacity=1,fill=white,text opacity=1, draw = black, minimum width = 2.2cm]  (H24)  at(15.5,5) {Spondylosis} ; 
+		
+		\node[text opacity=1,fill=lightgray,draw = black,text opacity=1, align = center, minimum width = 3.25cm]  (H31)  at(3,9)   {Inflammatory \\ polyarthropathies} ; 
+		\node[text opacity=1,fill=lightgray,draw = black,text opacity=1, minimum width = 3.25cm]  (H32)  at(13,9)  {Spondylopathies} ; 
+		
+		\node[text opacity=1,fill=lightgray,text opacity=1, draw = black, align = center]  (H41)  at(8,13)   {Diseases of the musculoskeletal system \\ and connective tissue} ; 
+		
+		% tree edges
+		\edge {H41} {H31}
+		\edge {H41} {H32}
+		
+		\edge {H31} {H21}
+		\edge {H31} {H22}
+		\edge {H32} {H23}
+		\edge {H32} {H24}
+		
+		\node[fit=(H32), draw, rounded corners, thick, inner sep=1.5mm, black] {};	
+		\node[fit=(H22), draw, rounded corners, thick, inner sep=1.5mm, black] {};	
+		\end{tikzpicture}
+		
+	\end{center}
+	
+		\begin{center}
+			\textcolor{white}{cyan nodes: non-null; }
+			\textcolor{white}{red nodes: null;}
+			\textcolor{white}{shaded nodes: rejected.}
+		\end{center}		
+	
+	Yekutieli (JASA, 2008)
+	
+	
+	
+\end{frame}
+
+
+\begin{frame}{Outer nodes filter may inflate the FDR}
+		
+	\begin{center}
+		\begin{tikzpicture}[scale = 0.5, minimum height = 1.2cm]
+		\node[text opacity=1,fill=white,draw = cyan, ultra thick, text opacity=1, align = center, minimum width = 2.2cm]  (H21)  at(0.5,5)   {Gout} ; 
+		\node[fill opacity = 0.5, text opacity=1,fill=cyan,draw = cyan, text opacity=1, align = center, minimum width = 2.2cm]  (H22)  at(5.5,5)  {Rheumatoid \\ arthritis}; 
+		\node[text opacity=1,fill=white,text opacity=1, draw = red, ultra thick, align = center, minimum width = 2.2cm]  (H23)  at (10.5,5)   {Ankylosing \\ spondylitis} ; 
+		\node[text opacity=1,fill=white,text opacity=1, ultra thick, draw = red, minimum width = 2.2cm]  (H24)  at(15.5,5) {Spondylosis} ; 
+		
+		\node[fill opacity = 0.5, text opacity=1,fill=cyan,draw = black,text opacity=1, align = center, minimum width = 3.25cm]  (H31)  at(3,9)   {Inflammatory \\ polyarthropathies} ; 
+		\node[fill opacity = 0.5, text opacity=1,fill=red,draw = black,text opacity=1, minimum width = 3.25cm]  (H32)  at(13,9)  {Spondylopathies} ; 
+		
+		\node[fill opacity = 0.5, text opacity=1,fill=cyan,text opacity=1, draw = black, align = center]  (H41)  at(8,13)   {Diseases of the musculoskeletal system \\ and connective tissue} ; 
+		
+		% tree edges
+		\edge {H41} {H31}
+		\edge {H41} {H32}
+		
+		\edge {H31} {H21}
+		\edge {H31} {H22}
+		\edge {H32} {H23}
+		\edge {H32} {H24}
+		
+		\node[fit=(H32), draw, rounded corners, thick, inner sep=1.5mm, red] {};	
+		\node[fit=(H22), draw, rounded corners, thick, inner sep=1.5mm, cyan] {};	
+		\end{tikzpicture}
+		
+	\end{center}
+	
+	\begin{center}
+		\textcolor{cyan}{cyan nodes: non-null; }
+		\textcolor{red}{red nodes: null;}
+		shaded nodes: rejected.
+	\end{center}		
+	
+	Yekutieli (2008)
+\end{frame}
+
+\begin{frame}{Existing options to control outer nodes FDR are limited}
+
+
+\begin{itemize}
+	\item Yekutieli proposed a procedure and bounded its \\ outer nodes FDR, but only under independence.
+	\item Structured Holm procedure\footnote{Meijer and Goeman (2016)} controls FWER on DAGs. \\ It allows arbitrary dependence but is conservative. 
+\end{itemize}
+
+
+\end{frame}
+
+
+
+\begin{frame}{Similar problems arise in other applications as well}
+	
+	
+	\begin{columns}
+				\begin{column}{0.4\textwidth}
+					\begin{itemize}
+						\item Genome-wide association studies\footnotemark
+						\item Imaging applications such as fMRI\footnotemark
+						\item Gene Ontology \\ enrichment analysis\footnotemark
+					\end{itemize}
+				\end{column}
+		\begin{column}{0.55\textwidth}
+	\resizebox{\textwidth}{!}{
+		\begin{tikzpicture}[
+		square/.style={regular polygon,regular polygon sides=4}
+		]
+		
+		\node[square, fill=white!10!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H11)  at(0.5,5)   {} ;
+		\node[square, fill=white!40!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(1.5,5)   {} ;
+		\node[square, fill=white!10!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(2.5,5)   {} ;
+		\node[square, fill=white!5!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(3.5,5)   {} ;
+		\node[square, fill=white!15!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(4.5,5)   {} ;
+		\node[square, fill=white!10!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(5.5,5)   {} ;
+		\node[square, fill=white!15!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(6.5,5)   {} ;
+		\node[square, fill=white!15!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(7.5,5)   {} ;
+		
+		\node[square, fill=white!50!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(1,5.5)   {} ;
+		\node[square, fill=white!85!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(2,5.5)   {} ;
+		\node[square, fill=white!40!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(3,5.5)   {} ;
+		\node[square, fill=white!35!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(4,5.5)   {} ;
+		\node[square, fill=white!45!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(5,5.5)   {} ;
+		\node[square, fill=white!50!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(6,5.5)   {} ;
+		\node[square, fill=white!25!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(7,5.5)   {} ;
+		
+		\node[square, fill=white!95!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(1.5,6)   {} ;
+		\node[square, fill=white!90!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(2.5,6)   {} ;
+		\node[square, fill=white!60!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(3.5,6)   {} ;
+		\node[square, fill=white!60!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(4.5,6)   {} ;
+		\node[square, fill=white, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(5.5,6)   {} ;
+		\node[square, fill=white!75!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(6.5,6)   {} ;
+		
+		\node[square, fill=white, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(2,6.5)   {} ;
+		\node[square, fill=white, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(3,6.5)   {} ;
+		\node[square, fill=white!75!red, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(4,6.5)   {} ;
+		\node[square, fill=white, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(5,6.5)   {} ;
+		\node[square, fill=white, rotate = 45, draw = black, align = center, minimum width = 1cm]  (H12)  at(6,6.5)   {} ;
+		
+		%		\draw[draw=black] (-0.5,0) rectangle (8.5,4.4);
+		
+		\node (source) at (-1, 4.2){};
+		\node (destination) at (9, 4.2){};
+		\draw[->](source)--(destination);
+		
+		%		\node (label) at (-1.2, 4.6) {Genome};
+		
+		
+		\node[label={[shift={(0,-0.25)}]above:\rotatebox{0}{$\text{SNP}_1$}}] (SNP1) at (0, 4.2) {\textbullet};
+		\node[label={[shift={(0,-0.25)}]above:\rotatebox{0}{$\text{SNP}_2$}}] (SNP2) at (1, 4.2) {\textbullet};
+		\node[label={[shift={(0,-0.25)}]above:\rotatebox{0}{$\text{SNP}_3$}}] (SNP3) at (2, 4.2) {\textbullet}; 		
+		\node[label={[shift={(0,-0.25)}]above:\rotatebox{0}{$\text{SNP}_4$}}] (SNP4) at (3, 4.2) {\textbullet};
+		\node[label={[shift={(0,-0.25)}]above:\rotatebox{0}{$\text{SNP}_5$}}] (SNP5) at (4, 4.2) {\textbullet}; 		
+		\node[label={[shift={(0,-0.25)}]above:\rotatebox{0}{$\text{SNP}_6$}}] (SNP6) at (5, 4.2) {\textbullet};
+		\node[label={[shift={(0,-0.25)}]above:\rotatebox{0}{$\text{SNP}_7$}}] (SNP7) at (6, 4.2) {\textbullet};
+		\node[label={[shift={(0,-0.25)}]above:\rotatebox{0}{$\text{SNP}_8$}}] (SNP8) at (7, 4.2) {\textbullet};
+		\node[label={[shift={(0,-0.25)}]above:\rotatebox{0}{$\text{SNP}_9$}}] (SNP9) at (8, 4.2) {\textbullet};
+		
+		
+		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		
+		\node[fill=white,draw = black, rotate = 90, align = center, minimum width = 2.2cm,minimum height = 1.2cm]  (H21)  at(-2,-6.5)   {Gout} ; 
+		\node[fill=blue,fill opacity = 0.5, draw = black, rotate = 90, align = center, minimum width = 2.2cm,minimum height = 1.2cm, text opacity = 1]  (H22)  at(-2,-3.5)  {Rheumatoid \\ arthritis}; 
+		\node[fill=white, draw = black, text opacity=1, rotate = 90, align = center, minimum width = 2.2cm,minimum height = 1.2cm]  (H23)  at (-2,-0.5)   {Ankylosing \\ spondylitis} ; 
+		\node[fill=white,text opacity=1, draw = black, rotate = 90, minimum width = 2.2cm,minimum height = 1.2cm]  (H24)  at(-2,2.5) {Spondylosis} ; 
+		
+		\node[fill=white,draw = black, rotate = 90, align = center, minimum width = 3.25cm,minimum height = 1.2cm]  (H31)  at(-4,-5)   {Inflammatory \\ polyarthropathies} ; 
+		\node[fill=white,draw = black, rotate = 90, minimum width = 3.25cm,minimum height = 1.2cm]  (H32)  at(-4,1)  {Spondylopathies} ; 
+		
+		\node[text opacity=1,fill=white,text opacity=1, draw = black, align = center, rotate = 90,minimum height = 1.2cm]  (H41)  at(-6,-2)   {Diseases of the musculoskeletal system \\ and connective tissue} ; 
+		
+		% tree edges
+		\edge {H41} {H31}
+		\edge {H41} {H32}
+		
+		\edge {H31} {H21}
+		\edge {H31} {H22}
+		\edge {H32} {H23}
+		\edge {H32} {H24}
+		
+		\node (H21dest) at (9, -6.5){};
+		\node (H22dest) at (9, -3.5){};
+		\node (H23dest) at (9, -0.5){};
+		\node (H24dest) at (9, 2.5){};
+		\node (H31dest) at (9, -5){};
+		\node (H32dest) at (9, 1){};
+		\node (H41dest) at (9, -2){};
+		
+		\draw[dashed](H21)--(H21dest);
+		\draw[ultra thick, color = blue](H22)--(H22dest);
+		\draw[dashed](H23)--(H23dest);
+		\draw[dashed](H24)--(H24dest);
+		\draw[dashed](H31)--(H31dest);
+		\draw[dashed](H32)--(H32dest);
+		\draw[dashed](H41)--(H41dest);
+		
+		\node (SNP1dest) at (0,-8){};
+		\node (SNP2dest) at (1,-8){};
+		\node (SNP3dest) at (2,-8){};
+		\node (SNP4dest) at (3,-8){};
+		\node (SNP5dest) at (4,-8){};
+		\node (SNP6dest) at (5,-8){};
+		\node (SNP7dest) at (6,-8){};
+		\node (SNP8dest) at (7,-8){};
+		\node (SNP9dest) at (8,-8){};
+		
+		\draw[dashed](SNP1)--(SNP1dest);
+		\draw[dashed](SNP2)--(SNP2dest);
+		\draw[dashed](SNP3)--(SNP3dest);
+		\draw[dashed](SNP4)--(SNP4dest);
+		\draw[dashed](SNP5)--(SNP5dest);
+		\draw[dashed](SNP6)--(SNP6dest);
+		\draw[dashed](SNP7)--(SNP7dest);
+		\draw[dashed](SNP8)--(SNP8dest);
+		\draw[dashed](SNP9)--(SNP9dest);
+		
+		\foreach \x in {0,1,2,3,4,5,6,7,8} {
+			\foreach \y in {-6.5,-5,-2,-0.5,1,2.5} {
+				\fill[color=black] (\x,\y) circle (0.1);
+			}
+		}
+		
+		\foreach \x in {0,1,2,3,4,5,6,7,8} {
+			\foreach \y in {-3.5} {
+				\fill[color=blue] (\x,\y) circle (0.15);
+			}
+		}
+		
+		
+		
+		\end{tikzpicture}
+	}
+		\end{column}
+	\end{columns}	
+	%		\resizebox{\textwidth}{!}{
+
+	\footnotetext[2]{Siegmund, Zhang, Yakir (2011)}
+	\footnotetext[3]{Pacifico et al (2004), Heller et al (2006), Sun et al (2015)}
+	\footnotetext[4]{Goeman and B\"{u}hlmann (2007), Meijer and Goeman (2016)}
+		
+
+	%\vspace{-0.15in}
+	%\textit{Genome-wide association study (GWAS):} find a set of SNPs associated with a given disease.
+\end{frame}
+
+\begin{frame}{A general problem}
+	
+	Filtering may inflate the FDR, and must be accounted for.
+	\vspace{0.1in}
+	
+	\includegraphics[width = \textwidth]{figures/schematic_2.pdf}
+
+\vspace{0.1in}
+
+Partial solutions exist, but a general-purpose solution is lacking. 
+
+\vspace{0.1in}
+
+\begin{block}{Focus of this talk}
+	Reconciling curation with replicability for \\ modern data analysis pipelines.
+\end{block}
+\vspace{0.1in}
+
+Goeman and Solari (2011), Berk et al (2013), Taylor and Tibshirani (2015), $\dots$
+
+\end{frame}
+
+\begin{frame}{Preview: Reconciling curation with replicability}
+		
+	\textcolor{beamer@blendedblue}{Part I (automatic curation):} For any {\color{blue} pre-specified} filter, we propose \textbf{Focused BH}\footnote{\textbf{K.}, Sabatti, Bogomolov (arXiv, 2019+)} to control the FDR \textit{after filtering.}
+
+	\begin{center}
+	\includegraphics[width = 0.9\textwidth]{figures/schematic_5.pdf}
+	\end{center}
+	\vspace{-0.3 in}
+		
+		\pause 
+	\begin{columns}
+		\begin{column}{0.4\textwidth}
+%			\hspace{0.1in}
+				\textcolor{beamer@blendedblue}{Part II (manual curation):} We propose \textbf{simultaneous selective inference}\footnotemark \ to allow directed exploration while bounding FDP whp.
+		\end{column}
+		\begin{column}{0.5\textwidth}
+			\vspace{0.15in}
+			\begin{center}
+				\includegraphics[width =0.8\textwidth]{figures/spotting_example.pdf}
+			\end{center}
+		\end{column}
+	\end{columns}
+\vspace{-0.1in}
+
+	\footnotetext[6]{\textbf{K.} and Ramdas (AOS, in revision, 2019+), \ \textbf{K.} and Sabatti (AOAS, 2019)}
+
+	
+\end{frame}
+
+
+%\section[Focused BH]{Focused BH: Controlling FDR while filtering}
+%
+%\frame{\sectionpage}
+
+\begin{frame}
+
+\centering
+
+\color{beamer@blendedblue}
+
+%\Huge
+%Part I
+%\vspace{0.1in}
+
+\LARGE
+Part I: Controlling FDR while filtering
+
+\end{frame}
+
+
+
+\begin{frame}{A general definition of a filter}
+	
+	Hypotheses $\mathcal H = (H_1, \dots, H_m)$ and p-values $\bm p = (p_1, \dots, p_m)$.
+	\vspace{0.1in}
+	
+	\begin{block}{Definition}
+		Given $\mathcal R \subseteq \mathcal H$ and $\bm p \in [0,1]^m$, a \textit{filter} $\mathfrak F$ is any mapping
+		\begin{equation*}
+		\mathfrak F: (\mathcal R, \bm p) \mapsto \mathcal U, \text{ such that } \mathcal U \subseteq \mathcal R.
+		\end{equation*}
+	\end{block}
+	
+	\vspace{0.1in}
+
+	\begin{columns}
+		\begin{column}{0.45\textwidth}
+			For example, 
+	\begin{itemize}
+		\item $\mathfrak F$ is the \\ outer nodes filter;
+		\item $\mathcal R$ is the set of \\ rejected nodes;
+		\item $\mathcal U$ is the set of \\ outer nodes.
+	\end{itemize}
+		\end{column}
+		\begin{column}{0.5\textwidth}
+			\vspace{0.1in}
+			\resizebox{\textwidth}{!}{
+			\begin{tikzpicture}[scale = 0.5, minimum height = 1.2cm]
+			\node[text opacity=1,fill=white,draw = black, text opacity=1, align = center, minimum width = 2.2cm]  (H21)  at(0.5,5)   {Gout} ; 
+			\node[text opacity=1,fill=lightgray,draw = black, text opacity=1, align = center, minimum width = 2.2cm]  (H22)  at(5.5,5)  {Rheumatoid \\ arthritis}; 
+			\node[text opacity=1,fill=white,text opacity=1, draw = black, align = center, minimum width = 2.2cm]  (H23)  at (10.5,5)   {Ankylosing \\ spondylitis} ; 
+			\node[text opacity=1,fill=white,text opacity=1, draw = black, minimum width = 2.2cm]  (H24)  at(15.5,5) {Spondylosis} ; 
+			
+			\node[text opacity=1,fill=lightgray,draw = black,text opacity=1, align = center, minimum width = 3.25cm]  (H31)  at(3,9)   {Inflammatory \\ polyarthropathies} ; 
+			\node[text opacity=1,fill=lightgray,draw = black,text opacity=1, minimum width = 3.25cm]  (H32)  at(13,9)  {Spondylopathies} ; 
+			
+			\node[text opacity=1,fill=lightgray,text opacity=1, draw = black, align = center]  (H41)  at(8,13)   {Diseases of the musculoskeletal system \\ and connective tissue} ; 
+			
+			% tree edges
+			\edge {H41} {H31}
+			\edge {H41} {H32}
+			
+			\edge {H31} {H21}
+			\edge {H31} {H22}
+			\edge {H32} {H23}
+			\edge {H32} {H24}
+			
+			\node[fit=(H32), draw, rounded corners, thick, inner sep=1.5mm, black] {};	
+			\node[fit=(H22), draw, rounded corners, thick, inner sep=1.5mm, black] {};	
+			\end{tikzpicture}
+			}
+		\end{column}
+	\end{columns}
+	
+\end{frame}
+
+\begin{frame}{Adjusting the FDR for filtering}
+
+The \textit{false discovery proportion} (FDP) of a set $\mathcal U \subseteq \mathcal H$ is 
+\begin{equation*}
+\text{FDP}(\mathcal U) = \frac{|\mathcal U \cap \mathcal H_0|}{|\mathcal U|},
+\end{equation*}
+where $\mathcal H_0 \subseteq \mathcal H$ is the set of nulls.
+\vspace{0.1in}
+
+\begin{definition}
+Given a filter $\mathfrak F$, the \textit{false filtered discovery rate} of a testing procedure (mapping $\bm p \mapsto \mathcal R^*$) is
+\begin{equation*}
+\text{FDR}_{\mathfrak F} = \mathbb E[\text{FDP}(\mathcal U^*)] = \mathbb E[\text{FDP}(\mathfrak F(\mathcal R^*, \bm p))].
+\end{equation*}
+\end{definition}
+
+Given a filter $\mathfrak F$ and a pre-specified target FDR level $q$, our goal is to design a testing procedure for which $\text{FDR}_{\mathfrak F} \leq q$.
+
+%	\begin{textblock*}{5cm}(9.5cm, 8.2cm) % {block width} (coords)
+%		\includegraphics[width = 1in]{figures/truefalse.png}
+%	\end{textblock*}
+
+
+\end{frame}
+
+
+\begin{frame}{Adjusting BH to account for filtering}
+	
+%	Input: p-values $p_1, \dots, p_m$, a filter $\mathfrak F$, and a target level $q$.
+%	\vspace{0.1in}
+	
+%	\color{black}
+%	\only<1>{\color{white}}
+	For a p-value cutoff $t \in [0,1]$, consider $\mathcal R(t) = \{j: p_j \leq t\}$.
+
+	\begin{block}{BH procedure}
+	BH employs the FDP estimate (Storey, 2002)
+	\begin{equation*}
+	\widehat{\text{FDP}}_{\text{BH}}(t) = \frac{m \cdot t}{|\mathcal R(t)|};
+	\end{equation*}
+	choosing the threshold
+	\begin{equation*}
+	t^*_{\text{BH}} = \max\{t \in [0,1]: \widehat{\text{FDP}}_{\text{BH}}(t) \leq q\}.
+	\end{equation*}
+	\end{block}
+
+	We are interested instead in $\mathcal U(t) = \mathfrak F(\{j: p_j \leq t\}, \bm p)$. 
+	\vspace{0.1in}
+	
+	BH too optimistic in counting discoveries: $|\mathcal R(t)| \gg |\mathcal U(t)|$.
+	
+\end{frame}
+
+\begin{frame}{Adjusting BH to account for filtering}
+
+Instead of 
+\begin{equation*}
+\widehat{\text{FDP}}_{\text{BH}}(t) = \frac{m \cdot t}{|\mathcal R(t)|},
+\end{equation*}
+correct the denominator and define
+\begin{equation*}
+\widehat{\text{FDP}}(t) = \frac{m \cdot t}{|\mathcal U(t)|} = \frac{m \cdot t}{|\mathfrak{F}(\{j: p_j \leq t\}, \bm p)|}.
+\end{equation*}
+
+We keep the numerator as is, since $|\mathcal U(t) \cap \mathcal H_0| \leq |\mathcal R(t) \cap \mathcal H_0|$.
+
+	
+\end{frame}
+
+\begin{frame}{Focused BH procedure}
+	\begin{center}
+		\begin{minipage}{\linewidth}
+			\large
+			{			
+				\setlength{\interspacetitleruled}{0pt}%
+				\setlength{\algotitleheightrule}{0pt}%
+				\begin{algorithm}[H]
+					%			\SetAlgorithmName{Procedure}{}\; %last arg is the title of listing table		
+					%			\TitleOfAlgo{Focused BH}
+					
+					\KwData{p-values $p_1, \dots, p_m$, filter $\mathfrak F$, target level $q$}
+					\For{$t \in \{0, p_1, \dots, p_m\}$}{
+						Compute $\displaystyle \widehat{\text{FDP}}(t) = \frac{m \cdot t}{|\mathfrak F(\{j: p_j \leq t\}, \bm p)|}$\;
+					}	
+					Compute $t^* \equiv \max\{t \in \{0, p_1, \dots, p_m\}: \widehat{\text{FDP}}(t) \leq q\}$\;		
+					\KwResult{$\mathcal R^* = \{j: p_j \leq t^*\}$.}
+					%			\caption{\bf Focused BH}
+					%			\label{filtered_BH}
+				\end{algorithm}
+			}
+		\end{minipage}
+	\end{center}
+	\vspace{-0.1in}
+	\begin{itemize}
+		\item Focused BH is a general-purpose way of dealing with filters; note that $\mathfrak F$ can be a black box.
+		\item When $\mathfrak F$ does nothing, Focused BH reduces to BH.
+		\item Procedure can be expanded to filters that \textit{prioritize} rejections.
+%		\item<4-> For soft filters, Focused BH resembles weighted multiple testing procedures, like (Benjamini, 1997). Importantly, \textit{Focused BH allows the data to determine the weights}.
+	\end{itemize}
+\end{frame}
+
+%\begin{frame}{Special case: screening filters [optional]}
+%
+%Let $\mathcal S$ be a screening function mapping $\bm p$ to a set $\mathcal S_0 \subseteq \mathcal H$.
+%\vspace{0.1in}
+%
+%\only<1>{\color{white}}
+%\only<2->{\color{black}}
+%A \textit{screening filter} is defined $\mathfrak F(\mathcal R, \bm p) = \mathcal R \cap \mathcal S(\bm p)$.
+%\vspace{0.1in}
+%
+%\only<1-2>{\color{white}}
+%\only<3->{\color{black}}
+%Focused BH reduces to applying BH to $\mathcal S(\bm p)$ at the corrected level $\frac{|\mathcal S(\bm p)|}{m}q$, similar to Benjamini and Yekutieli (JASA, 2005).
+%\vspace{0.1in}
+%
+%\only<1-3>{\color{white}}
+%\only<4->{\color{black}}
+%Focused BH goes further by allowing the filter to be defined on the \textit{output} of a testing procedure instead of on the input.
+%
+%\end{frame}
+
+\begin{frame}{Focused BH provably controls $\text{FDR}_{\mathfrak F}$}
+	
+	A filter $\mathfrak F$ is \textbf{monotonic} if for $\mathcal R^1 \supseteq \mathcal R^2$ and $\bm p^1 \leq \bm p^2$, we have
+	\begin{equation*}
+	|\mathfrak F(\mathcal R^1, \bm p^1)| \geq |\mathfrak F(\mathcal R^2, \bm p^2)|.
+	\end{equation*}
+	
+	A filter is \textbf{simple} if $|\mathfrak F(\mathcal R, \bm p)|$ is independent of $\bm p$.
+	
+	\begin{block}{Theorem (\textbf{K.}, Sabatti, Bogomolov)}
+		Focused BH controls $\text{FDR}_{\mathfrak F}$ if either 
+		\begin{enumerate}
+			\item p-values are independent, $\mathfrak F$ is simple or monotonic.
+			\item p-values are ``positively dependent" (PRDS), $\mathfrak F$ is monotonic.
+		\end{enumerate}
+		
+	\end{block}	
+\vspace{-0.1in}	
+	\begin{itemize}
+		\item Proof for item 1 inspired by Benjamini and Bogomolov (2014);
+		\item Proof for item 2 inspired by Blanchard and Roquain (2008).
+	\end{itemize}
+
+	Simulations suggest Focused BH is robust.
+	
+%	\begin{textblock*}{5cm}(9.5cm, 8.4cm) % {block width} (coords)
+%		\includegraphics[width = 1in]{figures/truefalse.png}
+%	\end{textblock*}
+	
+	\end{frame}
+
+\begin{frame}{Specializing to the outer nodes filter}
+	
+	\begin{block}{Corollary}
+		Focused BH controls the outer nodes FDR on trees if \\ the p-values are positively dependent.
+	\end{block}
+	
+	\textit{Proof:} The outer nodes filter is monotonic on trees.
+	\vspace{0.15in}
+
+	\begin{tikzpicture}[scale=.8]
+	\node[text opacity=1,fill=lightgray,text opacity=1, draw = black, minimum size=6mm]  (H1)  at(2,3)       {} ; 			
+	\node[text opacity=1,fill=white, draw = black, text opacity=1, minimum size=6mm]  (H2)  at(1,1)   {} ; 
+	\node[text opacity=1,fill=white, draw = black, text opacity=1, minimum size=6mm]  (H3)  at(3,1)  {} ; 
+	\edge {H1} {H2}
+	\edge {H1} {H3}
+	\node[fit=(H1), draw, rounded corners, thick, inner sep=1.5mm, black] {};
+	\end{tikzpicture}
+	\hspace{0.5in}
+	\begin{tikzpicture}[scale=.8]
+	\node[text opacity=1,fill=lightgray,text opacity=1, draw = black, minimum size=6mm]  (H1)  at(2,3)       {} ; 			
+	\node[text opacity=1,fill=lightgray, draw = black, text opacity=1, minimum size=6mm]  (H2)  at(1,1)   {} ; 
+	\node[text opacity=1,fill=white, draw = black, text opacity=1, minimum size=6mm]  (H3)  at(3,1)  {} ; 
+	\edge {H1} {H2}
+	\edge {H1} {H3}
+	\node[fit=(H2), draw, rounded corners, thick, inner sep=1.5mm, black] {};
+	\end{tikzpicture}
+	\hspace{0.5in}
+	\begin{tikzpicture}[scale=.8]
+	\node[text opacity=1,fill=lightgray,text opacity=1, draw = black, minimum size=6mm]  (H1)  at(2,3)       {} ; 			
+	\node[text opacity=1,fill=lightgray, draw = black, text opacity=1, minimum size=6mm]  (H2)  at(1,1)   {} ; 
+	\node[text opacity=1,fill=lightgray, draw = black, text opacity=1, minimum size=6mm]  (H3)  at(3,1)  {} ; 
+	\edge {H1} {H2}
+	\edge {H1} {H3}
+	\node[fit=(H2), draw, rounded corners, thick, inner sep=1.5mm, black] {};
+	\node[fit=(H3), draw, rounded corners, thick, inner sep=1.5mm, black] {};
+	\end{tikzpicture}
+
+\pause 
+
+\vspace{0.2in}
+
+\color{blue}
+Focused BH is the first procedure provably controlling \\ outer nodes FDR under dependence.
+
+%	\begin{textblock*}{5cm}(9.5cm, 8.4cm) % {block width} (coords)
+%		\includegraphics[width = 1in]{figures/truefalse.png}
+%	\end{textblock*}
+
+\end{frame}
+
+\begin{frame}{Improving the power of Focused BH}
+
+The numerator $m \cdot t$ in
+$$\widehat{\text{FDP}}(t) = \frac{m \cdot t}{|\mathfrak F(\{j: p_j \leq t\}, \bm p)|}$$
+can be a conservative estimate of $V(t) = |\mathcal U(t) \cap \mathcal H_0|$.
+\vspace{0.1in}
+
+Can improve procedure's power by tightening FDP estimate, e.g.
+\begin{equation*}
+\widehat V_{\text{oracle}}(t) = \mathbb E[V(t)] \leq m \cdot t.
+\end{equation*}
+
+
+\end{frame}
+
+
+\begin{frame}{Improving the power of Focused BH by permutations}
+	
+	Let $\widetilde{\bm p}$ be a ``permuted" version of $\bm p$. Then,
+	\begin{equation*}
+	\begin{split}
+	\mathbb E[V(t)] &= \mathbb E\left[|\mathfrak{F}(\{j: p_j \leq t\}, \bm p) \cap \mathcal H_0|\right] \\
+	&\approx \mathbb E[|\mathfrak{F}(\{j: \widetilde p_j \leq t\}, \widetilde{\bm p}) \cap \mathcal H_0|] \\
+	&\leq \mathbb E[|\mathfrak{F}(\{j: \widetilde p_j \leq t\}, \widetilde{\bm p})|].
+	\end{split}
+	\end{equation*}
+	
+	Given permutations $\widetilde{\bm p}^1, \dots, \widetilde{\bm p}^B$, define
+	\begin{equation*}
+	\widehat V_{\text{perm}}(t) = \frac{1}{B}\sum_{b = 1}^B |\mathfrak{F}(\{j: \widetilde{p}^b_j \leq t\}, \widetilde{\bm p}^b)|.
+	\end{equation*}
+	
+	No theoretical results yet, but performs well in simulations.	
+\end{frame}
+
+\begin{frame}{Simulation: Setup}
+
+\textbf{Graph structure:} Forest of 20 binary trees of depth 6, \\ with $m = 1260$ total nodes.
+\vspace{0.1in}
+
+\textbf{Data generating mechanism:}
+\begin{itemize}
+	\item 21 non-null leaves (out of 640), 98 total non-nulls;
+	\item Leaf nodes get independent p-values;
+	\item Internal nodes get p-values by applying \\ Simes global test to their leaf descendants.
+\end{itemize}
+\vspace{0.075in}
+
+\textbf{Filter:} Outer nodes filter.
+
+\end{frame}
+
+
+\begin{frame}{Simulation: Methods compared}
+	\begin{itemize}
+		\item BH \qquad \qquad \qquad \ (targeting pre-filter FDR at level $q = 0.1$)
+		\item Structured Holm\footnote{Meijer and Goeman (2016)} \ (targeting FWER at level $q = 0.1$)
+		\item Yekutieli\footnote{Yekutieli (2008)} \quad \quad \quad \ \hspace{0.01in} (targeting post-filter FDR at level $q = 0.1$)
+		\item Focused BH \quad \quad \ \ (targeting post-filter FDR at level $q = 0.1$)
+		\begin{itemize}
+			\item Original version
+			\item Permutation version
+			\item Oracle version
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Simulation: Results}
+	\begin{center}
+		\includegraphics[width = \textwidth]{figures/tree_results.pdf}
+	\end{center}
+\end{frame}
+
+\begin{frame}{Application: UK Biobank PheWAS with outer nodes filter}
+
+HLA region on chromosome 6 is known to affect many diseases.
+\vspace{0.1in}
+
+Conducted PheWAS analysis for the HLA-B*27:05 allele, \\ studied previously by Cortes et al (Nature Genetics, 2017).
+\vspace{0.1in}
+
+Computed p-values testing marginal association between this allele and the $m = 3265$ ICD-10 codes that had at least 50 cases.\footnote{This filtering step does not need to be corrected for, since it does not take the response variable into account.}
+\vspace{0.1in}
+
+BH, Structured Holm, Yekutieli, Focused BH applied \\ with $q = 0.05$.
+\end{frame}
+
+\begin{frame}{Number of outer node rejections made by each method}
+
+\centering
+	\begin{tabular}{l|c}
+		Method & Outer node rejections \\
+		\hline 
+		BH & 28 \\
+		\bf Focused BH & \bf 24 \\
+		Structured Holm  & 13 \\
+		Yekutieli & 1
+	\end{tabular}	
+\end{frame}
+
+\begin{frame}{Focused BH rejects 34 nodes, 24 outer nodes}
+		\vspace{-0.1in}
+	\resizebox{\textwidth}{!}{
+		\begin{tikzpicture}[
+		root/.style={square, fill=white, text centered, anchor=north, text=white},
+		reg/.style={square, draw=black, fill=white,
+			text centered, anchor=north, minimum size=10mm},
+		rejbh/.style={square, draw=black, fill=white,
+			text centered, anchor=north, minimum size=10mm},
+%		rejbh/.style={square, draw=black, pattern=custom north west lines,hatchspread=3pt,hatchthickness=1pt,hatchcolor=gray, text centered, anchor=north, minimum size=10mm},
+		rej/.style={square, draw=black, fill=lightgray,
+			text centered, anchor=north, minimum size=10mm},
+		rejnew/.style={square, draw=black, fill=lightgray,
+			text centered, anchor=north, minimum size=10mm},
+		square/.style={regular polygon,regular polygon sides=4},
+		level distance=2.5cm, growth parent anchor=south
+		]	
+		
+		\node (0) [root] {} [->]
+		[sibling distance=2.5cm]
+		child{ [sibling distance=1.5cm]
+			node (25) [reg, label={[shift={(0.9,0.3)}]above:\rotatebox{45}{\huge Circulatory}}] {} 
+			child{
+				node (10) [reg] {}
+				child{
+					node (52) [reg] {}
+					child{
+						node (53) [rejnew] {}
+					}	
+				}	
+			}
+			child{
+				node (11) [reg] {}
+				child{
+					node (54) [rej] {}
+					child{
+						node (55) [rejnew] {}
+					}	
+				}	
+			}	
+			edge from parent[draw=none]
+		}	
+		child{ [sibling distance=1cm]
+			node (24) [reg, xshift = -0.5cm, label={[shift={(0.8,0.3)}]above:\rotatebox{45}{\huge Neoplasms}}] {} 
+			child{
+				node (1) [reg] {}
+				child{
+					node (35) [rejnew] {}
+				}	
+			}
+			edge from parent[draw=none]
+		}	
+		child{ [sibling distance=1.1cm]
+			node (26) [reg, label={[shift={(0.7,0.3)}]above:\rotatebox{45}{\huge Nervous}}] {} 
+			child{
+				node (2) [reg] {}
+				child{
+					node (36) [reg] {}
+					child{
+						node (37) [rejnew] {}
+					}	
+				}	
+			}
+			child{
+				node (3) [reg] {}
+				child{
+					node (38) [rej] {}
+					child{
+						node (39) [rej] {}
+					}	
+				}	
+			}	
+			child{
+				node (4) [reg] {}
+				child{
+					node (40) [reg] {}
+					child{
+						node (41) [rejbh] {}
+					}	
+				}	
+			}	
+			child{
+				node (5) [reg] {}
+				child{
+					node (42) [reg] {}
+					child{
+						node (43) [rejnew] {}
+					}	
+				}	
+			}								
+			edge from parent[draw=none]
+		}	
+		child{ [sibling distance=1cm]
+			node (28) [reg, xshift = 0.35cm, label={[shift={(0.2,0.3)}]above:\rotatebox{45}{\huge Ear}}] {} 
+			child{
+				node (9) [reg] {}
+				child{
+					node (50) [reg] {}
+					child{
+						node (51) [rejbh] {}
+					}	
+				}	
+			}
+			edge from parent[draw=none]
+		}			
+		child{ [sibling distance=1cm]
+			node (27) [reg, label={[shift={(0.2,0.3)}]above:\rotatebox{45}{\huge Eye}}] {} 
+			child{
+				node (6) [reg] {}
+				child{
+					node (44) [rej] {}
+					child{
+						node (45) [rej] {}
+					}	
+				}	
+			}
+			child{
+				node (7) [reg] {}
+				child{
+					node (46) [reg] {}
+					child{
+						node (47) [rej] {}
+					}	
+				}	
+			}	
+			child{
+				node (8) [reg] {}
+				child{
+					node (48) [rej] {}
+					child{
+						node (49) [rej] {}
+					}	
+				}	
+			}	
+			edge from parent[draw=none]
+		}
+		child{ [sibling distance=1cm]
+			node (29) [reg, label={[shift={(1,0.3)}]above:\rotatebox{45}{\huge Respiratory}}] {} 
+			child{
+				node (12) [reg] {}
+				child{
+					node (56) [rejnew] {}
+				}	
+				child{
+					node (57) [reg] {}
+					child{
+						node (58) [rejnew] {}
+					}	
+				}	
+			}
+			edge from parent[draw=none]
+		}	
+		child{ [sibling distance=1cm]
+			node (30) [reg, label={[shift={(0.3,0.3)}]above:\rotatebox{45}{\huge Skin}}] {} 
+			child{
+				node (13) [reg] {}
+				child{
+					node (59) [reg] {}
+					child{
+						node (60) [rejnew] {}
+					}	
+				}	
+			}
+			child{
+				node (14) [rej] {}
+				child{
+					node (61) [rej] {}
+					child{
+						node (62) [rej] {}
+					}	
+				}	
+			}	
+			child{
+				node (15) [reg] {}
+				child{
+					node (63) [rejbh] {}
+				}	
+			}	
+			edge from parent[draw=none]
+		}
+		child{ [sibling distance=1cm]
+			node (33) [reg, label={[shift={(0.8,0.3)}]above:\rotatebox{45}{\huge Pregnancy}}] {} 
+			child{
+				node (20) [reg] {}
+				child{
+					node (73) [reg] {}
+					child{
+						node (74) [rej] {}
+					}	
+				}	
+			}
+			edge from parent[draw=none]
+		}
+		child{ [sibling distance=1cm]
+			node (31) [reg, label={[shift={(1.2,0.3)}]above:\rotatebox{45}{\huge  Musculoskeletal}}] {} 
+			child{
+				node (17) [rej] {}
+				child{ [sibling distance=1.2cm]
+					node (64) [rej] {}
+					child{
+						node (65) [rej] {}
+						child{
+							node (66) [rejnew] {}
+						}
+						child{
+							node (67) [rej] {}
+						}
+						child{
+							node (68) [rej] {}
+						}
+					}	
+				}	
+			}
+			child{
+				node (19) [reg] {}
+				child{
+					node (71) [reg] {}
+					child{
+						node (72) [rejnew] {}
+					}	
+				}	
+			}								
+			child{
+				node (16) [rej] {}
+			}
+			child{ [sibling distance=1.2cm]
+				node (18) [rej] {}
+				child{
+					node (69) [rej] {}
+				}	
+				child{
+					node (70) [rej] {}
+				}					
+			}	
+			edge from parent[draw=none]
+		}	
+		child{ [sibling distance=1cm]
+			node (34) [rejnew, label={[shift={(1.6,0.3)}]above:\rotatebox{45}{\huge Clinical symptoms}}] {} 
+			edge from parent[draw=none]
+		}
+		child{ [sibling distance=1.1cm]
+			node (32) [reg, xshift = -0.5cm, label={[shift={(0.7,0.3)}]above:\rotatebox{45}{\huge Injuries}}] {} 
+			child{
+				node (21) [reg] {}
+				child{
+					node (75) [reg] {}
+					child{
+						node (76) [rej] {}
+					}	
+				}	
+			}
+			child{
+				node (22) [reg] {}
+				child{
+					node (77) [reg] {}
+					child{
+						node (78) [rejbh] {}
+					}	
+				}	
+			}	
+			child{
+				node (23) [reg] {}
+				child{
+					node (79) [reg] {}
+					child{
+						node (80) [rej] {}
+					}	
+				}	
+			}	
+			edge from parent[draw=none]
+		};	
+		\node[fit=(16), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(35), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(53), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(55), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(37), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(39), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(43), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(45), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(47), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(49), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(56), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(58), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(60), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(62), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(66), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(67), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(68), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(69), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(70), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(72), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};		
+		\node[fit=(76), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};		\node[fit=(80), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(74), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(34), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		
+		\node (key) at (-13.1,-14.5) {\huge $\underline{\text{Key}}$};
+		\node[square, fill=white,draw = black, minimum size=10mm, label={[shift={(0,0)}]right:\rotatebox{0}{\huge Not rejected by Focused BH}}]  (key1)  at(-13.25,-15.5) {}; 
+		\node[square, draw=black, fill = lightgray, minimum size=10mm, label={[shift={(0,0)}]right:\rotatebox{0}{\huge Rejected by Focused BH}}]  (key1)  at(-13.25,-16.5) {};	
+%		\node[square,  pattern=custom north west lines, hatchspread=3pt, hatchthickness=1pt, hatchcolor=gray, draw = black, minimum size=10mm, label={[shift={(0,0)}]right:\rotatebox{0}{\huge Rejected by BH but not Focused BH (4)}}]  (key4)  at(-13.25,-17.5) {};
+%		\node[square, fill=lightgray,draw = black, minimum size=10mm, label={[shift={(0,0)}]right:\rotatebox{0}{\huge Outer node rejected by Focused BH (24; \color{violet} 11 not found by Structured Holm)}}]  (key3)  at(-13.25,-18.5) {}; 
+%		
+%		\node[fit=(key3), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		
+		\end{tikzpicture}
+	}
+\end{frame}
+
+\begin{frame}{FBH rejects 11 outer nodes more than Structured Holm}
+	\resizebox{\textwidth}{!}{
+		\begin{tikzpicture}[
+		root/.style={square, fill=white, text centered, anchor=north, text=white},
+		reg/.style={square, draw=black, fill=white,
+			text centered, anchor=north, minimum size=10mm},
+		rejbh/.style={square, draw=black, fill=white,
+			text centered, anchor=north, minimum size=10mm},
+		%		rejbh/.style={square, draw=black, pattern=custom north west lines,hatchspread=3pt,hatchthickness=1pt,hatchcolor=gray, text centered, anchor=north, minimum size=10mm},
+		rej/.style={square, draw=black, fill=lightgray,
+			text centered, anchor=north, minimum size=10mm},
+		rejnew/.style={square, draw=black, fill=violet,
+			text centered, anchor=north, minimum size=10mm},
+		square/.style={regular polygon,regular polygon sides=4},
+		level distance=2.5cm, growth parent anchor=south
+		]	
+		
+		\node (0) [root] {} [->]
+		[sibling distance=2.5cm]
+		child{ [sibling distance=1.5cm]
+			node (25) [reg, label={[shift={(0.9,0.3)}]above:\rotatebox{45}{\huge Circulatory}}] {} 
+			child{
+				node (10) [reg] {}
+				child{
+					node (52) [reg] {}
+					child{
+						node (53) [rejnew] {}
+					}	
+				}	
+			}
+			child{
+				node (11) [reg] {}
+				child{
+					node (54) [rej] {}
+					child{
+						node (55) [rejnew] {}
+					}	
+				}	
+			}	
+			edge from parent[draw=none]
+		}	
+		child{ [sibling distance=1cm]
+			node (24) [reg, xshift = -0.5cm, label={[shift={(0.8,0.3)}]above:\rotatebox{45}{\huge Neoplasms}}] {} 
+			child{
+				node (1) [reg] {}
+				child{
+					node (35) [rejnew] {}
+				}	
+			}
+			edge from parent[draw=none]
+		}	
+		child{ [sibling distance=1.1cm]
+			node (26) [reg, label={[shift={(0.7,0.3)}]above:\rotatebox{45}{\huge Nervous}}] {} 
+			child{
+				node (2) [reg] {}
+				child{
+					node (36) [reg] {}
+					child{
+						node (37) [rejnew] {}
+					}	
+				}	
+			}
+			child{
+				node (3) [reg] {}
+				child{
+					node (38) [rej] {}
+					child{
+						node (39) [rej] {}
+					}	
+				}	
+			}	
+			child{
+				node (4) [reg] {}
+				child{
+					node (40) [reg] {}
+					child{
+						node (41) [rejbh] {}
+					}	
+				}	
+			}	
+			child{
+				node (5) [reg] {}
+				child{
+					node (42) [reg] {}
+					child{
+						node (43) [rejnew] {}
+					}	
+				}	
+			}								
+			edge from parent[draw=none]
+		}	
+		child{ [sibling distance=1cm]
+			node (28) [reg, xshift = 0.35cm, label={[shift={(0.2,0.3)}]above:\rotatebox{45}{\huge Ear}}] {} 
+			child{
+				node (9) [reg] {}
+				child{
+					node (50) [reg] {}
+					child{
+						node (51) [rejbh] {}
+					}	
+				}	
+			}
+			edge from parent[draw=none]
+		}			
+		child{ [sibling distance=1cm]
+			node (27) [reg, label={[shift={(0.2,0.3)}]above:\rotatebox{45}{\huge Eye}}] {} 
+			child{
+				node (6) [reg] {}
+				child{
+					node (44) [rej] {}
+					child{
+						node (45) [rej] {}
+					}	
+				}	
+			}
+			child{
+				node (7) [reg] {}
+				child{
+					node (46) [reg] {}
+					child{
+						node (47) [rej] {}
+					}	
+				}	
+			}	
+			child{
+				node (8) [reg] {}
+				child{
+					node (48) [rej] {}
+					child{
+						node (49) [rej] {}
+					}	
+				}	
+			}	
+			edge from parent[draw=none]
+		}
+		child{ [sibling distance=1cm]
+			node (29) [reg, label={[shift={(1,0.3)}]above:\rotatebox{45}{\huge Respiratory}}] {} 
+			child{
+				node (12) [reg] {}
+				child{
+					node (56) [rejnew] {}
+				}	
+				child{
+					node (57) [reg] {}
+					child{
+						node (58) [rejnew] {}
+					}	
+				}	
+			}
+			edge from parent[draw=none]
+		}	
+		child{ [sibling distance=1cm]
+			node (30) [reg, label={[shift={(0.3,0.3)}]above:\rotatebox{45}{\huge Skin}}] {} 
+			child{
+				node (13) [reg] {}
+				child{
+					node (59) [reg] {}
+					child{
+						node (60) [rejnew] {}
+					}	
+				}	
+			}
+			child{
+				node (14) [rej] {}
+				child{
+					node (61) [rej] {}
+					child{
+						node (62) [rej] {}
+					}	
+				}	
+			}	
+			child{
+				node (15) [reg] {}
+				child{
+					node (63) [rejbh] {}
+				}	
+			}	
+			edge from parent[draw=none]
+		}
+		child{ [sibling distance=1cm]
+			node (33) [reg, label={[shift={(0.8,0.3)}]above:\rotatebox{45}{\huge Pregnancy}}] {} 
+			child{
+				node (20) [reg] {}
+				child{
+					node (73) [reg] {}
+					child{
+						node (74) [rej] {}
+					}	
+				}	
+			}
+			edge from parent[draw=none]
+		}
+		child{ [sibling distance=1cm]
+			node (31) [reg, label={[shift={(1.2,0.3)}]above:\rotatebox{45}{\huge  Musculoskeletal}}] {} 
+			child{
+				node (17) [rej] {}
+				child{ [sibling distance=1.2cm]
+					node (64) [rej] {}
+					child{
+						node (65) [rej] {}
+						child{
+							node (66) [rejnew] {}
+						}
+						child{
+							node (67) [rej] {}
+						}
+						child{
+							node (68) [rej] {}
+						}
+					}	
+				}	
+			}
+			child{
+				node (19) [reg] {}
+				child{
+					node (71) [reg] {}
+					child{
+						node (72) [rejnew] {}
+					}	
+				}	
+			}								
+			child{
+				node (16) [rej] {}
+			}
+			child{ [sibling distance=1.2cm]
+				node (18) [rej] {}
+				child{
+					node (69) [rej] {}
+				}	
+				child{
+					node (70) [rej] {}
+				}					
+			}	
+			edge from parent[draw=none]
+		}	
+		child{ [sibling distance=1cm]
+			node (34) [rejnew, label={[shift={(1.6,0.3)}]above:\rotatebox{45}{\huge Clinical symptoms}}] {} 
+			edge from parent[draw=none]
+		}
+		child{ [sibling distance=1.1cm]
+			node (32) [reg, xshift = -0.5cm, label={[shift={(0.7,0.3)}]above:\rotatebox{45}{\huge Injuries}}] {} 
+			child{
+				node (21) [reg] {}
+				child{
+					node (75) [reg] {}
+					child{
+						node (76) [rej] {}
+					}	
+				}	
+			}
+			child{
+				node (22) [reg] {}
+				child{
+					node (77) [reg] {}
+					child{
+						node (78) [rejbh] {}
+					}	
+				}	
+			}	
+			child{
+				node (23) [reg] {}
+				child{
+					node (79) [reg] {}
+					child{
+						node (80) [rej] {}
+					}	
+				}	
+			}	
+			edge from parent[draw=none]
+		};	
+		\node[fit=(16), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(35), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(53), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(55), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(37), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(39), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(43), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(45), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(47), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(49), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(56), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(58), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(60), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(62), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(66), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(67), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(68), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(69), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(70), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(72), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};		
+		\node[fit=(76), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};		\node[fit=(80), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(74), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(34), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		
+		\node (key) at (-13.1,-14.5) {\huge $\underline{\text{Key}}$};
+		\node[square, fill=white,draw = black, minimum size=10mm, label={[shift={(0,0)}]right:\rotatebox{0}{\huge Not rejected by Focused BH}}]  (key1)  at(-13.25,-15.5) {}; 
+		\node[square, draw=black, fill = lightgray, minimum size=10mm, label={[shift={(0,0)}]right:\rotatebox{0}{\huge Rejected by Focused BH}}]  (key1)  at(-13.25,-16.5) {};	
+		%		\node[square,  pattern=custom north west lines, hatchspread=3pt, hatchthickness=1pt, hatchcolor=gray, draw = black, minimum size=10mm, label={[shift={(0,0)}]right:\rotatebox{0}{\huge Rejected by BH but not Focused BH (4)}}]  (key4)  at(-13.25,-17.5) {};
+		\node[square, fill=violet,draw = black, minimum size=10mm, label={[shift={(0,0)}]right:\rotatebox{0}{\huge Outer node rejected by Focused BH but not Structured Holm}}]  (key3)  at(-13.25,-17.5) {}; 
+		
+		\node[fit=(key3), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		
+		\end{tikzpicture}
+	}
+\end{frame}
+
+%\section[Broader View]{Replicable exploratory data analysis:\newline A broader view}
+%
+%\frame{\sectionpage}
+
+\begin{frame}{Summary of Focused BH}
+	
+	\includegraphics[width = \textwidth]{figures/schematic_5.pdf}
+	\vspace{0.25in}
+	
+	Focused BH guarantees Type-I error control when data analysis involves automatic curation via a pre-specified filter.
+	\vspace{0.1in}
+	
+	Filtering framework is general; applies beyond examples presented.
+		
+\end{frame}
+
+
+\begin{frame}
+	\centering
+	\LARGE
+	\color{beamer@blendedblue}
+	
+	Part II: From automatic to manual curation
+	
+\end{frame}
+
+\begin{frame}{Manually curating promising hypotheses}
+	
+%Sometimes, more analytical flexibility is necessary: data scientists might want to interact with the data to find interesting patterns.
+%\vspace{0.1in}
+
+Consider the practice of re-running an FDR procedure with different target levels until one obtains a ``good" rejection set.
+\vspace{0.1in}
+
+$\mathcal R_k = \{H_{(1)}, \dots, H_{(k)}\}$: set corresponding to $k$ smallest p-values.
+
+\begin{equation*}
+\varnothing = \mathcal R_0 \subseteq \mathcal R_1 \subseteq \cdots \subseteq \mathcal R_m \subseteq \mathcal H
+\end{equation*}
+
+\color{white}
+\only<6>{\color{black}}
+
+\vspace{0.3in}
+Simultaneous inference is one solution (e.g. Goeman and Solari 2011, Berk et al 2013), but can be conservative.
+
+\only<3->{
+	\begin{textblock*}{5cm}(5.4cm,5.1cm) % {block width} (coords)
+		\centering
+		\includegraphics[width = 0.25in]{figures/magnifying-glass-black.png}
+	\end{textblock*}
+}
+
+\only<2->{
+	\begin{textblock*}{5cm}(3.35cm,5.1cm) % {block width} (coords)
+		\centering
+		\includegraphics[width = 0.25in]{figures/magnifying-glass-black.png}
+	\end{textblock*}
+}
+
+\only<4>{
+	\begin{textblock*}{5cm}(4.4cm,5.1cm) % {block width} (coords)
+		\centering
+		\includegraphics[width = 0.25in]{figures/magnifying-glass-black.png}
+	\end{textblock*}
+}
+
+
+\only<5->{
+	\begin{textblock*}{5cm}(4.4cm,5.1cm) % {block width} (coords)
+		\centering
+		\includegraphics[width = 0.25in]{figures/magnifying-glass-green.png}
+	\end{textblock*}
+}
+
+
+\end{frame}
+
+\begin{frame}{Simultaneous selective inference}
+		
+	Data scientist wants to inspect a ``menu" of options 
+	\begin{equation*}
+	\varnothing = \mathcal R_0 \subseteq \mathcal R_1 \subseteq \cdots \subseteq \mathcal R_m \subseteq \mathcal H.
+	\end{equation*}
+	Idea: provide corresponding upper bounds 
+	\begin{equation*}
+	\overline{\text{FDP}}(\mathcal R_k) = \frac{\log(\alpha^{-1})}{\log(1+\log(\alpha^{-1}))}\frac{1 + n \cdot p_{(k)}}{|\mathcal R_k|}
+	\end{equation*}
+	such that
+	\begin{block}{Theorem (\textbf{K.} and Ramdas, AOS, in revision, 2019+)}
+	Under independence of null p-values,
+	\begin{equation*}
+	\mathbb P[\text{FDP}(\mathcal R_k) \leq \overline{\text{FDP}}(\mathcal R_k) \text{ for all } k] \geq 1-\alpha
+	\end{equation*}
+	for all $n$ and all $\alpha \leq 0.31$.
+	\end{block}
+
+	Data scientist can freely choose from menu while \\ maintaining validity of FDP bounds.
+
+\end{frame}
+
+\begin{frame}{Simultaneous selective inference in a toy example}
+	
+
+	\begin{center}
+		\includegraphics[width =\textwidth]{figures/spotting_example.pdf}
+	\end{center}
+	
+\end{frame}
+
+\begin{frame}{Linear upper bounds for empirical processes}
+
+For bounds of the form $\displaystyle\overline{\text{FDP}}(t) = \frac{a+bt}{R(t)}$, we seek $a, b$ such that \vspace{-0.05in}
+
+$$\displaystyle \mathbb P[V(t) \leq a + bt \text{ for all } t \in [0,1]] \geq 1-\alpha,$$
+
+\vspace{-0.05in} where $V(t) = \sum_{j \in \mathcal H_0} I(p_j \leq t)$.
+%\begin{equation*}
+%\mathbb P[V(t) \leq a + bt \text{ for all } t \in [0,1]] \geq 1-\alpha,
+%\end{equation*}
+%where $V(t) = \sum_{j \in \mathcal H_0} I(p_j \leq t)$.%; i.e. we seek a uniform linear upper bound on an empirical process.
+
+\pause
+
+\vspace{0.1in}
+\begin{columns}
+	\begin{column}{0.5\textwidth}
+		
+		Existing finite-sample bounds:\footnotemark
+		\begin{itemize}
+			\item $\overline{V}(t) = \frac{1}{\alpha}nt$; \\ tight very near 0.
+			\item $\overline{V}(t) = \sqrt{\frac n 2 \log \frac{1}{\alpha}} + nt$; \\ tight near 1.
+		\end{itemize}
+		\vspace{0.1in}
+		
+		We obtain a new bound by exploiting connection between empirical and Poisson processes.
+%		Instead, we seek a bound $$\overline V(t) = x(1+nt)$$ for some $x > 1$.
+	\end{column}
+	\begin{column}{0.4\textwidth}
+		\begin{center}
+			\includegraphics[width = \textwidth]{figures/poisson_hitting.png}
+		\end{center}
+	\end{column}
+\end{columns}
+\footnotetext[10]{Robbins (1954) and Dvoretsky Kiefer Wolfowitz (1956)}
+
+
+\end{frame}
+%
+%\begin{frame}{Upper-bounding an empirical process}
+%Easy to upper-bound \textit{Poisson} processes with linear boundaries. 
+%\vspace{0.1in}
+%
+%Recall that an empirical process is a conditional Poisson process:
+%\begin{equation*}
+%V(t) \overset d = N(t)|N(1) = n.
+%\end{equation*}
+%
+%KR19+ leveraged this characterization to show that
+%\begin{equation*}
+%\begin{split}
+%\mathbb P[V(t) \geq \overline V(t) \text{ for some } t] &= \mathbb P[N(t) \geq \overline V(t) \text{ for some } t |N(1) = n] \\
+%&\leq \mathbb P[N(t) \geq \overline V(t) \text{ for some } t] \\
+%\end{split}
+%\end{equation*}
+%
+%
+%We thus obtain new uniform, closed form, finite sample \\ linear bounds on the empirical process.
+%
+%\end{frame}
+
+\begin{frame}{Comparing to existing bounds ($n = 500, \alpha = 0.05$)}
+
+\begin{center}
+	\includegraphics[height = 0.9\textheight]{figures/Comparing_Bounds.pdf}
+\end{center}
+
+\end{frame}
+
+\begin{frame}{Simultaneous selective inference with side information}
+	
+KR19+ bounds can leverage side information to give data scientists a better menu of rejection sets to choose from. 
+
+\begin{itemize}
+	\item Hypotheses ordered a priori \\ (same menu as accumulation test\footnote{Li and Barber (2017)})
+	\item Hypotheses ordered adaptively \\ (same menu as AdaPT or STAR\footnote{Lei and Fithian (2018), Lei, Ramdas, Fithian (2019+)})
+	\item Hypotheses ordered according to variable selection importance \\ (same menu as knockoffs\footnote{Barber and Candes (2015)})
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Simultaneous selective inference for knockoffs}
+	
+Knockoffs method (Barber and Candes, 2015) developed for variable selection with FDR control.
+\vspace{0.1in} 
+
+\textit{Knockoff statistics} $W_1, \dots, W_m$ assigned to variables instead of p-values, ordering variables based on 
+\begin{equation*}
+W_{(1)} \geq W_{(2)} \geq \cdots \geq W_{(m)}.
+\end{equation*}
+
+BR19+ derived uniform FDP bounds for knockoffs as well:
+\begin{equation*}
+\overline{\text{FDP}}(\mathcal R_k) = \frac{\log(\frac 1 \alpha)}{\log(2-\alpha)}\frac{1 + |\{j: W_j \leq -W_{(k)}\}|}{|\mathcal R_k|}.
+\end{equation*}
+
+Uniform bounds for knockoffs first considered by \\ \textbf{K.} and Sabatti (AOAS, 2019).
+	
+\end{frame}
+
+
+
+\begin{frame}{Replicability guarantees for modern data analysis pipelines}
+
+Different modes of curation require different statistical approaches:
+\vspace{0.01in}
+
+\begin{tabular}{l|l}
+Mode of curation & Statistical approach \\
+\hline
+1. Automatic (filtering) & Focused BH \\
+2. Manual (exploration) & Simultaneous selective inference
+\end{tabular}
+\vspace{0.1in}
+
+\pause 
+These lie on a spectrum from selective to simultaneous inference:
+\begin{center}
+\begin{figure}
+	\includegraphics[width = \textwidth]{figures/simultaneous_selective.pdf}
+\end{figure}
+\end{center}
+\vspace{-0.05in}
+
+\pause 
+
+Open questions:
+\begin{itemize}
+	\item (Applications) Pairing applications with inferential guarantees;
+	\item (Theory, Methodology) Filling in the spectrum with \\ powerful procedures using realistic assumptions.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+
+{
+\Huge
+\begin{center}
+\textcolor{beamer@blendedblue}{Thank you.}
+\end{center}
+}
+
+\vspace{0.1in}
+
+\centering
+All papers and code available at \url{http://web.stanford.edu/~ekatsevi/index.html}.
+	
+	
+\end{frame}
+
+\appendix
+
+\begin{frame}{PRDS condition}
+
+\begin{block}{Definition (Benjamini Yekutieli 2001)}
+The vector $\bm p$ is PRDS if for any null $j$ and non-decreasing set $\mathcal D \subseteq [0,1]^m$, the quantity $\mathbb P[\bm p \in \mathcal D | p_i \leq t]$ is nondecreasing in $t \in (0,1]$.
+\end{block}
+
+\end{frame}
+
+\begin{frame}{Definition of power in the context of filtering}
+	
+	Maximum possible weighted number of non-null rejections is
+	\begin{equation*}
+	T_{\max} \equiv \max_{\mathcal R, \bm p} \left\{\sum_{j \in \mathcal H_1} U_j\right\}; \quad \bm U = \mathfrak F(\mathcal R, \bm p),
+	\label{tmax}
+	\end{equation*}
+	Then, define power via
+	\begin{equation*}
+	\pi(\bm U) = \mathbb E\left[\frac{\sum_{j \in \mathcal H_1} U_j}{T_{\max}}\right].
+	\end{equation*}
+	
+\end{frame}
+
+
+\begin{frame}{Simulation 2: GWAS with clump filtering}
+	
+	\begin{center}
+		\includegraphics[width = 0.9\textwidth]{figures/Manhattan_plot_new_colors.pdf}
+	\end{center}
+	\vspace{-0.1in}
+	
+	\begin{itemize}
+		\item Genome of length 3000, with 100 LD blocks of size 30
+		\item Simulated genotype data with local correlations
+		\item Phenotypes from linear model with 10 nonzero coefficients
+		\item Univariate association p-values generated for each SNP 
+		\item For simplicity, filter uses a priori LD blocks as clumps
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Simulation 2: Results}
+	\begin{center}
+		\includegraphics[width = \textwidth]{figures/GWAS_results.pdf}
+	\end{center}
+\end{frame}
+
+
+\begin{frame}{Robustness experiment}
+
+\centering
+\includegraphics[width = 0.9\textwidth]{figures/robustness_experiment.pdf}
+
+\end{frame}
+
+\begin{frame}{Outer nodes found by BH but not Focused BH}
+	
+	\begin{itemize}
+		\item Other and unspecified antidepressants [as a cause of death via complication of medical care]
+		\item Urticaria [also known as hives]
+		\item Localisation-related (focal) (partial) symptomatic epilepsy and epileptic syndromes with complex partial seizures
+		\item Meniere's disease
+	\end{itemize}
+	
+\end{frame}
+
+\begin{frame}{Outer nodes found by Focused BH \\ but not Structured Holm}
+	
+	\begin{itemize}
+		\item Symptoms, signs and abnormal clinical and laboratory findings
+		\item Other benign neoplasms of connective and other soft tissues
+		\item Meningitis, unspecified    
+		\item Other specified polyneuropathies 
+		\item Cardiomegaly 
+		\item Scrotal varices 
+		\item Chronic sinusitis      
+		\item Paralysis of vocal cords and larynx
+		\item Cellulitis of other sites 
+		\item Rheumatoid arthritis, unspecified (Multiple sites)
+		\item Other synovitis and tenosynovitis 
+	\end{itemize}
+	
+\end{frame}
+
+\begin{frame}{FBH rejects 4 nodes fewer than BH}
+	\resizebox{\textwidth}{!}{
+		\begin{tikzpicture}[
+		root/.style={square, fill=white, text centered, anchor=north, text=white},
+		reg/.style={square, draw=black, fill=white,
+			text centered, anchor=north, minimum size=10mm},
+		rejbh/.style={square, draw=black, pattern=custom north west lines,hatchspread=3pt,hatchthickness=1pt,hatchcolor=gray, text centered, anchor=north, minimum size=10mm},
+		rej/.style={square, draw=black, fill=lightgray,
+			text centered, anchor=north, minimum size=10mm},
+		rejnew/.style={square, draw=black, fill=lightgray,
+			text centered, anchor=north, minimum size=10mm},
+		square/.style={regular polygon,regular polygon sides=4},
+		level distance=2.5cm, growth parent anchor=south
+		]	
+		
+		\node (0) [root] {} [->]
+		[sibling distance=2.5cm]
+		child{ [sibling distance=1.5cm]
+			node (25) [reg, label={[shift={(0.9,0.3)}]above:\rotatebox{45}{\huge Circulatory}}] {} 
+			child{
+				node (10) [reg] {}
+				child{
+					node (52) [reg] {}
+					child{
+						node (53) [rejnew] {}
+					}	
+				}	
+			}
+			child{
+				node (11) [reg] {}
+				child{
+					node (54) [rej] {}
+					child{
+						node (55) [rejnew] {}
+					}	
+				}	
+			}	
+			edge from parent[draw=none]
+		}	
+		child{ [sibling distance=1cm]
+			node (24) [reg, xshift = -0.5cm, label={[shift={(0.8,0.3)}]above:\rotatebox{45}{\huge Neoplasms}}] {} 
+			child{
+				node (1) [reg] {}
+				child{
+					node (35) [rejnew] {}
+				}	
+			}
+			edge from parent[draw=none]
+		}	
+		child{ [sibling distance=1.1cm]
+			node (26) [reg, label={[shift={(0.7,0.3)}]above:\rotatebox{45}{\huge Nervous}}] {} 
+			child{
+				node (2) [reg] {}
+				child{
+					node (36) [reg] {}
+					child{
+						node (37) [rejnew] {}
+					}	
+				}	
+			}
+			child{
+				node (3) [reg] {}
+				child{
+					node (38) [rej] {}
+					child{
+						node (39) [rej] {}
+					}	
+				}	
+			}	
+			child{
+				node (4) [reg] {}
+				child{
+					node (40) [reg] {}
+					child{
+						node (41) [rejbh] {}
+					}	
+				}	
+			}	
+			child{
+				node (5) [reg] {}
+				child{
+					node (42) [reg] {}
+					child{
+						node (43) [rejnew] {}
+					}	
+				}	
+			}								
+			edge from parent[draw=none]
+		}	
+		child{ [sibling distance=1cm]
+			node (28) [reg, xshift = 0.35cm, label={[shift={(0.2,0.3)}]above:\rotatebox{45}{\huge Ear}}] {} 
+			child{
+				node (9) [reg] {}
+				child{
+					node (50) [reg] {}
+					child{
+						node (51) [rejbh] {}
+					}	
+				}	
+			}
+			edge from parent[draw=none]
+		}			
+		child{ [sibling distance=1cm]
+			node (27) [reg, label={[shift={(0.2,0.3)}]above:\rotatebox{45}{\huge Eye}}] {} 
+			child{
+				node (6) [reg] {}
+				child{
+					node (44) [rej] {}
+					child{
+						node (45) [rej] {}
+					}	
+				}	
+			}
+			child{
+				node (7) [reg] {}
+				child{
+					node (46) [reg] {}
+					child{
+						node (47) [rej] {}
+					}	
+				}	
+			}	
+			child{
+				node (8) [reg] {}
+				child{
+					node (48) [rej] {}
+					child{
+						node (49) [rej] {}
+					}	
+				}	
+			}	
+			edge from parent[draw=none]
+		}
+		child{ [sibling distance=1cm]
+			node (29) [reg, label={[shift={(1,0.3)}]above:\rotatebox{45}{\huge Respiratory}}] {} 
+			child{
+				node (12) [reg] {}
+				child{
+					node (56) [rejnew] {}
+				}	
+				child{
+					node (57) [reg] {}
+					child{
+						node (58) [rejnew] {}
+					}	
+				}	
+			}
+			edge from parent[draw=none]
+		}	
+		child{ [sibling distance=1cm]
+			node (30) [reg, label={[shift={(0.3,0.3)}]above:\rotatebox{45}{\huge Skin}}] {} 
+			child{
+				node (13) [reg] {}
+				child{
+					node (59) [reg] {}
+					child{
+						node (60) [rejnew] {}
+					}	
+				}	
+			}
+			child{
+				node (14) [rej] {}
+				child{
+					node (61) [rej] {}
+					child{
+						node (62) [rej] {}
+					}	
+				}	
+			}	
+			child{
+				node (15) [reg] {}
+				child{
+					node (63) [rejbh] {}
+				}	
+			}	
+			edge from parent[draw=none]
+		}
+		child{ [sibling distance=1cm]
+			node (33) [reg, label={[shift={(0.8,0.3)}]above:\rotatebox{45}{\huge Pregnancy}}] {} 
+			child{
+				node (20) [reg] {}
+				child{
+					node (73) [reg] {}
+					child{
+						node (74) [rej] {}
+					}	
+				}	
+			}
+			edge from parent[draw=none]
+		}
+		child{ [sibling distance=1cm]
+			node (31) [reg, label={[shift={(1.2,0.3)}]above:\rotatebox{45}{\huge  Musculoskeletal}}] {} 
+			child{
+				node (17) [rej] {}
+				child{ [sibling distance=1.2cm]
+					node (64) [rej] {}
+					child{
+						node (65) [rej] {}
+						child{
+							node (66) [rejnew] {}
+						}
+						child{
+							node (67) [rej] {}
+						}
+						child{
+							node (68) [rej] {}
+						}
+					}	
+				}	
+			}
+			child{
+				node (19) [reg] {}
+				child{
+					node (71) [reg] {}
+					child{
+						node (72) [rejnew] {}
+					}	
+				}	
+			}								
+			child{
+				node (16) [rej] {}
+			}
+			child{ [sibling distance=1.2cm]
+				node (18) [rej] {}
+				child{
+					node (69) [rej] {}
+				}	
+				child{
+					node (70) [rej] {}
+				}					
+			}	
+			edge from parent[draw=none]
+		}	
+		child{ [sibling distance=1cm]
+			node (34) [rejnew, label={[shift={(1.6,0.3)}]above:\rotatebox{45}{\huge Clinical symptoms}}] {} 
+			edge from parent[draw=none]
+		}
+		child{ [sibling distance=1.1cm]
+			node (32) [reg, xshift = -0.5cm, label={[shift={(0.7,0.3)}]above:\rotatebox{45}{\huge Injuries}}] {} 
+			child{
+				node (21) [reg] {}
+				child{
+					node (75) [reg] {}
+					child{
+						node (76) [rej] {}
+					}	
+				}	
+			}
+			child{
+				node (22) [reg] {}
+				child{
+					node (77) [reg] {}
+					child{
+						node (78) [rejbh] {}
+					}	
+				}	
+			}	
+			child{
+				node (23) [reg] {}
+				child{
+					node (79) [reg] {}
+					child{
+						node (80) [rej] {}
+					}	
+				}	
+			}	
+			edge from parent[draw=none]
+		};	
+		\node[fit=(16), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(35), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(53), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(55), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(37), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(39), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(43), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(45), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(47), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(49), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(56), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(58), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(60), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(62), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(66), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(67), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(68), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(69), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(70), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(72), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};		
+		\node[fit=(76), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};		\node[fit=(80), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(74), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(34), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		
+		\node (key) at (-13.1,-14.5) {\huge $\underline{\text{Key}}$};
+		\node[square, fill=white,draw = black, minimum size=10mm, label={[shift={(0,0)}]right:\rotatebox{0}{\huge Not rejected by Focused BH}}]  (key1)  at(-13.25,-15.5) {}; 
+		\node[square, draw=black, fill = lightgray, minimum size=10mm, label={[shift={(0,0)}]right:\rotatebox{0}{\huge Rejected by Focused BH}}]  (key1)  at(-13.25,-16.5) {};	
+		\node[square,  pattern=custom north west lines, hatchspread=3pt, hatchthickness=1pt, hatchcolor=gray, draw = black, minimum size=10mm, label={[shift={(0,0)}]right:\rotatebox{0}{\huge Rejected by BH but not Focused BH}}]  (key4)  at(-13.25,-17.5) {};
+		%		\node[square, fill=lightgray,draw = black, minimum size=10mm, label={[shift={(0,0)}]right:\rotatebox{0}{\huge Outer node rejected by Focused BH (24; \color{violet} 11 not found by Structured Holm)}}]  (key3)  at(-13.25,-18.5) {}; 
+		%		
+		%		\node[fit=(key3), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		
+		\end{tikzpicture}
+	}
+\end{frame}
+
+\begin{frame}{Focusing on diseases of the musculoskeletal system}
+	
+	\centering
+	\resizebox{\textwidth}{!}{
+		\begin{tikzpicture}[
+		reg/.style={draw=black, fill=white,
+			text centered, anchor=north, minimum height=25mm},
+		%		rejbh/.style={square, draw=black, rounded corners=1mm, pattern color = lightgray, pattern = north west lines, text centered, anchor=north, minimum size=10mm},
+		rejbh/.style={draw=black, pattern=custom north west lines,hatchspread=3pt,hatchthickness=1pt,hatchcolor=gray, text centered, anchor=north, minimum height=25mm},
+		rejboth/.style={draw=black, fill=lightgray,
+			text centered, anchor=north, minimum height=25mm},
+		square/.style={regular polygon,regular polygon sides=4},
+		level distance=2.5cm, growth parent anchor=south
+		]	
+		
+		\node (31) [reg, align = center] {\Huge Diseases of the musculoskeletal  \\ \Huge system and connective tissue} [->]
+		[sibling distance=7.5cm]
+		child{
+			node (19) [reg, align = center] {\Huge Disorders of \\ \Huge synovium and tendon}
+			child{
+				node (71) [reg, align = center] {\Huge Synovitis and \\ \Huge tenosynovitis}
+				child{
+					node (72) [rejboth, align = center] {\Huge Other synovitis \\ \Huge and tenosynovitis}
+				}	
+			}	
+		}								
+		child{
+			node (17) [rejboth, xshift = 0.75cm, align = center] {\Huge Inflammatory \\ \Huge polyarthropathies}
+			child{
+				node (64) [rejboth, align = center] {\Huge Other rheumatoid \\ \Huge arthritis}
+				child{
+					node (65) [rejboth, align = center] {\Huge Rheumatoid arthritis, \\
+						\Huge unspecified}
+					[sibling distance=9cm]
+					child{
+						node (66) [rejboth, align = center] {\Huge Rheumatoid arthritis, \\ \Huge unspecified \\ \Huge (Multiple sites)}
+					}
+					child{
+						node (67) [rejboth, align = center] {\Huge Rheumatoid arthritis, \\ \Huge unspecified \\ \Huge (Shoulder region)}
+					}
+					child{
+						node (68) [rejboth, align = center] {\Huge Rheumatoid arthritis, \\ \Huge unspecified \\ \Huge (Hand)}
+					}
+				}	
+			}	
+		}
+		child{
+			node (16) [rejboth, align = center] {\Huge Infectious \\ \Huge arthropathies}
+		}
+		child{
+			node (18) [xshift = -0.5cm, rejboth] {\Huge Spondylopathies}
+			[sibling distance=7.5cm]
+			child{
+				node (69) [rejboth, align = center] {\Huge Ankylosing \\ \Huge spondylitis}
+			}	
+			child{
+				node (70) [rejboth, align = center] {\Huge Ankylosing \\ \Huge spondylitis \\ \Huge (Site unspecified)}
+			}					
+		};	
+		\node[fit=(16), draw, rounded corners, ultra thick, inner sep=3mm, black] {};
+		\node[fit=(66), draw, rounded corners, ultra thick, inner sep=3mm, black] {};
+		\node[fit=(67), draw, rounded corners, ultra thick, inner sep=3mm, black] {};
+		\node[fit=(68), draw, rounded corners, ultra thick, inner sep=3mm, black] {};
+		\node[fit=(69), draw, rounded corners, ultra thick, inner sep=3mm, black] {};
+		\node[fit=(70), draw, rounded corners, ultra thick, inner sep=3mm, black] {};
+		\node[fit=(72), draw, rounded corners, ultra thick, inner sep=3mm, black] {};		
+		\end{tikzpicture}
+	}
+	
+\end{frame}
+
+
+
+\begin{frame}{Focusing on diseases of the skin}
+	
+	\resizebox{\textwidth}{!}{
+		\begin{tikzpicture}[
+		reg/.style={draw=black, fill=white,
+			text centered, anchor=north, minimum height=10mm, minimum width = 40mm},
+		%		rejbh/.style={square, draw=black, rounded corners=1mm, pattern color = lightgray, pattern = north west lines, text centered, anchor=north, minimum size=10mm},
+		rejbh/.style={draw=black, pattern=custom north west lines,hatchspread=6pt,hatchthickness=1pt,hatchcolor=gray, text centered, anchor=north, minimum height=10mm, minimum width = 40mm},
+		rejboth/.style={draw=black, fill=lightgray,
+			text centered, anchor=north, minimum height=10mm, minimum width = 40mm},
+		square/.style={regular polygon,regular polygon sides=4},
+		level distance=1cm, growth parent anchor=south
+		]	
+		
+		\node (30) [reg, align = center] {Diseases of the skin and \\ subcutaneous tissue} [->]
+		[sibling distance=4.5cm]	
+		child{
+			node (13) [reg, align = center] {Infections of the skin \\ and subcutaneous tissue}
+			child{
+				node (59) [reg] {Cellulitis}
+				child{
+					node (60) [rejboth, align = center] {Cellulitis of \\ other sites}
+				}	
+			}	
+		}
+		child{
+			node (14) [rejboth, align = center] {Papulosquamous \\ disorders}
+			child{
+				node (61) [rejboth] {Psoriasis}
+				child{
+					node (62) [rejboth, align = center] {Arthropathic \\ psoriasis}
+				}	
+			}	
+		}	
+		child{
+			node (15) [reg, align = center] {Urticaria and \\ erythema}
+			child{
+				node (63) [rejbh, align = center] {Urticaria \\ (Hives)}
+			}	
+		};	
+		\node[fit=(60), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(62), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\node[fit=(63), draw, rounded corners, ultra thick, inner sep=1.5mm, black] {};
+		\end{tikzpicture}
+	}
+	
+\end{frame}
+
+\begin{frame}{Soft outer nodes filter}
+		
+	\begin{center}
+		\hspace*{-.5cm}   \begin{tikzpicture}[scale=.85]
+		
+		\node[text=red] at(0.5,2) {0.75};
+		\node[text=red] at(0.5,4) {0.33};
+		\node[text=red] at(3.5,2) {0.75};
+		\node[text=red] at(6.7,2) {0.5};
+		\node[text=red] at(9.9,2) {1};
+		\node[text=red] at(5.2,4) {0};
+		\node[text=red] at(9.7,4) {1};
+		\node[text=red] at(11.25,4) {1};
+		\node[text=red] at(6.1,6) {$\displaystyle\frac{1}{8}$};
+		
+		% \draw [help lines] (0,0) grid (13,8);
+		\node[obs,  text opacity=1]  (H1)  at(0,0)   {a} ;
+		\node[obs,  , text opacity=1]  (H2)  at(3,0)   {b} ;
+		\node[obs,   text opacity=1]  (H3)  at(9,0)   {g} ;
+		\node[obs,  text opacity=1,very thick,draw=red]  (-1H1)  at(1.5,2)   {{\bf a,b}$^*$} ;
+		\node[obs, text opacity=1,very thick,draw=red]  (-1H2)  at(4.5,2)   {{\bf b}$^*$,{\bf e}} ;
+		\node[obs,   text opacity=1,very thick,draw=red]  (-1H3)  at(7.5,2)   {{\bf f},g} ;
+		\node[obs,  text opacity=1,very thick,draw=red]  (-1H4)  at(10.5,2)   {\bf g} ;
+		\node[obs,  text opacity=1,very thick,draw=red]  (-2H1)  at(1.5,4)   {a,b,{\bf c}} ;
+		\node[obs,  text opacity=1,very thick,draw=red]  (-2H2)  at(6,4)   {b,e,f,g} ;
+		\node[obs,  text opacity=1]  (-2H3)  at(7.5,4)   { i} ;
+		\node[obs,  text opacity=1]  (-2H4)  at(9,4)   {l} ;
+		\node[obs,  text opacity=1,very thick,draw=red]  (-2H5)  at(10.5,4)   {\bf m,n,o} ;
+		\node[obs,  text opacity=1,text width=.8cm,very thick,draw=red]  (-2H6)  at(12,4)   {\bf p,q,\\
+			r,s,t} ;
+		\node[obs,  text opacity=1]  (-3H1)  at(1.5,6)   {a,b,c,d} ;
+		\node[obs,  text opacity=1,text width=1.2cm,very thick,draw=red]  (-3H2)  at(7.5,6)   {  a,b,c,\\ e,f,g,{\bf i,l}\\ m,n,o,p,\\ q,r,s,t} ;
+		
+		
+		\edge[draw=gray!50] {-1H1} {H1}; %
+		\edge[draw=gray!50]  {-1H1} {H2}; %
+		
+		
+		\edge[draw=gray!50]  {-1H2} {H2}; %
+		\edge[draw=gray!50]  {-1H3} {H3}; %
+		\edge[draw=gray!50]  {-1H4} {H3}; %
+		\edge[draw=gray!50]  {-2H1} {-1H1}; %
+		\edge[draw=gray!50]  {-2H2} {-1H2}; %
+		\edge[draw=gray!50]  {-2H2} {-1H3}; %
+		\edge[draw=gray!50]  {-3H1} {-2H1}; %
+		\edge[draw=gray!50]  {-3H2} {-2H1}; %
+		\edge[draw=gray!50]  {-3H2} {-2H2}; %
+		\edge[draw=gray!50]  {-3H2} {-2H3}; %
+		
+		\edge[draw=gray!50]  {-3H2} {-2H4}; %
+		\edge[draw=gray!50]  {-3H2} {-2H5}; %
+		\edge[draw=gray!50]  {-3H2} {-2H6}; %
+		
+		
+		%  \plate[inner sep=0.15cm, xshift=-0.08cm, yshift=0.12cm] {plateX} {(H1) (H2) (H3) (H4) (H5) (H6) (H7) (H8) (H9) (H10) (H11) (H12) (H13) (H14)} {\textcolor{black}{Level 3}};
+		
+		\end{tikzpicture}
+	\end{center}
+	
+\end{frame}
+
+\begin{frame}{Multi-filter Focused BH}
+	
+	Given $M$ filters $\mathfrak F_1, \dots, \mathfrak F_M$, suppose one wants $\mathcal R^*$ such that
+	\begin{equation*}
+	\text{FDP}_{\mathfrak F_k} = \mathbb E[\text{FDP}(\mathfrak F_k(\mathcal R^*, \bm p))] \leq q_k \text{ for all } k = 1, \dots, m.
+	\end{equation*}
+	
+	For a threshold $t$, we can construct $\widehat{\text{FDP}}_k(t)$ as in Focused BH, and then choose
+	\begin{equation*}
+	t^* = \max\{t \in \{0, p_1, \dots, p_m\}: \widehat{\text{FDP}}_k(t) \leq q_k \text{ for all } k\}.
+	\end{equation*}
+	
+	This will control FDR for all filtered rejection sets if $\bm p$ is PRDS and all filters are monotonic.
+	
+\end{frame}
+
+\begin{frame}{Focused Storey BH}
+	
+Writing  
+\begin{equation*}
+\widehat m_0^\lambda = \frac{1 + |\{j: p_j > \lambda\}|}{1-\lambda},
+\end{equation*}
+following Storey, we can define
+\begin{equation*}
+\widehat{\text{FDP}}_{\text{Storey}}(t) = \frac{\widehat m_0^\lambda \cdot t}{|\mathfrak F(\mathcal R(t, \bm p), \bm p)|}.
+\end{equation*}
+The corresponding procedure controls FDR under independence for simple filters.
+	
+\end{frame}
+
+
+
+\end{document}

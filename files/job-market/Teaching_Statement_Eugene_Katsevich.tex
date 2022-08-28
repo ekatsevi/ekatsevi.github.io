@@ -1,0 +1,124 @@
+%\documentstyle[11pt,a4]{article}
+%\documentclass[a4paper]{article}
+\documentclass[11pt]{article}
+% Seems like it does not support 9pt and less. Anyways I should stick to 10pt.
+%\documentclass[a4paper, 9pt]{article}
+%\topmargin-2.0cm
+\usepackage[margin=1in]{geometry}
+
+
+\usepackage{fancyhdr, amsmath, amsfonts, amssymb}
+\usepackage{pagecounting, hyperref}
+\usepackage[dvips]{color}
+\usepackage{bm, bbm}
+% Color Information from - http://www-h.eng.cam.ac.uk/help/tpl/textprocessing/latex_advanced/node13.html
+
+% NEW COMMAND
+%marginsize{left}{right}{top}{bottom}:
+%\marginsize{3cm}{2cm}{1cm}{1cm}
+%\marginsize{0.85in}{0.85in}{0.625in}{0.625in}
+
+%\advance\oddsidemargin-0.75in
+%\advance\evensidemargin-0.65cm
+%\textheight9.2in
+%\textwidth6.5in
+\newcommand\bb[1]{\mbox{\em #1}}
+\def\baselinestretch{1.05}
+%\pagestyle{empty}
+
+\newcommand{\hsp}{\hspace*{\parindent}}
+\definecolor{gray}{rgb}{0.4,0.4,0.4}
+%\definecolor{gray}{rgb}{1.0,1.0,1.0}
+
+\newcommand{\eps}{{\epsilon}}
+\newcommand{\vp}{{\varphi}}
+\newcommand{\ip}[2]{\left \langle #1, #2 \right\rangle}
+\newcommand{\norm}[1]{\left \lVert #1 \right \rVert}
+\newcommand{\Var}{\text{Var}}
+\newcommand{\fdp}{\textnormal{FDP}}
+\newcommand{\fdr}{\textnormal{FDR}}
+\newcommand{\fwer}{\textnormal{FWER}}
+\newcommand{\fdphat}{\widehat{\textnormal{FDP}}}
+\newcommand{\fdpbar}{\overline{\textnormal{FDP}}}
+\newcommand{\cR}{\mathcal R}
+\newcommand{\cU}{\mathcal U}
+\newcommand{\sU}{\mathscr U}
+\newcommand{\sR}{\mathscr R}
+\newcommand{\cH}{\mathcal H}
+\newcommand{\F}{\mathfrak F}
+\newcommand{\EE}[1]{\mathbb E\left[#1\right]}
+\newcommand{\PP}[1]{\mathbb P\left[#1\right]}
+\newcommand{\EEst}[2]{\mathbb E\left[\left. #1 \right| #2 \right]}
+\newcommand{\PPst}[2]{\mathbb P\left[\left. #1 \right| #2 \right]}
+\newcommand{\cM}{\mathcal M}
+\newcommand{\ind}{\mathbbm 1}
+
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
+\newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
+
+
+\begin{document}
+\thispagestyle{fancy}
+%\pagenumbering{gobble}
+%\fancyhead[location]{text} 
+% Leave Left and Right Header empty.
+\lhead{}
+\rhead{}
+%\rhead{\thepage}
+\renewcommand{\headrulewidth}{0pt} 
+\renewcommand{\footrulewidth}{0pt} 
+%\fancyfoot[C]{\footnotesize \textcolor{gray}{http://web.stanford.edu/$\sim$ekatsevi/}} 
+
+%\pagestyle{myheadings}
+%\markboth{Sundar Iyer}{Sundar Iyer}
+
+\pagestyle{fancy}
+\lhead{\textcolor{gray}{\it Eugene Katsevich}}
+\rhead{\textcolor{gray}{\thepage/\totalpages{}}}
+%\rhead{\thepage}
+%\renewcommand{\headrulewidth}{0pt} 	
+%\renewcommand{\footrulewidth}{0pt} 
+%\fancyfoot[C]{\footnotesize http://www.stanford.edu/$\sim$sundaes/application} 
+%\ref{TotPages}
+
+% This kind of makes 10pt to 9 pt.
+%\begin{small}
+
+%\vspace*{0.1cm}
+\begin{center}
+{\LARGE \bf TEACHING STATEMENT}\\
+\vspace*{0.1cm}
+{\normalsize Eugene Katsevich}
+\end{center}
+
+I have loved teaching for as long as I can remember myself. I grew up with a sister who is three years younger than me, and I enjoyed teaching her math throughout our childhood. In high school, I organized an impromptu AP Calculus review session to help my friends prepare for their AP exam in this subject. In college, I tutored two daughters of a family friend in math, who were in middle school and high school at the time. In graduate school, I served as TA for a variety of undergraduate and graduate statistics courses, and I served as the instructor for the qualifying exam workshop in applied statistics for first-year PhD students. Over the course of working with many students of various backgrounds and educational stages, I have learned that successful teaching involves creating a comfortable learning environment for students, building their intuition for the subject matter, and encouraging student interaction. My students appreciate the effort and enthusiasm I put into my teaching, as evidenced by their course reviews and the departmental teaching assistant award I received in 2016. I eagerly look forward to teaching and advising students as an assistant professor.
+
+\subsection*{Teaching approach}
+
+I know that a classroom can be an intimidating environment for students, which sometimes prevents them from participating. Therefore, the first aspect of my teaching approach is to create a comfortable learning environment for my students. This is an important prerequisite for learning, since it makes it more likely for students to engage with other classmates and with the instructor. I cultivate a friendly and open atmosphere by learning students' names, emphasizing than I myself got confused when learning certain aspects of the same material, and incorporating humor into my teaching when the opportunity presents itself. This approach has made a positive difference for my students; one said in a course review that ``Gene was...the most approachable of the TAs. He was always smiling and happy to help..." while another said that ``Gene was always willing to help even when we struggled. He was super patient and took the time to learn and remember the names of people who showed up."
+
+Secondly, I believe it is crucially important to build students' intuition for the subject matter, no matter how technical it might be. I believe intuitive understanding is the core of knowledge; all the technical details are secondary and more likely to be forgotten (especially in the absence of intuition). To build students' intuition, I rely as much as I can on graphical illustrations, concrete examples, and analogies. When explaining technical derivations, I help prevent students from getting lost in the details by reminding them of the big picture and by stating in words what the formulas are saying. Among the \href{http://web.stanford.edu/~ekatsevi/STATS302/}{review materials} I prepared as an instructor of the qualifying exam workshop for first-years in applied statistics, my derivation of the \href{http://web.stanford.edu/~ekatsevi/STATS302/EM.pdf}{EM algorithm} illustrates some of these strategies. I first motivate the algorithm based on a latent variable problem from a past qualifying exam, and derive it step-by-step by first considering the case when the latent variables are observed. Only after going through the example do I derive the algorithm in full generality. I also provide a graphical illustration of the algorithm in action. In a course evaluation, a student said that ``Gene did a great job explaining concepts from class. He's very good at explaining topics intuitively and in simple, normal language without having to resort to the pedantic mathematics. Gene also did a great job answering questions that *were* about the rigorous math."
+
+Finally, I have found that encouraging student interaction is central to a successful learning experience. When lecturing, I avoid going on for too long without pausing for questions or asking for student input. Instead, I encourage students to ask me questions at any time, and I take a long pause for questions after every chunk of the lecture. When I led a section for STATS 60---an undergraduate statistics course for humanities and social science students---I frequently asked students to assist me as I worked through problems on the board. One student from that section said that ``Gene's sections were engaging. He didn't just talk at us for an hour but rather actively encouraged us to chime in." When I held office hours for STATS 315A, a graduate-level class on statistical machine learning, I asked for student feedback in real time to assess which parts of the material I needed to spend more time on and which parts students were already comfortable with. 
+
+\subsection*{Teaching interests}
+
+In graduate school, I have taught the full range of statistics students: from undergraduates with non-quantitative backgrounds to statistics PhD students. I have enjoyed teaching students at all levels, and I look forward to teaching courses at a variety of levels as an assistant professor. I believe strongly that high-quality instruction at the undergraduate level is essential to promoting the field of statistics. I would like, and am qualified, to teach undergraduate courses on any topic. I would make it a priority to teach material that is engaging and relevant for a wide audience of undergraduates, with the goal of exciting students about our field. On the other hand, I would also like to teach graduate courses, especially in applied statistics. Unlike students in other fields like mathematics or physics, statistics PhD students often do not have the benefit of having studied the subject for several years before entering graduate school. Therefore, I would like to help PhD students build a solid foundation in applied statistics that they can rely on. Finally, I would be excited to teach advanced-level PhD courses in areas of research that interest me, such as multiple testing and variable selection.
+
+\subsection*{Advising}
+
+I imagine advising PhD students to be one of the most rewarding aspects of being a professor. I feel ready to take on this role, as I have accumulated a wealth of experience over the years with mentoring and one-on-one teaching. When I tutored two grade-school age girls in math as a college student, I started learning how to effectively gauge my student's level of understanding in the context of one-on-one interaction and how to tailor instruction to their needs and abilities. In particular, I found it effective to push my students slightly, but not too far, beyond their current level of understanding. Navigating this delicate balance is important in order to avoid students getting bored on the one hand or getting lost on the other. I employ a version of this strategy when I help students individually in office hours when they struggle with homework problems, providing them with just enough help to get moving again. A student said in a course review that ``[Gene] greatly helped me understand what mistakes I made on a quiz or two, providing me with hints on how to solve it, but not directly giving me the answer." I plan to use similar strategies with my advisees, gauging their knowledge and gently pushing them into new territory.
+
+I also believe that students at different stages of their PhD need different levels of guidance. I plan to help my junior students to formulate research problems that are limited in scope and fairly clearly defined. I will provide them with relevant papers to read, and make sure to show them the ``big picture" and where their problem fits into it. As students progress, I will encourage them to be more independent in terms of finding and solving research problems, as well as to search for problems of larger scope. At all stages of my students' PhDs, I will meet with them regularly (at least once a week) to make sure they are on track. 
+
+\subsection*{Student support}
+
+Aside from my formal roles as instructor and advisor, I would like to do everything I can to support PhD students academically. I believe the PhD is a multifaceted challenge for students to navigate, and that faculty have a responsibility for helping them succeed. Both as an undergraduate and a graduate student, I invested a significant amount of time and effort to supporting other students. As the academic chair of the Princeton math club, I developed a comprehensive online \href{https://blogs.princeton.edu/mathclub/guide/}{guide} for math majors, which included detailed information on a variety of relevant topics, like courses, research, applying to graduate schools, and much more. As a PhD student at Stanford, I have proposed and executed various initiatives to provide academic support to other students. For example, I proposed a student-run orientation program for new statistics PhD students to help introduce them to the department. I recruited a co-organizer as well as other PhD students to lead a series of light sessions, and we successfully rolled out the \href{http://web.stanford.edu/~ekatsevi/stats_orientation/}{program} this fall. We had 100\% attendance from the incoming first-years and received overwhelmingly positive feedback; one student said in an anonymous feedback form ``Thank you so much for organizing this! I had a wonderful day---I left orientation elated and excited for the next 4-5 years to come." As an assistant professor, I intend to continue my efforts to support PhD students (both my own advisees as well as other students) through initiatives like those I have worked on at Princeton and Stanford.
+
+\subsection*{Conclusion}
+
+Teaching math and statistics has always been an integral and enjoyable part of my life, and this will continue to be the case for me as an assistant professor. The teaching skills I have accumulated will make me an effective instructor and advisor, and I look forward to interacting with and learning from students of all levels and backgrounds.
+
+
+\end{document}
+

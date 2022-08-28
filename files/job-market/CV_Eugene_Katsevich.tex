@@ -1,0 +1,527 @@
+% LaTeX Curriculum Vitae Template
+%
+
+
+\documentclass[letterpaper]{article}
+
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{verbatim}
+
+
+
+% Comment the following lines to use the default Computer Modern font
+% instead of the Palatino font provided by the mathpazo package.
+% Remove the 'osf' bit if you don't like the old style figures.
+\usepackage[T1]{fontenc}
+\usepackage[sc,osf]{mathpazo}
+	
+%%To make the list of publications in reverse order
+%\usepackage{etaremune}
+%\makeatletter
+%\long\def\thebibliography#1{%
+%  \section*{\refname}%
+%  \@mkboth{\MakeUppercase\refname}{\MakeUppercase\refname}
+%  \settowidth{\dimen0}{\@biblabel{#1}}%
+%  \setlength{\dimen2}{\dimen0}%
+%  \addtolength{\dimen2}{\labelsep}
+%  \sloppy
+%  \clubpenalty 4000 
+%  \@clubpenalty 
+%  \clubpenalty 
+%  \widowpenalty 4000
+%  \sfcode `\.\@m
+%  \renewcommand{\labelenumi}{\@biblabel{\theenumi}} % labels like [3], [2], [1]
+%  \begin{etaremune}[labelwidth=\dimen0,leftmargin=\dimen2]\@openbib@code
+%}
+%\def\endthebibliography{\end{etaremune}}
+%\def\@bibitem#1{%
+%  \item \if@filesw\immediate\write\@auxout{\string\bibcite{#1}{\the\value{enumi}}}\fi\ignorespaces
+%}
+%\makeatother
+%%%%%%
+
+
+\geometry{
+  body={6.5in, 8.5in},
+  left=1.0in,
+  top=1.25in
+}
+
+
+% Set your name here
+\def\name{Eugene Katsevich}
+
+
+%{\normalsize Assistant Professor}\\ 
+
+% Replace this with a link to your CV if you like, or set it empty
+% (as in \def\footerlink{}) to remove the link in the footer:
+\def\footerlink{}
+
+% The following metadata will show up in the PDF properties
+\hypersetup{
+  colorlinks = true,
+  urlcolor = blue,
+  pdfauthor = {\name},
+%  pdfkeywords = {robotics, aeronautics, astronautics},
+  pdftitle = {\name: Curriculum Vitae},
+  pdfsubject = {Curriculum Vitae},
+  pdfpagemode = UseNone
+}
+
+
+%Own reference name (we do not want the word "References" before the list of references)
+\renewcommand{\refname}{}
+
+% Customize page headers
+\pagestyle{myheadings}
+\markright{\name}
+\thispagestyle{empty}
+
+% Custom section fonts
+\usepackage{sectsty}
+\sectionfont{\rmfamily\mdseries\Large}
+\subsectionfont{\rmfamily\mdseries\itshape\large}
+
+% Other possible font commands include:
+% \ttfamily for teletype,
+% \sffamily for sans serif,
+% \bfseries for bold,
+% \scshape for small caps,
+% \normalsize, \large, \Large, \LARGE sizes.
+
+% Don't indent paragraphs.
+\setlength\parindent{0em}
+
+% Make lists without bullets
+\newenvironment{itemizenob}{
+  \begin{list}{}{
+    \setlength{\leftmargin}{1.5em}
+  }
+}{
+  \end{list}
+}
+
+\begin{document}
+
+% Place name at left
+{\huge \name}
+
+% Alternatively, print name centered and bold:
+%\centerline{\huge \bf \name}
+\vspace{0.05in}
+{\large Statistics PhD Student} \vspace{-0.2in}\\
+
+\line(1,0){469.755}
+\vspace{0.25in}
+
+\begin{minipage}{0.49\linewidth}
+  Stanford University \\
+  Sequoia Hall \\
+  390 Serra Mall \\
+  Stanford, CA 94305
+\end{minipage}
+\begin{minipage}{0.49\linewidth}
+  \begin{tabular}{ll}
+    Phone: & (650) 250 3331 \\
+%    Fax: & (617) 495 1712 \\
+    Email: & \href{mailto:ekatsevi@stanford.edu}{\nolinkurl{ekatsevi@stanford.edu}}\\
+    Homepage: & \url{http://web.stanford.edu/~ekatsevi/} \\
+  \end{tabular}
+\end{minipage}
+
+
+%\section*{Biosketch}
+%Eugene Katsevich is an PhD student in the Department of Statistics at Stanford
+%University, where he works on multiple testing and variable selection problems with applications to genomics under the supervision of Professor Chiara Sabatti. Prior to Stanford, he
+%was an undergraduate student in mathematics at Princeton University advised by Professor
+%Amit Singer.
+
+\section*{Education}
+\begin{itemizenob}\addtolength{\itemsep}{-0.2\baselineskip}
+\item {\bf Stanford University} (Stanford, CA), Ph.D. in Statistics,
+  2019 (expected). \\ Thesis Advisor: Chiara Sabatti.
+
+\item {\bf Princeton University} (Princeton, NJ), A.B. in Mathematics
+  (with Highest Honors), 2014. \\ Thesis Advisor: Amit Singer.
+\end{itemizenob}
+
+\section*{Experience}
+
+\subsection*{Student academic research}
+\begin{itemizenob}\addtolength{\itemsep}{-0.2\baselineskip}
+\item {\em PhD student researcher}, Stanford University (2015--2019). \\ I developed novel theory and methodology for multiple testing and variable selection problems with applications to genomics. See \cite{KS18, KR18, KetB18}.
+\item {\em Undergraduate student researcher}, Princeton University, (2012--2014). \\ I designed, studied theoretically, and implemented a novel algorithm to solve the heterogeneity problem of cryo-electron microscopy, which is to reconstruct multiple conformations of a macromolecule based on noisy 2D projections of it from unknown directions. See \cite{KetS15, AetS15}.
+\end{itemizenob}
+
+\subsection*{Summer internships}
+\begin{itemizenob}\addtolength{\itemsep}{-0.2\baselineskip}
+\item {\em Research intern}, 23andMe computational biology team (Summer 2018). \\ I studied methods to borrow information across phenotypes for genome-wide association studies.
+\item {\em Research intern}, Toshiba Medical Research Institute USA, (Summer 2013). \\ I investigated accelerated gradient-based optimization methods for medical imaging applications, 
+speeding up GPU code written in C++ by a factor of three. See \cite{KetZ14}.
+\item {\em Research intern}, Virginia Tech Biomedical Imaging Division, (Summer 2011).  \\
+I proved uniqueness and stability for the interior problem of computed tomography, an image reconstruction framework that requires less radiation dose to the patient. See \cite{KKW12}.
+\end{itemizenob}
+
+\subsection*{Workshops}
+\begin{itemizenob}\addtolength{\itemsep}{-0.2\baselineskip}
+	\item {\em Participant}, Simons Institute Workshop on Robust and High-Dimensional Statistics (October 2018). %\\
+	\item {\em Participant}, Joint UCLA and Stanford Statistical Genetics Programming Workshop (Summer 2016). %\\
+	%I attended this two-day workshop, where I learned about Julia and the OpenMendel software and participated in a hands-on coding project. 
+	\item {\em Participant}, UCLA Computational Genomics Summer Institute short course (Summer 2016). %\\ I attended this week-long workshop, which included talks by experts on computational genomics and journal clubs where I and other participants presented recent research articles in this field.
+\end{itemizenob}
+
+
+\section*{Fellowships and Funding}
+\begin{itemize}\addtolength{\itemsep}{-0.2\baselineskip}
+	\item Hertz Fellowship (2014-2019).
+	\item National Defense Science and Engineering Fellowship (2014-2017).
+	\item Department of Energy Computational Sciences Graduate Fellowship (declined for NDSEG)	
+	\item Barry Goldwater Scholarship (2012).
+\end{itemize}
+
+\section*{Awards}
+\begin{itemize}\addtolength{\itemsep}{-0.2\baselineskip}
+\item Statistics Department Teaching Assistant Award (2016).
+\item George B. Covington Thesis Prize in Mathematics (2014)
+\item Early election to Phi Beta Kappa (2013; awarded to top 1\% of Princeton graduating class).
+\item Shapiro Prize for Academic Excellence (2011, 2012).
+\item Freshman First Honor Prize (2011).
+\end{itemize}
+
+%\section*{Selected Contracts and Grants}
+%\begin{itemize}\addtolength{\itemsep}{-0.2\baselineskip}
+%\item PI, Precision Attitude and Translation Control for Drag-Free Satellites, King Abdulaziz City for Science and Technology, \$95,750 (2014).
+%\item Co-I (University PI), Enabling Nanosat Mobility and Autonomy for Small Bodies Exploration (Phase II), NASA Center Innovation Fund, \$100,000 (2014).
+%\end{itemize}
+
+% \section*{Teaching and Training}
+\section*{Teaching}
+
+%\subsection*{Undergraduate Curriculum}
+%\begin{itemize}\addtolength{\itemsep}{-0.2\baselineskip}
+%\item Served as faculty advisor for Stanford Student Space Initiative.
+%\item Added a hands-on project to the Stanford Introduction to Aeronautics and Astronautics course, where students design, build, and test a glider.
+%\item Offered several undergraduate student opportunities to participate in research projects and supervised their creative efforts.
+%\item Served as pre-major advisor for Stanford University low-income and first-generation students at Stanford University. 
+%\item Engaged San Francisco Bay Area  high-school students in basic aerospace research performed in his lab. 
+%\end{itemize}
+
+
+%\subsection*{Graduate Curriculum}
+%\begin{itemize}\addtolength{\itemsep}{-0.2\baselineskip}
+%\item Designed new graduate courses on robust control and optimal control.
+%\end{itemize}
+
+\subsection*{Courses Taught at Stanford}
+\begin{itemize}\addtolength{\itemsep}{-0.2\baselineskip}
+\item STATS 302: Qualifying Exams Workshop, Summer '17 -- Graduate Level. \\
+I led two sessions per week over the course of six weeks to help the first-year PhD students prepare for their applied statistics qualifying exam. This involved solving problems from previous years' qualifying exams and reviewing material. See \href{http://web.stanford.edu/~ekatsevi/STATS302/}{course website} for a sample of the review materials I prepared.
+\end{itemize}
+
+\subsection*{Courses Served as Teaching Assistant at Stanford}
+\begin{itemize}\addtolength{\itemsep}{-0.2\baselineskip}
+\item STATS 315A: Modern Applied Statistics: Learning, Winter '18 -- Graduate Level.
+\item STATS 60: Introduction to Statistical Methods: Precalculus, Fall '16 -- Undergraduate Level.
+\item STATS 191: Introduction to Applied Statistics, Winter '16 -- Undergraduate Level.
+\item STATS 203: Introduction to Regression Models and Analysis of Variance, Spring '15 -- Graduate level.
+\end{itemize}
+
+%\subsection*{Undergraduate Student Supervision}
+%\begin{itemize}\addtolength{\itemsep}{-0.2\baselineskip}
+%\item Wentong Zhang, Multiple Knockoffs for Powerful Variable Selection  (2017-2018).
+%%\item Ivan Maric, Dynamics and Control of Free-Floating Robots (2014).
+%%\item Nicholas Cheung, Structural Design of Microgravity Mobility Platforms (2012-2014).
+%\end{itemize}
+%
+%\subsection*{Doctoral Student Supervision}
+%\begin{itemize}\addtolength{\itemsep}{-0.2\baselineskip}
+%\item Wenshuo Wang, Generalized Algorithms for Generating Knockoffs (2018-present).
+%\item Lu Zhang, Improving the Consistency of Knockoffs (2018-present).
+%\item Dongming Huang, Gaussian Graphical Models with Knockoffs (2017-present).
+%\item Molei Liu, Computational Methods for High-Dimensional Testing (2017-present).
+%\end{itemize}
+
+%\section*{University Service Activities}
+%\begin{itemize}\addtolength{\itemsep}{-0.2\baselineskip}
+%%\item  Aero/Astro Undergraduate Program Director (2014).
+%%\item Search Committee (2014).
+%%\item Space Committee (2013, 2014).
+%\item Ph.D. Admissions Committee (2018).
+%\item Paper Selection Committee for Dempster Award (2018).
+%\item Statistics Colloquium Organizer (2018)
+%\end{itemize}
+
+\section*{Professional Service Activities}
+
+%\subsection*{Workshops and Conference Committees}
+%\begin{itemize}\addtolength{\itemsep}{-0.2\baselineskip}
+%\item Co-Organizer, second Stanford-Berkeley Robotics Symposium (2014).
+%\item Organizer, full-day workshop on ``Constrained decision-making in robotics: models, algorithms, and applications" at the Robotics: Science and Systems Conference (2014).
+%\end{itemize}
+
+
+%\subsection*{Proposal Reviewer}
+%\begin{itemize}
+%\item NASA
+%\item Agency for Science, Technology and Research, Singapore
+%\end{itemize}
+
+%\subsection*{Outreach}
+%\begin{itemize}\addtolength{\itemsep}{-0.2\baselineskip}
+%% x consultees: x = years*4quarters*10weeks*2consultees/week
+%\item Evaluation Chair, SAILORS: Stanford Artificial Intelligence Laboratory Outreach Summer (2016).
+%\item Consultant, Stanford Statistics Free Consulting Service, over
+%  $100$ consultees helped (2012-2016).
+%\item Member, Statistics for Social Good Working Group at Stanford University (2013-2016).
+%\item Judge, Seton Middle School Science Fair (2014-2016).
+%\end{itemize}
+
+\begin{itemize}\addtolength{\itemsep}{-0.2\baselineskip}
+	\item \textit{Reviewer}, Annals of Statistics, Electronic Journal of Statistics, Genetics.
+	\item \textit{Organizer}, Stanford statistics department orientation program for PhD students (2018). \\
+	I proposed this day-long orientation program for incoming first-year students, which consisted of a series of light sessions to introduce students to the department. I recruited other PhD students to lead the sessions, maintained a \href{http://web.stanford.edu/~ekatsevi/stats_orientation/}{website} with information, and helped run the program. 
+	\item \textit{Organizer}, Hertz West Coast Retreat (2017). \\
+	I co-organized this annual retreat for west coast Hertz Fellows, which included inviting leading scientists from academia and industry to give presentations on their research. 
+	\item \textit{Academic chair}, Princeton Math Club (2012). \\ 
+	I ran the weekly Undergraduate Math Colloquium, including recruiting and scheduling faculty speakers. I developed a comprehensive online \href{https://blogs.princeton.edu/mathclub/guide/}{guide} for math majors, contacting at least 15 upperclassmen to contribute articles and course reviews.
+	\item \textit{Head problem writer}, Princeton University Math Competition (2011). \\
+	I was responsible for all problem-writing and beta testing of over 100 total problems across two divisions for this competition, in which several hundred high school students from several countries participated. I wrote geometry tests for the two divisions and led a team of about 10 problem writers.
+\end{itemize}
+
+
+%\subsection*{Advisory Boards}
+%\begin{itemize}\addtolength{\itemsep}{-0.2\baselineskip}
+%\item NM Robotic (2014-present).
+%\item AeroSpy Sense \& Avoid Technology GmbH (2012-2013).
+%\end{itemize}
+
+\section*{Presentations}
+
+\subsection*{Invited Seminar Presentations}
+\begin{itemize}\addtolength{\itemsep}{-0.2\baselineskip}
+	\item \textit{Controlling FDR while highlighting distinct discoveries, with applications to GO enrichment analysis.} \\ Stanford Biostatistics Workshop, Oct. 11, 2018. 
+	\item \textit{Controlling FDR while highlighting distinct discoveries, with applications to GO enrichment analysis.} \\U.C. Berkeley Statistics and Genomics Seminar, Sep. 27, 2018.
+\end{itemize}
+
+\subsection*{Contributed Conference Oral Presentations}
+\begin{itemize}\addtolength{\itemsep}{-0.2\baselineskip}
+	\item \textit{Gene Ontology enrichment testing: Reconciling FDR control with filtering.} \\
+	Joint Statistical Meetings, Jul. 28--Aug. 2, 2018, in Vancouver, Canada.
+%	\item \textit{Examining the FDP distribution of FDR procedures.} \\ Stanford Statistics Industrial Affiliates Conference, Feb. 2018.
+	\item \textit{The multilayer knockoff filter: Controlled multi-resolution variable selection.} \\ International Conference on Multiple Comparison Procedures, Jun. 20--23, 2017, in Riverside, California.
+\end{itemize}
+
+\subsection*{Conference Poster Presentations}
+\begin{itemize}\addtolength{\itemsep}{-0.2\baselineskip}
+%\item \textit{Controlling FDR while highlighting distinct discoveries.}\\
+%Stanford Biomedical Data Science Symposium, Sep. 2018.
+
+\item \textit{Multi-resolution association analysis for exome-wide sequencing.} \\ American Society for Human Genetics, Oct. 16--20, 2018, in San Diego, California.
+\item \textit{Controlling FDR while highlighting distinct discoveries.} \\ Workshop on Higher-Order Asymptotics and Post-Selection Inference, Sep. 8--10 2018, in St. Louis, Missouri.
+\item \textit{Multilayer FDR control for genetic association studies.} \\ Graybill Conference on Statistical Genomics and Genetics, Jun. 5--7 2017, in Fort Collins, Colorado. Best student poster award.
+\item \textit{The multilayer knockoff filter: Multilayer FDR control for association studies.} \\ Probabilistic Modeling in Genomics, Sep. 12--14, 2016, in Oxford, United Kingdom.
+\end{itemize}
+
+%\section*{Collaborators}
+%\begin{itemize} \addtolength{\itemsep}{-0.2\baselineskip}
+%\item {\bf Collaborators in preceding 48 months}:
+%R. Allen (Stanford), A. Arsie (U. Toledo), C. Assad (JPL), B. Balaram (JPL), F. Bullo (UCSB), J. Castillo (JPL), F. K. Chang (Stanford), Y. L. Chow (Stanford), E. Frazzoli (MIT), J. Hoffman (MIT), L. Janson (Stanford), A. Koenig (Stanford), Y. Kuwata (JPL), C. McQuin (JPL), D. Miller (MIT), I. Nesnas (JPL), J. Ramirez (MIT), F. Rossi (Stanford), D. Rus (MIT),  K. Savla (MIT), E.  Schmerling (Stanford), M. Schwager (Boston U.), S. L. Smith (U. Waterloo), J. Starek (Stanford), A. Stoica (JPL), N. Strange (JPL), K. Treleaven (MIT), R. Zhang (Stanford).
+%\vskip1em
+%\item {\bf Graduate and Postdoctoral Advisors, and JPL Supervisors}:
+%E. Frazzoli (MIT), A. Stoica (JPL), R. Volpe (JPL).
+%\end{itemize}
+
+
+%\section*{In the News}
+%Dr. Pavone's  work has been reported in many popular press outlets, including: ABC $\diamond$ NBC $\diamond$ Forbes   $\diamond$ Reuters   $\diamond$ Popular Science $\diamond$ Huffington Post $\diamond$ The Times of India $\diamond$  MIT Technology Review $\diamond$ The Verge  $\diamond$ Universe Today.
+
+\section*{Publications and Preprints}
+%\vspace{-0.3truecm}
+%{\footnotesize * denotes alphabetized author order}
+%Author of 14 journal papers, 35 conference papers, and four book chapters (all publications can be found at \url{http://www.stanford.edu/~pavone/publications.html}). Google Scholar H-index: 14, Google Scholar Citations: 690.
+\vspace{-0.1truecm}
+
+%\subsection*{Preprints}
+%
+%\begin{thebibliography}{10}
+%\vspace{-0.7truecm}
+%\makeatletter
+%\renewcommand\@biblabel[1]{[P#1]}
+%\makeatother
+%
+%\bibitem{EC-ea:2018}
+%E. Cand\`{e}s*, Y. Fan*, {\bf L.~Janson}*, and J. Lv*.
+%\newblock Panning for Gold: Model-X Knockoffs for High-dimensional Controlled Variable Selection. 
+%\newblock {\em Journal of the Royal Statistical Society: Series B}, 80(3):551--577, 2018.
+%
+%
+%\end{thebibliography}
+
+%\subsection*{Journal Articles}
+
+\begin{thebibliography}{10}
+\vspace{-0.7truecm}
+%\makeatletter
+%\renewcommand\@biblabel[1]{[J#1]}
+%\makeatother
+
+%\bibitem{EC-ea:2018}
+%E. Cand\`{e}s*, Y. Fan*, {\bf L.~Janson}*, and J. Lv*.
+%\newblock Panning for Gold: Model-X Knockoffs for High-dimensional Controlled Variable Selection. 
+%\newblock {\em Journal of the Royal Statistical Society: Series B}, 80(3):551--577, 2018.
+%% [\texttt{https://arxiv.org/abs/1610.02351}]
+
+\bibitem{KKW12}
+{\bf E. Katsevich}, A. Katsevich, and G. Wang.
+\newblock Stability of the interior problem for polynomial region of interest.
+\newblock {\em Inverse Problems}, 28(6), 2012. Available on \href{https://www.ncbi.nlm.nih.gov/pubmed/24058227}{PubMed}.
+
+\bibitem{KetZ14}
+B. Shi, {\bf E. Katsevich}, B. Chiang, A. Katsevich, and A. Zamyatin.
+\newblock Image registration for motion estimation in cardiac CT.
+\newblock In {\em SPIE Medical Imaging}, San Diego, California, February 2014. Available on \href{https://www.spiedigitallibrary.org/conference-proceedings-of-spie/9033/90332E/Image-registration-for-motion-estimation-in-cardiac-CT/10.1117/12.2043559.full?SSO=1}{SPIE digital library}.
+
+\bibitem{KetS15}
+{\bf E. Katsevich}, A. Katsevich, A. Singer. 
+\newblock Covariance matrix estimation for the cryo-EM heterogeneity problem.
+\newblock {\em SIAM Journal on Imaging Sciences}, 8(1):126--185, 2015. Available on \href{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4331039/}{PubMed}.
+
+\bibitem{AetS15}
+J. Anden, {\bf E. Katsevich}, and A. Singer.
+\newblock Covariance estimation using conjugate gradient for 3D classification in cryo-EM.
+\newblock In {\em IEEE Int Symp Biomed Imaging}, New York, New York, April 2015. Available on \href{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4679407/}{PubMed}.
+
+\bibitem{KS18}
+{\bf E. Katsevich} and C. Sabatti. 
+\newblock Multilayer Knockoff Filter: Controlled variable selection at multiple resolutions.
+\newblock {\em Annals of Applied Statistics}, to appear, 2018. Available on \href{https://arxiv.org/abs/1706.09375}{arXiv}.
+
+\bibitem{KR18}
+{\bf E. Katsevich} and A. Ramdas. 
+\newblock Towards ``simultaneous selective inference:'' post-hoc bounds on the false discovery proportion.
+\newblock {\em Annals of Statistics}, in revision, 2018+. Available on \href{https://arxiv.org/abs/1803.06790}{arXiv}.
+
+\bibitem{KetB18}
+{\bf E. Katsevich}, C. Sabatti, and M. Bogomolov. 
+\newblock Controlling FDR while highlighting distinct discoveries.
+\newblock In submission, 2018+. Available on \href{https://arxiv.org/abs/1809.01792}{arXiv}.
+
+\bibitem{ZetS18}
+J. Zhu, Q. Zhao, {\bf E. Katsevich}, C. Sabatti.
+\newblock Exploratory Gene Ontology Analysis with Interactive Visualization.
+\newblock In submission, 2018+. Available on \href{https://www.biorxiv.org/content/early/2018/10/05/436741}{bioRxiv}.
+
+
+
+
+
+
+
+
+%\end{thebibliography}
+
+
+%\cite{Treleaven2012, Pavone2012, Pavone2011a, Pavone2011, Bullo2010, Ramirez2010, Smith2010, Pavone2009a, Pavone2009, Pavone2007, Pavone2006, Pavone2006a}
+
+
+
+%\subsection*{Refereed Conference Proceedings}
+
+%\begin{thebibliography}{10}
+%\vspace{-0.7truecm}
+
+%\makeatletter
+%\renewcommand\@biblabel[1]{[C#1]}
+%\makeatother
+
+
+\end{thebibliography}
+
+%\subsection*{Refereed Workshop Proceedings}
+%
+%\begin{thebibliography}{10}
+%\vspace{-0.7truecm}
+%
+%\makeatletter
+%\renewcommand\@biblabel[1]{[W#1]}
+%\makeatother
+%
+%\bibitem{Janson:2014}
+%{\bf L. Janson} and M. Pavone.
+%\newblock Fast Marching Trees: a fast marching sampling-based method for optimal motion planning in many dimensions.
+%\newblock In {\em Robotics: Science and Systems Workshop: Robotic Exploration, Monitoring, and Information Gathering},
+%Berlin, Germany, June 2013.
+%
+%\end{thebibliography}
+
+%\subsection*{Discussion Paper Comments}
+%
+%\begin{thebibliography}{10}
+%\vspace{-0.7truecm}
+%
+%\makeatletter
+%\renewcommand\@biblabel[1]{[D#1]}
+%\makeatother
+%
+%\bibitem{Janson:2014}
+%{\bf L. Janson}.
+%\newblock Discussion on `Random Projection Ensemble Classification'.
+%\newblock {\em Journal of the Royal Statistical Society: Series B}, 79(4):1013--1014, 2017.
+%
+%\end{thebibliography}
+
+%\subsection*{Book Chapters and Reports}
+
+
+%\begin{thebibliography}{10}
+%\vspace{-0.7truecm}
+
+%\makeatletter
+%\renewcommand\@biblabel[1]{[B#1]}
+%\makeatother
+
+%\bibitem{Pavone:2013}
+%{\bf M. Pavone}, B. Acikmese, I. Nesnas, and J. Starek.
+%\newblock Spacecraft autonomy challenges for next generation space missions.
+%\newblock In {\em Springer Lecture Notes in Control and Information Sciences}, 2015. Submitted.
+
+%\bibitem{Frazzoli:2013}
+%E.~Frazzoli,  {\bf M. Pavone}.
+%\newblock Multi-vehicle routing.
+%\newblock In {\em Springer Encyclopedia of Systems and Control}, 2015. To Appear.
+
+%\bibitem{Pavone:2013}
+%K. Spieser, K. Treleaven, R. Zhang, E. Frazzoli, D. Morton, and {\bf M. Pavone}.
+%\newblock Toward a systematic approach to the design and evaluation of automated mobility-on-demand systems: a case study in Singapore.
+%\newblock In {\em Springer Lecture Notes in Mobility}, 2014. %CHECK
+
+%\end{thebibliography}
+
+%\subsection*{Ph.D. Thesis}
+%\begin{thebibliography}{10}
+%\vspace{-0.7truecm}
+%\makeatletter
+%\renewcommand\@biblabel[1]{[T#1]}
+%\makeatother
+%
+%\bibitem{Janson:2017}
+%{\bf L. Janson}.
+%\newblock A Model-Free Approach to High-Dimensional Inference.
+%\newblock PhD thesis, Stanford University, Department of Statistics, 2017. 
+%
+%\end{thebibliography}
+
+
+
+\vspace{1truecm}
+% Footer
+\begin{center}
+  \begin{footnotesize}
+    Last updated: \today \\
+%    \url{http://www.stanford.edu/~pavone/}
+  \end{footnotesize}
+\end{center}
+
+\end{document}

@@ -1,0 +1,309 @@
+%\documentstyle[11pt,a4]{article}
+%\documentclass[a4paper]{article}
+\documentclass[11pt]{article}
+% Seems like it does not support 9pt and less. Anyways I should stick to 10pt.
+%\documentclass[a4paper, 9pt]{article}
+%\topmargin-2.0cm
+\usepackage[margin=1in]{geometry}
+
+
+\usepackage{fancyhdr, amsmath, amsfonts, amssymb}
+\usepackage{pagecounting, hyperref}
+\usepackage[dvips]{color}
+\usepackage{bm, bbm}
+% Color Information from - http://www-h.eng.cam.ac.uk/help/tpl/textprocessing/latex_advanced/node13.html
+
+% NEW COMMAND
+%marginsize{left}{right}{top}{bottom}:
+%\marginsize{3cm}{2cm}{1cm}{1cm}
+%\marginsize{0.85in}{0.85in}{0.625in}{0.625in}
+
+%\advance\oddsidemargin-0.75in
+%\advance\evensidemargin-0.65cm
+%\textheight9.2in
+%\textwidth6.5in
+\newcommand\bb[1]{\mbox{\em #1}}
+\def\baselinestretch{1.05}
+%\pagestyle{empty}
+
+\newcommand{\hsp}{\hspace*{\parindent}}
+\definecolor{gray}{rgb}{0.4,0.4,0.4}
+%\definecolor{gray}{rgb}{1.0,1.0,1.0}
+
+\newcommand{\eps}{{\epsilon}}
+\newcommand{\vp}{{\varphi}}
+\newcommand{\ip}[2]{\left \langle #1, #2 \right\rangle}
+\newcommand{\norm}[1]{\left \lVert #1 \right \rVert}
+\newcommand{\Var}{\text{Var}}
+\newcommand{\fdp}{\textnormal{FDP}}
+\newcommand{\fdr}{\textnormal{FDR}}
+\newcommand{\fwer}{\textnormal{FWER}}
+\newcommand{\fdphat}{\widehat{\textnormal{FDP}}}
+\newcommand{\fdpbar}{\overline{\textnormal{FDP}}}
+\newcommand{\cR}{\mathcal R}
+\newcommand{\cU}{\mathcal U}
+\newcommand{\sU}{\mathscr U}
+\newcommand{\sR}{\mathscr R}
+\newcommand{\cH}{\mathcal H}
+\newcommand{\F}{\mathfrak F}
+\newcommand{\EE}[1]{\mathbb E\left[#1\right]}
+\newcommand{\PP}[1]{\mathbb P\left[#1\right]}
+\newcommand{\EEst}[2]{\mathbb E\left[\left. #1 \right| #2 \right]}
+\newcommand{\PPst}[2]{\mathbb P\left[\left. #1 \right| #2 \right]}
+\newcommand{\cM}{\mathcal M}
+\newcommand{\ind}{\mathbbm 1}
+
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
+\newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
+
+
+\begin{document}
+\thispagestyle{fancy}
+%\pagenumbering{gobble}
+%\fancyhead[location]{text} 
+% Leave Left and Right Header empty.
+\lhead{}
+\rhead{}
+%\rhead{\thepage}
+\renewcommand{\headrulewidth}{0pt} 
+\renewcommand{\footrulewidth}{0pt} 
+%\fancyfoot[C]{\footnotesize \textcolor{gray}{http://web.stanford.edu/$\sim$ekatsevi/}} 
+
+%\pagestyle{myheadings}
+%\markboth{Sundar Iyer}{Sundar Iyer}
+
+\pagestyle{fancy}
+\lhead{\textcolor{gray}{\it Eugene Katsevich}}
+\rhead{\textcolor{gray}{\thepage/\totalpages{}}}
+%\rhead{\thepage}
+%\renewcommand{\headrulewidth}{0pt} 	
+%\renewcommand{\footrulewidth}{0pt} 
+%\fancyfoot[C]{\footnotesize http://www.stanford.edu/$\sim$sundaes/application} 
+%\ref{TotPages}
+
+% This kind of makes 10pt to 9 pt.
+%\begin{small}
+
+%\vspace*{0.1cm}
+\begin{center}
+{\LARGE \bf RESEARCH STATEMENT}\\
+\vspace*{0.1cm}
+{\normalsize Eugene Katsevich}
+\end{center}
+
+
+From my undergraduate work in computed tomography \cite{KKW12, KetZ14} and cryo-electron microscopy \cite{KetS15, AetS15} to my graduate work in statistical genetics \cite{MKF, Focused_BH}, I have always had a keen interest in applying my quantitative skills to biomedical applications. Along the way, several technical challenges stemming from these applications have inspired me to think more generally about methodological and theoretical problems in statistics. In my PhD, I have investigated ways to extract patterns from complex data sets while providing replicability guarantees. In particular, I have designed multiple testing and variable selection methodologies that account for the \textit{structure} of modern data sets and the \textit{exploration} which often goes into analyzing them. 
+
+
+%The recent development of high-throughput biological assays has unlocked our potential to study the genetic underpinnings of human disease. The surmounting of biotechnological roadblocks, however, has created new statistical ones: the look-elsewhere effect across the vast genome creates ample opportunities for false discoveries. The discipline of multiple testing, which significantly predates the high-throughput era, has been evolving to meet these new challenges. Nevertheless, significant gaps remain in our ability to ensure replicability of findings while. My goal is to bridge the gap between the theory of statistical inference and the practice of genomics data analysis. 
+
+\subsection*{Current Work: Structure and Exploration in Multiple Testing}
+
+The data collected in a variety of fields is increasingly rich and complex, which creates novel opportunities and challenges for statisticians. New vast data sets collected in fields like finance, biology, astronomy, and social science promise insights about the molecular mechanisms of disease, the structure of the universe, and everything in between. On the other hand, the scale and complexity of these modern data sets makes it challenging to unlock these insights. One way of handling this complexity is to use the data itself to \textit{generate} hypotheses, scanning for interesting patterns to examine more closely. While exploratory data analysis is a useful hypothesis-generating tool that has been in use for decades, it is increasingly important to additionally provide \textit{replicability guarantees} for the hypotheses flagged for follow-up. Indeed, the look-elsewhere effect paired with the richness of modern data sets creates ample room for false discoveries. 
+
+I have used multiple testing, and in particular \textit{false discovery rate} (FDR) control, as a formal way of encoding replicability. Consider the universe of hypotheses $\mathcal H = (H_1, \dots, H_m)$ that can be encoded in a data set $\mathcal D$; the goal is to find a subset $\cR^*$ of these that are supported by the data. Given p-values $\bm p = (p_1, \dots, p_m)$ derived from $\mathcal D$, traditional methods to control the FDR---like the Benjamini-Hochberg (BH) procedure---consider sets of the form $\{j: p_j \leq t\}$ and choose a cutoff $t^* \in [0,1]$ such that the FDR is bounded at a pre-defined level $q$. On the other hand, the hypotheses in $\mathcal H$ might have extra \textit{structure} (e.g. spatial or graphical), which does not align with BH's ``exchangeable" treatment of hypotheses. I have developed methods to search for rejection sets fitting into the context of this structure while preserving FDR guarantees. Moreover, traditional methods like BH leave no room for data scientists to \textit{explore}, since modifying the contents of an FDR-controlling set post hoc is formally prohibited. I have worked on reconciling exploration with rigorous Type-I error guarantees, bridging the gap between the theory of statistical inference and the practice of data science.
+
+Next, I outline three of my projects that exemplify how to integrate structure and exploration into multiple testing.
+
+%Suppose there are $m$ biological units we would like to scan for association with a certain disease of interest. These units might be hundreds of thousands of genetic variants in the spatially-structured genome, or tens of thousands of biological processes in the directed acyclic graph-structured Gene Ontology. Given data in the form of p-values $\bm p = (p_1, \dots, p_m)$ for this collection of hypotheses $\mathcal H = (H_1, \dots, H_m)$, we seek a rejection set $\cR^* \subseteq \mathcal H$ to pursue in follow-up experiments. The \textit{false discovery rate} (FDR)---the expected proportion of false discoveries among $\cR^*$---has gained popularity as a measure of Type-I error in large scale applications, and the Benjamini-Hochberg (BH) procedure is routinely employed to control FDR below a pre-specified level $q$. 
+%
+%While standard FDR procedures like BH are not well suited for structured hypotheses or for user interaction, in practice they are still used in these contexts. During my PhD, I have explored three such scenarios and developed principled solutions to account for structure and exploration while ensuring replicability.
+
+\subsubsection*{Controlled variable selection at multiple resolutions}
+
+Genome-wide association studies (GWAS), enabled by high-throughput genotyping technology, scan the genome for associations with a trait or disease of interest. Genetic measurements are made at the ``high resolution'' of single nucleotide polymorphisms (SNPs). However, SNPs have correlation patterns obeying the one-dimensional structure of the genome, making nearby SNPs hard to tell apart. They are also structured into larger functional units such as genes. Therefore, SNPs are often analyzed in groups (``lower resolution") to facilitate statistical power and/or interpretability.
+
+While traditional GWAS methodology relies on marginal testing, the recently developed knockoffs methodology \cite{knockoffs} provides an attractive alternative. Knockoffs provide a means to test the more meaningful hypotheses of \textit{conditional} independence between a response and a set of predictor variables and provide rigorous FDR control guarantees. Like BH, however, knockoffs do not accommodate for structure on the set of variables. For example, the set of significant SNPs returned by the knockoffs procedure cannot be grouped while retaining the FDR guarantee, since this operation can inflate the FDR. 
+
+This problem motivated me to develop the Multilayer Knockoff Filter (MKF) \cite{MKF} with my advisor Chiara Sabatti. The MKF is a variable selection methodology that finds a high-resolution set of significant variables whose projections into multiple pre-specified lower resolutions control the FDR at each resolution at given target levels. For example, one might want to control the FDR at the SNP level \textit{and} at the gene level. The MKF searches for rejection regions jointly across all resolutions (similar to the p-filter \cite{p-filter}) and leverages knockoff statistics to measure variable importance. The principal technical challenge lay in proving FDR control for multiple rejection sets (one per resolution) that are all coupled together in a complicated way. The key to the proof was to assume a worst-case scenario where the rejection thresholds at each resolution are chosen adversarially, and then bound this worst-case FDR by constructing an appropriate exponential supermartingale and applying the maximal inequality. Surprisingly, the price of this pessimistic analysis was an extra constant of only 1.93 in the FDR bound. 
+
+I applied the MKF procedure to a targeted exome re-sequencing data set to study associations with HDL cholesterol. Cross-referencing the results with the literature on this well-studied trait, MKF reduced the number of false positive genes from 5 (out of 11 total) to just 1 (out of 6 total), at the cost of one extra false negative. I am currently in the process of applying MKF and related ideas to the exome-wide Finnish Metabolic Sequencing (FinMetSeq) and UK Biobank data sets, and integrating this methodology into the existing \texttt{knockoff} package in \texttt{R}. I have presented this methodology to genetics audiences at conferences (including this year at the American Society for Human Genetics), where it has been well received, including a best student poster award at a statistical genomics conference in 2017.
+
+%Let $X_1, \dots, X_m \in \{0, 1, 2\}$ be random variables encoding the genotype of an individual at $m$ genomic locations and let $Y$ be a trait of interest. One would like to test the hypotheses of no conditional association between each genetic variant and the trait:
+%\begin{equation}
+%H^{\text{variant}}_j: X_j \independent Y | X_{-j}, \quad j = 1, \dots, m.
+%\label{variant_association}
+%\end{equation}
+%While genetic variation is probed at the level of individual genetic variants, these variants are often interpreted in the context of the genes these variants lie close to. 
+%%The most interesting part of the genome is the 1-2\% of it that contains genes, which code for proteins. Collectively, this part of the genome is called the \textit{exome}. Genetic variation in coding regions can be assayed using a modern high-throughput technique called whole exome sequencing. Sequencing either a cohort or a case-control sample in this way and studying the coding variants associated with a trait of interest is called an \textit{exome-wide association study}. 
+%If we let $\mathcal G_1, \dots, \mathcal G_K \subseteq \{1, \dots, m\}$ be the sets of variants near each of the $K$ genes (assuming each variant is associated with exactly one gene), we are also interested in testing
+%\begin{equation*}
+%H^{\text{gene}}_g: X_{\mathcal G_g} \independent Y | X_{-\mathcal G_g}, \quad g = 1, \dots, K.
+%\end{equation*}
+%Therefore, in this problem we are interested in performing variable selection at two different ``resolutions.'' A practical solution would be to reject a set of variants, and then reject those genes containing at least one rejected variant. However, 
+
+% If $\cR^*$ is the set of significant genetic variants obtained from an FDR method like BH, then it is standard practice to also report the set of genes containing any discovered variant. 
+
+\subsubsection*{Controlling FDR while filtering discoveries}
+
+Grouping the elements of a rejection set is just one example of a \textit{filtering} operation. Many other, more complicated, filtering operations are also common in data science, especially when hypotheses are structured. For example, International Classification of Diseases (ICD) codes, used in electronic health records and insurance claims, have a tree structure reflecting relationships between diseases (e.g. ``pneumococcal meningitis" is more specific than ``bacterial meningitis", so there is an edge from the latter to the former). In this and other applications involving hypotheses of varying degrees of specificity, filtering is common to reduce redundancy and improve interpretability of rejection sets. In the context of ICD codes, for instance, a rejection $i \in \cR^*$ might be considered ``redundant" if it has a descendant $j \in \cR^*$. The \textit{outer nodes filter} \cite{Yekutieli} might be employed to remove this redundancy, leaving a set of ``distinct" discoveries $\cU^* \subseteq \cR^*$. Other filters can be more involved and take the form of software packages.
+
+Like changing the resolution of discoveries, many filtering operations also run the risk of inflating the FDR. Therefore, applying an FDR procedure followed by a filter is in general a dangerous operation. This presents a challenge, especially because a variety of filters may be applied in practice and it is infeasible to design a new FDR methodology for each filter. To address this challenge in full generality, I first formalized the concept of a filter as any mapping 
+\begin{equation*}
+\F: (\cR, \bm p) \mapsto \cU, \text{ such that } \cU \subseteq \cR.
+\end{equation*}
+The outer nodes filter defined above might be one example of such an $\F$. With this definition, a reasonable inferential goal is to control the \textit{false filtered discovery rate}: 
+\begin{equation*}
+\fdr_{\F} = \EE{\fdp(\cU^*)} = \EE{\fdp(\F(\cR^*, \bm p))} \leq q.
+\end{equation*}
+In practice, it is often the case that the filter to be applied can be specified in advance. Therefore, in collaboration with Chiara Sabatti and Marina Bogomolov, I proposed Focused BH \cite{Focused_BH}, an extension of the BH procedure that accounts for the effect of a pre-specified filter $\F$ to control the above error rate. To prove FDR control, one must account for the interaction of the filter with the dependency structure of the p-values. In particular, I showed that Focused BH controls the FDR when the filter $\F$ is \textit{monotonic} filter and the p-values are PRDS (a kind of positive dependence).
+
+I extensively tested Focused BH across a variety of simulation settings, including hypotheses with tree, DAG, and spatial structures. In the case of tree-structured hypothesis testing with the outer nodes filter, I demonstrated that Focused BH controls the FDR under weaker assumptions and is more powerful than Yekutieli's procedure \cite{Yekutieli} targeting the same error rate. In the case of spatially-structured GWAS hypotheses, I showed in simulations that Focused BH controls the FDR after a clumping filter, while the filter-blind BH suffers a substantial FDR inflation.
+
+
+\subsubsection*{High-probability FDP bounds after exploration}
+
+In the context of Multilayer Knockoff Filter and Focused BH, note that the operations applied to the rejection set were required to be specified \textit{before} seeing the data (pre hoc). In certain cases, like the ones described above, this is a reasonable assumption. In other cases, it is important for data scientists to participate in the choice of a rejection set $\cR^*$ \textit{after} seeing the data (post hoc), leveraging their domain knowledge and intuition. Consider the following scenario: a data scientist applies BH at level $q = 0.05$, and it turns out that only two discoveries were made. She then tries BH at level $q = 0.1$, which yields ten discoveries. The extra eight discoveries seem promising, so all ten are reported as significant at FDR level 0.1. While in theory it is clear that this amounts to ``data snooping" and invalidates the FDR guarantee, in practice the expectation that the target level $q$ is set a priori is not always reasonable. 
+
+To allow data scientists to explore their data while retaining replicability guarantees, Aaditya Ramdas and I have proposed a \textit{simultaneous selective inference} approach \cite{spotting}. The user is presented with a data-dependent ``menu" (path) of nested rejection sets 
+\begin{equation*}
+\varnothing = \cR_0 \subseteq \cR_1 \subseteq \cdots \subseteq \cR_n \subseteq \mathcal H
+\end{equation*}
+with accompanying FDP bounds $\fdpbar(\cR_k)$, which under p-value independence are simultaneously valid across $k$ with high probability:
+\begin{equation*}
+\PP{\fdp(\cR_k) \leq \fdpbar(\cR_k) \text{ for all } k} \geq 1-\alpha.
+\end{equation*}
+The user can inspect this menu and choose a rejection set whose content and FDP bound is to her liking, \textit{the FDP bound of the chosen set retaining validity despite the user's data-dependent decision}. This approach is related to exploratory multiple testing \cite{GS}, which by simultaneously bounding the FDP of all subsets $\cR \subseteq \mathcal H$ allows the scientist to choose from this exponentially large menu of options. While this all-subsets approach relies on closed testing, I obtain simultaneous FDP bounds across a path of rejection sets by studying $\fdp(\cR_k)$ as a stochastic process in $k$. At the cost of providing a more modest (though perhaps more focused) menu of options to the data scientist, I show in simulations that simultaneous selective inference can yield much tighter bounds on the FDP. Therefore, in terms of power and flexibility, simultaneous selective inference is a compromise between selective inference (guarantees for one rejection set) and simultaneous inference (guarantees for all possible rejection sets).
+
+
+\subsection*{Short-Term Research Agenda: Correlations and Resampling}
+
+Much of my work has focused on handling complex structures in the context of multiple testing. Another kind of complexity in this context that has not been adequately addressed is the issue of correlation among p-values. It is the easiest to prove results in the unrealistically optimistic case of independence or in the unrealistically pessimistic case of arbitrary dependence. Aside from the somewhat mysterious PRDS condition, not too much has been done in the middle ground between these two extremes. Some of the most promising work in this direction has been based on resampling. I believe resampling is a powerful methodology to deal both with complex structures and dependency patterns, and I see several fruitful directions in which to expand these ideas.
+
+\subsubsection*{Permutation-based false (filtered) discovery rate control}
+
+While permutation-based methods were actively developed in the context of the stringent family-wise error rate (FWER) \cite{WY}, satisfactory methodology and theory for permutation-based FDR control is still lacking. I believe that work in this direction could lead to powerful multiple testing methodology that works under realistic and verifiable dependence assumptions and does not rely on conservative corrections. A possible place to start is a permutation-based version of Focused BH I proposed, which while currently lacking theory performed quite well in simulations, boosting power while retaining FDR control. Exploring this procedure and developing theory for it could lead to a promising way to account for p-value correlations as well as complicated filters.
+
+
+\subsubsection*{Variable selection via resampling}
+
+Given a collection of $m$ random variables $X_1, \dots, X_m$ and a response variable $Y$, consider testing the conditional independence hypotheses $H_j: X_j \independent Y | X_{-j}$ for $j = 1, \dots, m$. This variable selection problem is known to be hard, especially in high dimensions. In the ``model-X framework" where we have knowledge of the distribution of $X$, the \textit{conditional randomization test} \cite{modelX} (resampling $X_j$ from its distribution conditional on $X_{-j}$) is a simple and elegant way to test conditional independence. One might wonder whether it would be possible to modify it to be more robust to its strong model-X assumption. The conditional permutation test \cite{CPT} is a step in that direction, though is still relies fairly heavily on knowing the distribution of $X$ and is even more computationally costly than the CRT. I would like to improve upon the CRT and CPT to develop a variable selection methodology that is lighter on computations and assumptions. %I believe that permuting \textit{with} replacement can lighten the computations of the CPT and relying on a distance metric on $X_{-j}$ instead of on the conditional distribution $X_j|X_{-j}$ to choose permutations can lighten its assumptions.
+
+
+\subsubsection*{Accelerating resampling-based procedures}
+
+One of the biggest drawbacks of resampling-based procedures is their computational cost. Especially if permutation p-values are subjected to multiple testing corrections, they must be quite accurate, and therefore require more computation. I would like to work on significantly reducing the computational burden of resampling-based procedures. Progress in this direction would help the statistical advantages of these procedures outweigh their computational disadvantages. %One idea for how to proceed is to adaptively draw Monte Carlo samples for different hypotheses, allocating more samples to more promising hypotheses. Indeed, if the Monte Carlo samples we have for a given hypothesis give a confidence interval of $[0.7, 0.9]$ for its p-value, we probably need not allocate more samples to that hypothesis. If these adaptively determined p-values are valid, this could greatly reduce the number of Monte Carlo samples necessary. Another direction is to study the shapes of permutation distributions and see if they fall into a parametric family of some kind. Then, a smaller number of samples can be used to fit the parameters of the null distribution, which in turn can be used to calculate statistical significance. These ideas, while most likely not novel, can make a big difference in the practical implementation of resampling-based procedures.
+
+%\subsubsection*{FDR as decision-making}
+
+\subsection*{Long-Term Research Agenda: Precision Medicine}
+
+The sequencing of the human genome in 2001 created high expectations for our ability to understand the biological mechanisms of human disease, paving the way for better and more personalized prognosis, diagnosis, and treatment. Nearly two decades later, the promise of ``precision medicine" is still far from reality. My career goal is to move us closer to realizing that promise by tackling quantitative challenges relevant to biology and medicine. The following are two examples of research in this direction.
+
+%\subsubsection*{New methods and models for association analysis}
+%
+%The GWAS community has grown accustomed to relying on marginal testing, univariate analysis, and FWER control. I believe that improved modeling and methodology can help improve the power and interpretability of GWAS results. The knockoff methodology has started to change that, allowing arbitrarily complicated 
+%
+%I believe that multivariate methods with inferential guarantees (as opposed to the current univariate state of the art), like the knockoff filter, offer a promising path forward.
+
+\subsubsection*{Functional genomics and causality}
+
+The emerging field of functional genomics picks up from where association studies leave off: trying to explain the mechanism by which a given genetic variant leads to a disease. While association analysis looks for correlations, functional genomics looks for causal explanations. I would love to contribute to the rapid development of the fields of functional genomics and causal inference to advance our mechanistic understanding of human diseases. Causal inference is related to what I have already done since replicability is the hallmark of a causal effect. Moreover, my work on variable selection is adjacent to causality in that it deals with testing independence while conditioning away confounders. Testing such conditional hypotheses helps disentangle direct effects of predictors on outcomes from indirect effects through other predictors. I am interested in exploring these connections and learning more about causal inference.
+
+\subsubsection*{Inference from electronic health records}
+
+In addition to genomics, another increasingly large source of biomedical data is electronic health records (EHR). Especially when linked with genomic data, EHR data contain much promise for medical insights. Given the heterogeneiety and pervasive missingness in EHR data, however, unlocking these insights presents significant statistical challenges. Moreover, EHR data are highly structured and thus amenable to analysis with some of the techniques I have already developed. I am interested in learning more about EHRs and applying my experience with the analysis of structured data to this rich data source.
+
+
+\subsection*{Conclusion}
+
+The unifying theme of my work is identifying and addressing statistical challenges arising from biomedical applications. I believe that the best way for me to make a difference in biomedicine is to collaborate closely with scientists in this domain, pairing my statistical expertise with their domain knowledge. I am excited to learn from these scientific collaborators as well as from my colleagues in math statistics, and I hope that standing at the intersection of these two domains will allow me to achieve my goal of advancing precision medicine.
+
+%
+%%Starting in the summer after my freshman year of college, I have been captivated by the applied mathematics and statistics problems that arise out of biomedical applications; first I worked on computed tomography, then on electron microscopy, and then on statistical genetics.
+%
+%Genomics has fascinated me from the beginning of my PhD at Stanford, and it is exciting to leverage my statistics training to contribute to this important field. During my PhD, I have developed statistical theory and methodology to accommodate for the structured and exploratory nature of genomics data analysis. I am excited to continue working in this area, always keeping biomedical applications in mind while developing rigorous theory and methodology.
+
+
+%In each of these cases, the FDR guarantee is provided for the set $\cR^*$, but the rejection set (or sets) actually reported is a transformed version of $\cR^*$. This poses a problem because these post hoc operations usually invalidate the FDR guarantee. This can be seen as reflecting a certain fragility of the FDR criterion (as compared to, say, the FWER criterion). However, I have shown that if one begins with the end in mind, then it is possible to retain FDR control while accounting for hypothesis structures and the need for exploration. I elaborate below on my solutions to the three issues raised above.
+
+%\end{small}
+%\newpage
+
+\begin{footnotesize}
+
+\begin{thebibliography}{}
+\bibliographystyle{}
+
+\bibitem{KKW12}
+{\bf E. Katsevich}, A. Katsevich, and G. Wang.
+\newblock Stability of the interior problem for polynomial region of interest.
+\newblock {\em Inverse Problems}, 28(6), 2012.
+
+\bibitem{KetZ14}
+B. Shi, {\bf E. Katsevich}, B. Chiang, A. Katsevich, and A. Zamyatin.
+\newblock Image registration for motion estimation in cardiac CT.
+\newblock In {\em SPIE Medical Imaging}, San Diego, California, February 2014.
+
+\bibitem{KetS15}
+{\bf E. Katsevich}, A. Katsevich, A. Singer. 
+\newblock Covariance matrix estimation for the cryo-EM heterogeneity problem.
+\newblock {\em SIAM Journal on Imaging Sciences}, 8(1):126--185, 2015.
+
+\bibitem{AetS15}
+J. Anden, {\bf E. Katsevich}, and A. Singer.
+\newblock Covariance estimation using conjugate gradient for 3D classification in cryo-EM.
+\newblock In {\em IEEE Int Symp Biomed Imaging}, New York, New York, April 2015.
+
+\bibitem{MKF}
+{\bf E. Katsevich} and C. Sabatti. 
+\newblock Multilayer Knockoff Filter: Controlled variable selection at multiple resolutions.
+\newblock {\em Annals of Applied Statistics}, to appear, 2018.
+
+\bibitem{Focused_BH}
+{\bf E. Katsevich}, C. Sabatti, and M. Bogomolov. 
+\newblock Controlling FDR while highlighting distinct discoveries.
+\newblock In preparation, 2018+.
+
+\bibitem{knockoffs}
+R. F. Barber and E. J. Candes.
+\newblock Controlling the false discovery rate via knockoffs.
+\newblock {\em Annals of Statistics}, 2015.
+
+
+\bibitem{p-filter}
+R. F. Barber and A. Ramdas.
+\newblock The p-filter: multilayer false discovery rate control for grouped hypotheses.
+\newblock {\em Journal of the Royal Statical Society, Series B}, 2017.
+
+
+
+\bibitem{Yekutieli}
+D. Yekutieli. 
+\newblock Hierarchical false discovery rate--controlling methodology.
+\newblock {\em Journal of the Americal Statistical Association}, 2008.
+
+
+\bibitem{spotting}
+{\bf E. Katsevich} and A. Ramdas. 
+\newblock Towards ``simultaneous selective inference:" post-hoc bounds on the false discovery proportion.
+\newblock {\em Annals of Statistics}, in revision, 2018+.
+
+\bibitem{GS}
+J. J. Goeman and A. Solari. 
+\newblock Multiple testing for exploratory research.
+\newblock {\em Statistical Science}, 2011.
+
+
+\bibitem{WY}
+P. H. Westfall and S. S. Young.
+\newblock Resampling-Based Multiple Testing: Examples and Methods for p-Value Adjustment.
+\newblock Wiley, 1993.
+
+\bibitem{modelX}
+E. J. Cand\`{e}s, Y. Fan, L. Janson, and J. Lv.
+\newblock Panning for gold: `model-X' knockoffs for high dimensional controlled variable selection.
+\newblock {\em Journal of the Royal Statical Society, Series B}, 2018.
+
+\bibitem{CPT}
+T. B. Berrett, Y. Wang, R. F. Barber, and R. J. Samworth.
+\newblock The conditional permutation test.
+\newblock Preprint, 2018.
+
+
+
+\end{thebibliography}
+\end{footnotesize}
+
+\end{document}
+
