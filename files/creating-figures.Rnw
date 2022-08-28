@@ -1,0 +1,340 @@
+% (C) Brett Klamer - MIT - http://opensource.org/licenses/MIT
+% Please contact me if you find any errors or make improvements
+% Contact details at brettklamer.com
+
+\documentclass[11pt,letterpaper,english,oneside]{article} % article class is a standard class
+%==============================================================================
+%Load Packages
+%==============================================================================
+\usepackage[left=1in,right=1in,top=1in,bottom=1in]{geometry} % easy page margins
+\usepackage[utf8]{inputenc} % editor uses utf-8 encoding
+\usepackage[T1]{fontenc} % T1 font pdf output
+\usepackage{lmodern} % Latin modern roman font
+\usepackage{bm, bbm} % bold and blackboard bold math symbols
+\usepackage{amsmath, amsfonts, amssymb, amsthm} % math packages
+\usepackage[final]{microtype} % better microtypography
+\usepackage{graphicx} % for easier grahics handling
+\usepackage[hidelinks, colorlinks=true, linkcolor = blue, urlcolor = blue]{hyperref} % to create hyperlinks
+\usepackage{float} % tells floats to stay [H]ere!
+\usepackage{mdframed} % it's better than framed. knitr uses framed so settings won't conflict
+\usepackage{enumitem} % nice lists
+\usepackage{fancyhdr} % nice headers
+\usepackage{caption}  % to control figure and table captions
+
+\captionsetup{width=0.9\textwidth, justification = raggedright}
+
+%==============================================================================
+% Enter name and homework title here
+%==============================================================================
+\author{Eugene Katsevich}
+\title{Creating high quality figures}
+
+
+%==============================================================================
+% Put title and author in PDF properties
+%==============================================================================
+\makeatletter % change interpretation of @
+\hypersetup{pdftitle={\@title},pdfauthor={\@author}}
+
+
+%==============================================================================
+% Header settings
+%==============================================================================
+\pagestyle{fancy} % turns on fancy header styles
+\fancyhf{} % clear all header and footer fields
+\makeatletter
+\lhead{\@author} % left header
+\chead{\@title} % center header
+\makeatother
+\rhead{Page \thepage} % right header
+\setlength{\headheight}{13.6pt} % fixes minor warning
+\makeatother % change back interpretation of @
+
+%==============================================================================
+% List spacing
+%==============================================================================
+\setlist[itemize]{parsep=0em} % fix itemize spacing
+\setlist[enumerate]{parsep=0em} % fix enumerate spacing
+
+%==============================================================================
+% set knitr options
+%==============================================================================
+% latex (change space before and after knitr kframe; based on framed package)
+\setlength{\OuterFrameSep}{0.3em}
+% R
+<<setup, include=FALSE, cache=FALSE>>=
+library(knitr)
+library(tidyverse)
+
+# inline hook to process the output of \Sexpr{} statements to just 2 digits
+inline_hook <- function(x) {
+  if(is.numeric(x)) x <- round(x, 2)
+  paste(as.character(x), collapse=", ")
+}
+knit_hooks$set(inline = inline_hook)
+
+# cache all chunks
+opts_chunk$set(cache = TRUE)
+
+# create directory for figures
+if(!dir.exists("figures")){
+  dir.create("figures")
+}
+@
+
+\begin{document}
+
+\maketitle
+
+This document gives some suggestions on how to create high-quality figures, an essential skill for communicating your results effectively, whether in a paper, talk, or poster. Some of the material is drawn from \href{https://r4ds.had.co.nz/graphics-for-communication.html}{Chapter 28} of R for Data Science. 
+
+\section{Sizing}
+
+Once you have created a plot in R, you need to export it to include it in your paper, talk, or poster. For example, suppose we have the plot \verb|p| defined as below:
+<<>>=
+test_data <- tibble(x = rnorm(10), y = rnorm(10))
+p <- test_data %>% ggplot(aes(x = x, y = y)) + geom_point() + theme_bw()
+@
+\noindent You should save it as a PDF via \verb|ggsave|:
+<<eval = FALSE>>=
+ggsave(plot = p, 
+       filename = "figures-and-tables/test_plot.pdf", 
+       device = "pdf", 
+       width = ???, 
+       height = ???)
+@
+\noindent Here, the question marks should be the width and height of the figure, in inches. Choose these to get a reasonable aspect ratio and a reasonable overall plot size. The aspect ratio (i.e. ratio of width to height) of your plots should be consistent with their content; e.g. box plots are usually relatively narrow, and scatter plots often make sense with equal aspect ratios. The overall plot size should be such that the smallest text in your plots should be roughly the same size as the text in the rest of your slides/paper/poster. Figures~\ref{fig:test-plot-small}, \ref{fig:test-plot-medium}, and~\ref{fig:test-plot-large} consider the width and length of the figure to be 1 inch, 2.5 inches, and 5 inches, respectively. The medium-sized plot (Figure~\ref{fig:test-plot-medium}) appears to be the most sensible choice. It usually takes a few tries to find an appropriate size for a figure. If the figures are going into a LaTeX report, I recommend \verb|\includegraphics| using the original scale of the figure you created (i.e. not using commands like \verb|width = 0.8\textwidth|): 
+\begin{verbatim}
+\begin{figure}[h!]
+\centering
+\includegraphics{figures-and-tables/test_plot.pdf}
+\caption{A test plot.}
+\label{fig:test-plot}
+\end{figure}
+\end{verbatim}
+This will create consistent font sizes throughout your document.
+
+<<include = FALSE>>=
+# small
+ggsave(plot = p, 
+       filename = "figures-and-tables/test_plot_small.pdf", 
+       device = "pdf", 
+       width = 1, 
+       height = 1)
+# medium
+ggsave(plot = p, 
+       filename = "figures-and-tables/test_plot_medium.pdf", 
+       device = "pdf", 
+       width = 2, 
+       height = 2)
+# large
+ggsave(plot = p, 
+       filename = "figures-and-tables/test_plot_large.pdf", 
+       device = "pdf", 
+       width = 5, 
+       height = 5)
+@
+
+\begin{figure}[h!]
+\centering
+\includegraphics{figures-and-tables/test_plot_small.pdf}
+\caption{The plot saved as 1in by 1in.}
+\label{fig:test-plot-small}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics{figures-and-tables/test_plot_medium.pdf}
+\caption{The plot saved as 2in by 2in.}
+\label{fig:test-plot-medium}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics{figures-and-tables/test_plot_large.pdf}
+\caption{The plot saved as 5in by 5in.}
+\label{fig:test-plot-large}
+\end{figure}
+
+
+\section{Titles}
+
+Each plot should include informative axis and legend titles. For example, consider the code below (drawn from R4DS Chapter 28), which produces the plot in Figure~\ref{fig:cars-unlabeled}.
+<<message = FALSE>>=
+# a plot without clear axis and legend titles
+p <- mpg %>%
+  ggplot(aes(x = displ, y = hwy)) +
+  geom_point(aes(color = class)) +
+  geom_smooth(se = FALSE) + 
+  theme_bw()
+
+# save plot
+ggsave(plot = p, 
+       filename = "figures-and-tables/cars-unlabeled.pdf", 
+       device = "pdf", 
+       width = 5, 
+       height = 3.75)
+@
+This is a plot of fuel efficiency versus engine displacement for various types of cars, but the axis and legend labels on the plot do not make this very clear. 
+\begin{figure}[h!]
+\centering
+\includegraphics{figures-and-tables/cars-unlabeled.pdf}
+\caption{A plot without clear titles.}
+\label{fig:cars-unlabeled}
+\end{figure}
+We can easily add informative titles to this plot using \texttt{labs}, resulting in Figure~\ref{fig:cars-labeled}, which is much easier to understand. 
+<<message = FALSE>>=
+# a plot with clear axis and legend titles
+p <- mpg %>%
+  ggplot(aes(x = displ, y = hwy)) +
+  geom_point(aes(color = class)) +
+  geom_smooth(se = FALSE) + 
+  labs(
+    x = "Engine displacement (liters)",
+    y = "Highway fuel economy (miles per gallon)",
+    colour = "Car type"
+  ) +
+  theme_bw()
+
+# save plot
+ggsave(plot = p, 
+       filename = "figures-and-tables/cars-labeled.pdf", 
+       device = "pdf", 
+       width = 5, 
+       height = 3.75)
+@
+\begin{figure}[h!]
+\centering
+\includegraphics{figures-and-tables/cars-labeled.pdf}
+\caption{(A plot with clear axis and legend titles). Fuel efficiency generally decreases with engine size; two-seaters (sports cars) are an exception because of their light weight.}
+\label{fig:cars-labeled}
+\end{figure}
+\noindent Plots might or might not need overall titles; often the axis titles speak for themselves and the message of the plot can be conveyed in the caption (as in Figure~\ref{fig:cars-labeled}.) To add plot titles if necessary, use the \verb|title| argument to \verb|labs()|.
+
+If applicable, axis titles should also include the units of measurement, e.g. liters or miles per gallon as in Figure~\ref{fig:cars-labeled}. If axis titles involve mathematical formulas, these should be typeset appropriately. The code below (drawn from R4DS Chapter 28) and Figure~\ref{fig:formulas}, which it produces, illustrate how to do this. More examples can be found at \href{https://rdrr.io/r/grDevices/plotmath.html}{\texttt{?plotmath}}.
+<<>>=
+# a plot illustrating how to include formulas in axis titles
+p = tibble(x = runif(10), 
+       y = runif(10)) %>%
+  ggplot(aes(x, y)) +
+  geom_point() +
+  labs(x = quote(sum(x[i] ^ 2, i == 1, n)),
+       y = quote(alpha + beta + frac(delta, theta))) + 
+  theme_bw()
+
+# save the plot
+ggsave(plot = p, 
+       filename = "figures-and-tables/fig-formulas.pdf", 
+       device = "pdf", 
+       width = 2.5, 
+       height = 2.5)
+@
+\begin{figure}[h!]
+\centering
+\includegraphics{figures-and-tables/fig-formulas.pdf}
+\caption{An illustration of using formulas in axis titles.}
+\label{fig:formulas}
+\end{figure}
+
+\section{Captions}
+
+Figures should have informative captions to help readers understand what information is displayed and how to interpret it. 
+
+\section{Layout}
+
+Sometimes, two or more plots make sense to present together in a single figure. This can be accomplished in two ways. If the different plots convey the same type of information but for different slices of the data, then \verb|facet_grid| and \verb|facet_wrap| are the best way of laying out these plots. For example, the code below and Figure~\ref{fig:facet-wrap} illustrates \verb|facet_wrap| for the \texttt{mpg} data used in Figures~\ref{fig:cars-unlabeled} and~\ref{fig:cars-labeled}.
+
+<<>>=
+# illustrate how to use facet_wrap to create a multi-panel plot
+p = mpg %>%
+  filter(class %in% 
+           c("2seater", "compact", "midsize")) %>%  # select 3 classes of cars
+  ggplot(aes(x = displ, y = hwy)) +
+  geom_point() +
+  facet_wrap(class ~ .) +                           # separate panels per class
+  labs(
+    x = "Engine displacement (liters)",
+    y = "Highway fuel economy\n(miles per gallon)", # line break in axis title
+  ) +
+  theme_bw()
+
+# save the plot
+ggsave(plot = p, 
+       filename = "figures-and-tables/facet-wrap.pdf", 
+       device = "pdf", 
+       width = 5.5, 
+       height = 2.25)
+@
+\begin{figure}[h!]
+\centering
+\includegraphics{figures-and-tables/facet-wrap.pdf}
+\caption{An illustration of using \texttt{facet\_wrap} to create a multi-panel plot.}
+\label{fig:facet-wrap}
+\end{figure}
+
+If the plots convey different types of information, then they should be created separately and then concatenated together using \verb|plot_grid| from the \verb|cowplot| package. An example is shown below and in Figure~\ref{fig:cowplot-demo}. Note that the figure caption should reference the subpanels by their labels (in this case, a and b).
+<<message = FALSE>>=
+# illustration of using cowplot to concatenate multiple plots
+library(cowplot)
+
+# first plot: box plot of fuel economy by car type
+p1 = mpg %>%
+  mutate(class =                         # re-order car classes by fuel economy
+           fct_reorder(class, hwy)) %>%
+  ggplot(aes(x = class, y = hwy, fill = class)) +
+  geom_boxplot() +
+  labs(
+    x = "Car type",
+    y = "Highway fuel economy\n(miles per gallon)"
+  ) + 
+  theme_bw() + 
+  theme(legend.position = "none",        # remove legend and x axis text because 
+        axis.text.x = element_blank())   #  information present in second plot
+
+# second plot: scatter plot of fuel economy versus car type
+p2 = mpg %>%
+  mutate(class =                         # re-order car classes by fuel economy
+           fct_reorder(class, hwy)) %>%
+  ggplot(aes(x = displ, y = hwy)) +
+  geom_point(aes(color = class)) +
+  geom_smooth(se = FALSE) + 
+  labs(
+    x = "Engine displacement (liters)",
+    colour = "Car type"
+  ) +
+  theme_bw() + 
+  theme(axis.title.y = element_blank())  # remove y axis title because already
+                                         #  present in the first plot
+
+# use plot_grid from cowplot to concatenate the two plots
+p = plot_grid(p1, 
+              p2, 
+              labels = "auto",     # generate labels for subplots
+              rel_widths = c(1,2), # specify relative widths
+              align = "h")         # how to align subplots
+
+# save the plot
+ggsave(plot = p, 
+       filename = "figures-and-tables/cowplot-demo.pdf", 
+       device = "pdf", 
+       width = 5, 
+       height = 2.5)
+@
+\begin{figure}[!htb]
+\centering
+\includegraphics{figures-and-tables/cowplot-demo.pdf}
+\caption{(An illustration of using \texttt{cowplot} to create a multi-panel plot.) Relationships between highway fuel economy and car type (a) and engine displacement (b). }
+\label{fig:cowplot-demo}
+\end{figure}
+
+\vspace{2in}
+
+\section{Further resources}
+
+\begin{itemize}
+\item \href{https://r4ds.had.co.nz/graphics-for-communication.html}{Chapter 28} of R for Data Science 
+\item \href{https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003833}{Ten Simple Rules for Better Figures} (PLOS Computational Biology, 2014)
+\item \href{https://b.nanes.org/figures/}{How to Create Publication-Quality Figures} (by Benjamin Nanes)
+\end{itemize}
+
+\end{document}
