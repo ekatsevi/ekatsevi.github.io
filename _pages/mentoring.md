@@ -10,5 +10,6 @@ PhD students must master a variety of non-statistical skills, and these skills a
 - [Navigating the academic job market in statistics](/resources/job-market)
 - [Creating high quality figures](/files/creating-figures.pdf)
 - [Giving effective presentations](/resources/presentations)
+- [Programming Best Practices in R](/files/best-programming-practices.pdf)
 
 Along similar lines, [Aaditya Ramdas](https://www.stat.cmu.edu/~aramdas/) (Assistant Professor at CMU) has also compiled several ["checklists"](https://www.stat.cmu.edu/~aramdas/checklists.html) for stat/ML PhD students that I find quite helpful.
