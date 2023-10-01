@@ -11,6 +11,6 @@ PhD students must master a variety of non-statistical skills, and these skills a
 - [Creating high quality figures](/files/creating-figures.pdf)
 - [Giving effective presentations](/resources/presentations)
 - [Programming best practices in R](/files/best-programming-practices.pdf)
-- [High performance computing](https://ekatsevi.github.io/statistical-computing/hpc-basics.html)
+- [High-performance computing](https://ekatsevi.github.io/statistical-computing/hpc-basics.html)
 
 Along similar lines, [Aaditya Ramdas](https://www.stat.cmu.edu/~aramdas/) (Assistant Professor at CMU) has also compiled several ["checklists"](https://www.stat.cmu.edu/~aramdas/checklists.html) for stat/ML PhD students that I find quite helpful.
