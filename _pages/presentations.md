@@ -6,6 +6,7 @@ author_profile: false
 
 Giving effective presentations is an extremely important skill in academia and beyond, but is typically not taught formally. Nevertheless, a wealth of advice on this subject is available online. Below are some references I recommend:
 
+- [Jean-luc Doumount's talk](https://www.youtube.com/watch?v=meBXuTIPJQk) on creating effective slides
 - [Aaditya Ramdas's checklist for effectively presenting work in Stat-ML](https://www.stat.cmu.edu/~aramdas/checklists/aadi-talk-checklist.pdf)
 - Zach Holman's [speaking.io website](https://speaking.io/) and [talk on talks](https://www.youtube.com/watch?v=YVb2GsJHejo)
 - [Jeff Leek group guide to giving talks](https://github.com/jtleek/talkguide)
