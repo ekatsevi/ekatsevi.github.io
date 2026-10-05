@@ -5,8 +5,13 @@ permalink: /publications/
 author_profile: true
 ---
 
+\* Equal contribution.
+
 Statistics
 -======
+
+- Z. Niu, Z. Huang, J. Ray Choudhury, E. Katsevich. *Saddlepoint approximations for plug-in resampling*. Biometrika, forthcoming. ([paper](https://arxiv.org/abs/2407.08911))
+- A. Chakraborty\*, J. Lee\*, E. Katsevich. *Power of masking methods for adaptive testing in a multivariate normal means problem*. Under review. ([paper](https://arxiv.org/abs/2601.07764))
 
 - T. Barry, E. Katsevich, K. Roeder. *Exponential family measurement error models for single-cell CRISPR screens*. Preprint. ([paper](https://arxiv.org/abs/2201.01879), [code](https://github.com/timothy-barry/glmeiv-manuscript), [results](https://upenn.box.com/v/glmeiv-files-v1))
 - J. Tian, X. Chen, E. Katsevich, J. Goeman, A. Ramdas. *Large-scale simultaneous inference under dependence*. Preprint. ([paper](https://arxiv.org/abs/2102.11253))
